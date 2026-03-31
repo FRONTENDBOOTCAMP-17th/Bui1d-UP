@@ -1,6 +1,7 @@
 # Build-UP API 명세서
 
 > **Base URL** : `https://api.example.com`
+
 ---
 
 ## 📌 공통 사항 (Common)
@@ -10,6 +11,13 @@
 ```
 Authorization: Bearer {token}
 ```
+
+**유효기간**
+
+| 항목 | 유효기간 |
+|---|---|
+| 이메일 인증코드 | 30분 |
+| 로그인 토큰 (JWT) | 2시간 |
 
 ### 변수명 표기 규칙
 변수명은 **영문(camelCase)** 으로 작성하며, 설명은 **한글**로 병기함.
@@ -94,6 +102,7 @@ POST /api/email/code/send
 > 💡 이메일 인증코드 전송 후 반환된 `UUID (고유식별자)`는
 > 인증코드 확인 시 `checkCode (인증코드)`와 함께 전송해야 함.
 > 연속 중복 전송은 프론트에서 차단함.
+> 인증코드 유효시간은 **30분**이며, 만료 시 재전송 필요.
 
 **Request Body**
 
@@ -273,6 +282,7 @@ POST /api/login
 **❌ 로그인 토큰 불필요**
 
 > 💡 로그인 성공 시 반환된 `token (인증 토큰)`을 이후 요청의 `Authorization` 헤더에 포함해야 함.
+> 토큰 유효기간은 **2시간**이며, 만료 시 재로그인 필요.
 
 **Request Body**
 
@@ -508,6 +518,7 @@ GET /api/list
 > ⚠️ **주의사항**
 > - `latest (최신글)` : 전체 글 중 최신순으로 최대 **6개** 반환
 > - `genres (장르별)` : 각 장르별 최신순으로 최대 **5개씩** 반환
+> - `latest`의 `genre` 값은 장르 키(예: sf_fantasy, horror)로 통일해서 반환함.
 > - 장르 키 목록은 아래 표를 따름.
 
 **장르 키 (Genre Keys)**
@@ -533,7 +544,7 @@ GET /api/list
 | genres (장르별) | object | 장르 키별 최신순 게시글 (각 최대 5개) |
 | postId (게시글 ID) | number | 게시글 고유 ID |
 | title (제목) | string | 영화 제목 |
-| genre (장르) | string | 장르명 |
+| genre (장르) | string | 장르 키 (장르 키 표 참고) |
 | year (개봉연도) | number | 개봉 연도 |
 | director (감독) | string[] | 감독 이름 배열 |
 | cast (출연진) | string[] | 출연진 이름 배열 |
@@ -544,12 +555,12 @@ GET /api/list
   "message": "Movies fetched successfully",
   "data": {
     "latest": [
-      { "postId": 1, "title": "왕과 사는 남자", "genre": "SF", "year": 2026, "director": ["장현준"], "cast": ["유지태", "유혜진"] },
-      { "postId": 2, "title": "주토피아 2", "genre": "애니메이션", "year": 2025, "director": ["자레드 부시"], "cast": ["지니퍼 굿윈"] },
-      { "postId": 3, "title": "블랙 팬서 3", "genre": "액션", "year": 2026, "director": ["라이언 쿠글러"], "cast": ["레티티아 라이트"] },
-      { "postId": 4, "title": "미키 17", "genre": "SF", "year": 2025, "director": ["봉준호"], "cast": ["로버트 패틴슨"] },
-      { "postId": 5, "title": "엘리오", "genre": "애니메이션", "year": 2025, "director": ["에이드리언 몰리나"], "cast": ["요나스 키브렙"] },
-      { "postId": 6, "title": "노스페라투", "genre": "호러", "year": 2024, "director": ["로버트 에거스"], "cast": ["빌 스카스가드"] }
+      { "postId": 1, "title": "왕과 사는 남자", "genre": "sf_fantasy", "year": 2026, "director": ["장현준"], "cast": ["유지태", "유혜진"] },
+      { "postId": 2, "title": "주토피아 2", "genre": "animation", "year": 2025, "director": ["자레드 부시"], "cast": ["지니퍼 굿윈"] },
+      { "postId": 3, "title": "블랙 팬서 3", "genre": "action_thriller_crime", "year": 2026, "director": ["라이언 쿠글러"], "cast": ["레티티아 라이트"] },
+      { "postId": 4, "title": "미키 17", "genre": "sf_fantasy", "year": 2025, "director": ["봉준호"], "cast": ["로버트 패틴슨"] },
+      { "postId": 5, "title": "엘리오", "genre": "animation", "year": 2025, "director": ["에이드리언 몰리나"], "cast": ["요나스 키브렙"] },
+      { "postId": 6, "title": "노스페라투", "genre": "horror", "year": 2024, "director": ["로버트 에거스"], "cast": ["빌 스카스가드"] }
     ],
     "genres": {
       "animation": [
