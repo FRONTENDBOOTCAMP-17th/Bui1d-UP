@@ -1,8 +1,10 @@
 {
   "type": "module",
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
     "eslint": "^10.1.0",
     "jest": "^30.3.0",
+    "tailwindcss": "^4.2.2",
     "vite": "^8.0.3"
   },
   "scripts": {
