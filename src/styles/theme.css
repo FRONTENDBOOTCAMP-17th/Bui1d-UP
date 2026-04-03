@@ -1,10 +1,16 @@
+@import "tailwindcss";
+@source "../components";
+
 :root {
   --background-base: #171717;
   --background-surface: #262626;
+
   --text-primary: #ffffff;
   --text-secondary: #737373;
   --text-tertiary: #d4d4d4;
-  --color--primary: #dc2626;
-  --color-hover: #fb2c36;
+
+  --color-primary: #dc2626;
+  --color-primary-hover: #fb2c36;
+  --color-disabled: #737373;
   --color-star: #ffba00;
 }

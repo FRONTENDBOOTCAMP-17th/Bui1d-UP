@@ -10,6 +10,12 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest",
-    "clean": "rm -rf dist build"
+    "clean": "rm -rf dist build",
+    "tailwind": "tailwindcss -i ./src/styles/input.css -o ./src/styles/output.css",
+    "watch": "npm run tailwind -- --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2"
   }
 }
