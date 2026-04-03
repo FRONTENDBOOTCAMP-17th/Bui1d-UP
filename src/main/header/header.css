@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px 10px 16px;
+  gap: 8px;
+  border-bottom: 1px solid var(--neutral-800, #262626);
+  background: var(--neutral-900, #171717);
+}
+
+.header-logo-link {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.header-logo {
+  height: 28px;
+  width: auto;
+}
+
+.header-text-logo {
+  height: 20px;
+  width: auto;
+  max-width: 100px;
+}
+
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  padding: 6px;
+  gap: 6px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+.nav-btn--red {
+  background-color: #dc2626;
+  padding: 6px 8px;
+}
+
+.nav-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.btn-label {
+  display: none;
+}
+
+/* 모바일: 검색바를 전체 너비로 아래 행에 배치 */
+.search-bar {
+  order: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #737373;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #262626;
+  border-radius: 8px;
+  box-sizing: border-box;
+  margin: 0 10px;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #737373;
+}
+
+/* 웹(768px 이상): 로고 → 검색바 → nav 한 행 */
+@media (min-width: 768px) {
+  .site-header {
+    flex-wrap: nowrap;
+  }
+
+  .header-logo-link {
+    flex: 0 0 auto;
+  }
+
+  .search-bar {
+    order: 0;
+    flex: 1;
+    width: auto;
+  }
+
+  .btn-label {
+    display: inline;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover {
+    background-color: #262626;
+  }
+
+  .nav-btn--red:hover {
+    background-color: #b91c1c;
+  }
+}
