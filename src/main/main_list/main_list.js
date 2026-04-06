@@ -17,6 +17,18 @@ const GENRE_MAP = {
 
 const GENRE_ORDER = Object.keys(GENRE_MAP);
 
+function renderSectionHeader(title, href) {
+  return `
+    <div class="genre-section__header">
+      <h2 class="genre-section__title">${title}</h2>
+      <a href="${href}" class="genre-section__more">
+        전체보기 <span>›</span>
+      </a>
+    </div>
+  `;
+}
+
+// 맨 위 포스터
 function renderFeaturedCard(post) {
   return `
     <a href="/src/main/detail/detail.html?postId=${post.postId}" class="featured-card">
@@ -49,17 +61,26 @@ function renderSmallCard(post) {
   `;
 }
 
+// 전체 섹션: featured(index 0) + header + grid(index 1~)
+function renderLatestSection(latest) {
+  return `
+    <section class="genre-section">
+      ${renderFeaturedCard(latest[0])}
+      ${renderSectionHeader("전체", "/src/main/genre_more/genre_more.html")}
+      <div class="genre-section__grid">
+        ${latest.slice(1).map(renderSmallCard).join("")}
+      </div>
+    </section>
+  `;
+}
+
+// 아래 장르별 2열 카드 섹션
 function renderGenreSection(genreKey, posts) {
   const label = GENRE_MAP[genreKey];
   const displayPosts = posts.slice(0, 4);
   return `
     <section class="genre-section">
-      <div class="genre-section__header">
-        <h2 class="genre-section__title">${label}</h2>
-        <a href="/src/main/genre_more/genre_more.html?genre=${genreKey}" class="genre-section__more">
-          전체보기 <span>›</span>
-        </a>
-      </div>
+      ${renderSectionHeader(label, `/src/main/genre_more/genre_more.html?genre=${genreKey}`)}
       <div class="genre-section__grid">
         ${displayPosts.map(renderSmallCard).join("")}
       </div>
@@ -67,34 +88,30 @@ function renderGenreSection(genreKey, posts) {
   `;
 }
 
+// 장르별 데이터 존재시 섹션 렌더링
 async function loadMainList() {
-  const featuredEl = document.getElementById("featured-card");
-  const latestGridEl = document.getElementById("latest-grid");
+  const latestSectionEl = document.getElementById("latest-section");
   const genreListEl = document.getElementById("genre-list");
 
   try {
     const data = await getMainList();
+    if (!data) throw new Error("데이터 없음");
     const latest = data.latest ?? [];
     const genres = data.genres ?? {};
 
-    // 전체: index 0 featured, index 1~ grid
+    // 전체 섹션
     if (latest.length > 0) {
-      featuredEl.innerHTML = renderFeaturedCard(latest[0]);
-    }
-    if (latest.length > 1) {
-      latestGridEl.innerHTML = latest.slice(1).map(renderSmallCard).join("");
+      latestSectionEl.innerHTML = renderLatestSection(latest);
     }
 
     // 장르별 섹션
-    const genreHtml = GENRE_ORDER.filter(
+    genreListEl.innerHTML = GENRE_ORDER.filter(
       (key) => genres[key] && genres[key].length > 0,
     )
       .map((key) => renderGenreSection(key, genres[key]))
       .join("");
-
-    genreListEl.innerHTML = genreHtml;
   } catch (err) {
-    featuredEl.innerHTML =
+    latestSectionEl.innerHTML =
       "<p class='empty-message'>데이터를 불러오지 못했습니다.</p>";
     console.error(err);
   }

@@ -18,20 +18,8 @@
     <div id="header-container"></div>
 
     <main class="main-content">
-      <!-- 전체 섹션: featured(index 0) + grid(index 1~) -->
-      <section class="genre-section">
-        <div id="featured-card"></div>
-        <div class="genre-section__header">
-          <h2 class="genre-section__title">전체</h2>
-          <a
-            href="/src/main/genre_more/genre_more.html"
-            class="genre-section__more"
-          >
-            전체보기 <span>›</span>
-          </a>
-        </div>
-        <div id="latest-grid" class="genre-section__grid"></div>
-      </section>
+      <!-- 전체 섹션 (JS 동적 렌더링) -->
+      <div id="latest-section"></div>
 
       <!-- 장르별 섹션 (JS 동적 렌더링) -->
       <div id="genre-list"></div>
