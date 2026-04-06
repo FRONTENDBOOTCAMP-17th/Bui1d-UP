@@ -1,12 +1,12 @@
 import "./main_list.css";
 import { renderHeader } from "../header/header.js";
-import { fetchHomeList } from "../../API/main_list.js";
+import { getMainList } from "../../API/main_list.js";
 
 const GENRE_MAP = {
   animation: "애니메이션",
   comedy: "코미디",
   romance: "로맨스",
-  action_thriller_crime: "액션/스릴러/범죄",
+  action_thriller_crime: "액션 / 스릴러 / 범죄",
   horror: "호러",
   sf_fantasy: "SF/판타지",
   drama: "드라마",
@@ -73,7 +73,7 @@ async function loadMainList() {
   const genreListEl = document.getElementById("genre-list");
 
   try {
-    const data = await fetchHomeList();
+    const data = await getMainList();
     const latest = data.latest ?? [];
     const genres = data.genres ?? {};
 
@@ -86,14 +86,16 @@ async function loadMainList() {
     }
 
     // 장르별 섹션
-    const genreHtml = GENRE_ORDER
-      .filter((key) => genres[key] && genres[key].length > 0)
+    const genreHtml = GENRE_ORDER.filter(
+      (key) => genres[key] && genres[key].length > 0,
+    )
       .map((key) => renderGenreSection(key, genres[key]))
       .join("");
 
     genreListEl.innerHTML = genreHtml;
   } catch (err) {
-    featuredEl.innerHTML = "<p class='empty-message'>데이터를 불러오지 못했습니다.</p>";
+    featuredEl.innerHTML =
+      "<p class='empty-message'>데이터를 불러오지 못했습니다.</p>";
     console.error(err);
   }
 }
