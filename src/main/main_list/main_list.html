@@ -1,33 +1,42 @@
 <!doctype html>
 <html lang="ko-KR">
   <head>
-    <meta  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>후기 목록(메인)</title>
-    <link rel="shortcut icon" href="/favicon/likelion.ico" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="/favicon/likelion.ico"
+      type="image/x-icon"
+    />
     <link rel="icon" href="/favicon/likelion.svg" type="image/svg+xml" />
     <link rel="preload" as="font" href="/font/suit/SUIT-Variable.woff2" />
     <link rel="stylesheet" href="/font/suit/SUIT-Variable.css" />
-    <link rel="stylesheet" href="/src/common/index.css" />
+    <link rel="stylesheet" href="./main_list.css" />
   </head>
   <body>
-    <!-- 헤더 컴포넌트 -->
-    <div id="header-container"></div>
+    <div id="header-container">heelo</div>
 
-    <!-- 후기 목록 -->
     <main class="main-content">
-      <section class="reviews-section">
-        <h2 class="section-title">최신 후기</h2>
-        <div id="reviews-list" class="reviews-list">
-          <!-- 후기 카드들이 여기에 동적으로 추가됩니다 -->
+      <!-- 전체 섹션: featured(index 0) + grid(index 1~) -->
+      <section class="genre-section">
+        <div id="featured-card"></div>
+        <div class="genre-section__header">
+          <h2 class="genre-section__title">전체</h2>
+          <a
+            href="/src/main/genre_more/genre_more.html"
+            class="genre-section__more"
+          >
+            전체보기 <span>›</span>
+          </a>
         </div>
+        <div id="latest-grid" class="genre-section__grid"></div>
       </section>
+
+      <!-- 장르별 섹션 (JS 동적 렌더링) -->
+      <div id="genre-list"></div>
     </main>
 
-    <!-- 모달 컴포넌트 -->
-    <div id="modal-container"></div>
-
-    <script src="/src/main/header/header.js"></script>
-    <script src="/src/main/main_list/main_list.js"></script>
-    
+    <script type="module" src="./main_list.js"></script>
   </body>
 </html>
