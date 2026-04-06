@@ -1,1 +1,185 @@
 @import "tailwindcss";
+
+body {
+  background-color: #171717;
+  color: #ffffff;
+  margin: 0;
+}
+
+.main-content {
+  padding-bottom: 32px;
+}
+
+/* ── Featured Card ── */
+.featured-card {
+  display: block;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.featured-card__poster {
+  width: 100%;
+  height: 100%;
+  background-color: #404040;
+}
+
+.featured-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.featured-card__info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 48px 16px 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+}
+
+.featured-card__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #ffffff;
+}
+
+.featured-card__meta {
+  font-size: 12px;
+  color: #d4d4d4;
+  margin: 0 0 4px;
+}
+
+.featured-card__crew {
+  font-size: 9px;
+  color: #a3a3a3;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Genre Section ── */
+.genre-section {
+  margin-top: 0;
+}
+
+.genre-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 15px;
+}
+
+.genre-section__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.genre-section__more {
+  font-size: 15px;
+  color: #a3a3a3;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ── 2열 그리드 ── */
+.genre-section__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 0 20px;
+}
+
+/* ── Small Card ── */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #262626;
+}
+
+.movie-card__poster {
+  background-color: #404040;
+  overflow: hidden;
+}
+
+.movie-card__poster img {
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+
+.movie-card__info {
+  padding: 8px;
+}
+
+.movie-card__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-card__star {
+  font-size: 12px;
+  color: #facc15;
+}
+
+.empty-message {
+  color: #737373;
+  text-align: center;
+  padding: 40px 0;
+  font-size: 14px;
+}
+
+@media screen and (min-width: 768px) {
+  .featured-card__info {
+    padding: 64px 32px 32px;
+  }
+  .featured-card__title {
+    font-size: 32px;
+  }
+
+  .featured-card__meta {
+    font-size: 16px;
+  }
+
+  .featured-card__crew {
+    font-size: 14px;
+  }
+
+  .genre-section__header {
+    margin: 16px 24px;
+  }
+
+  .genre-section__title {
+    font-size: 28px;
+  }
+
+  .genre-section__more {
+    font-size: 16px;
+  }
+
+  .genre-section__grid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    gap: 12px;
+    padding: 0 24px;
+  }
+}
