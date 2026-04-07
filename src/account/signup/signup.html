@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../styles/theme.css" />
+    <link rel="stylesheet" href="../../components/input.css" />
+    <link rel="stylesheet" href="../../components/button.css" />
+  </head>
+  <body
+    class="min-h-screen flex overflow-hidden bg-[var(--background-base)] text-[var(--text-primary)] font-['Noto_Sans_KR',sans-serif]"
+  >
+    <!-- LEFT -->
+    <div
+      class="hidden min-[764px]:flex w-1/2 flex-col justify-center items-start p-20 relative overflow-hidden"
+    >
+      <!-- 그라디언트 오버레이 -->
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="
+          background:
+            radial-gradient(
+              ellipse 80% 60% at 20% 50%,
+              rgba(229, 9, 20, 0.18) 0%,
+              transparent 70%
+            ),
+            radial-gradient(
+              ellipse 60% 80% at 80% 80%,
+              rgba(229, 9, 20, 0.08) 0%,
+              transparent 60%
+            );
+        "
+      ></div>
+      <!-- 노이즈 텍스처 -->
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="
+          background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27 opacity=%270.04%27/%3E%3C/svg%3E&quot;);
+        "
+      ></div>
+
+      <!-- 콘텐츠 -->
+      <div class="relative z-10">
+        <div class="flex items-center gap-3 mb-12">
+          <div
+            class="w-12 h-12 bg-[var(--color-primary)] rounded-[10px] flex items-center justify-center"
+          >
+            <img src="/bui1d-boxLogo.png" alt="빌드업 로고" class="header-logo" />
+          </div>
+          <img
+            src="/public/Bui1dBox.png"
+            alt="빌드업 텍스트 로고"
+            class="header-text-logo"
+          />
+        </div>
+        <h2
+          class="text-[clamp(2.2rem,3vw,3.2rem)] font-bold leading-[1.2] mb-6"
+        >
+          처음 만나서<br />반가워요!
+        </h2>
+        <p
+          class="text-[1.1rem] text-[var(--text-secondary)] leading-[1.8] max-w-[400px]"
+        >
+          Bui1dBox에서 여러분만의<br />영화 컬렉션을 만들어보세요.
+        </p>
+      </div>
+
+      <!-- 배경 장식 텍스트 -->
+      <div
+        class="absolute -bottom-8 -left-4 font-['Bebas_Neue',sans-serif] text-[18rem] text-[rgba(229,9,20,0.04)] leading-[1] select-none pointer-events-none whitespace-nowrap"
+      >
+        FILM
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div
+      class="w-full min-[764px]:w-1/2 flex flex-col justify-center px-6 py-8 min-[360px]:p-12 min-[764px]:px-20 min-[764px]:py-16 overflow-y-auto"
+    >
+      <!-- 모바일 로고 -->
+      <div class="flex min-[764px]:hidden items-center gap-2.5 mb-10">
+        <div
+          class="w-9 h-9 bg-[var(--color-primary)] rounded-[10px] flex items-center justify-center"
+        >
+          <img src="/bui1d-boxLogo.png" alt="빌드업 로고" class="header-logo" />
+        </div>
+        <img
+          src="/public/Bui1dBox.png"
+          alt="빌드업 텍스트 로고"
+          class="header-text-logo"
+        />
+      </div>
+
+      <!-- 로그인 링크 -->
+      <div class="flex justify-end items-center gap-1.5 mb-10">
+        <span class="text-sm text-[var(--text-secondary)]"
+          >이미 계정이 있으신가요?</span
+        >
+        <a
+          href="../login/login.html"
+          class="text-sm text-[var(--color-primary)] no-underline font-medium transition-colors duration-150 hover:text-[var(--color-primary-hover)]"
+          >로그인</a
+        >
+      </div>
+
+      <h1 class="text-[clamp(2rem,4vw,2.8rem)] font-bold mb-10">회원가입</h1>
+
+      <form id="signup-form" novalidate class="flex flex-col gap-5">
+        <!-- 아이디 -->
+        <div class="flex flex-col gap-1.5">
+          <div class="form-input">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder=" "
+              autocomplete="username"
+              aria-labelledby="username-label"
+              aria-describedby="username-hint"
+              required
+            />
+            <label for="username" id="username-label">아이디</label>
+            <button
+              type="button"
+              class="action-btn clear"
+              id="username-clear"
+              aria-label="아이디 입력값 삭제"
+              tabindex="0"
+            >
+              <svg width="18" height="18" aria-hidden="true" focusable="false">
+                <use href="../../assets/icons/sprite.svg#icon-x" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-hint" id="username-hint" aria-live="polite"></p>
+        </div>
+
+        <!-- 닉네임 -->
+        <div class="flex flex-col gap-1.5">
+          <div class="form-input">
+            <input
+              type="text"
+              id="nickname"
+              name="nickname"
+              placeholder=" "
+              autocomplete="nickname"
+              aria-labelledby="nickname-label"
+              aria-describedby="nickname-hint"
+              required
+            />
+            <label for="nickname" id="nickname-label">닉네임</label>
+            <button
+              type="button"
+              class="action-btn clear"
+              id="nickname-clear"
+              aria-label="닉네임 입력값 삭제"
+              tabindex="0"
+            >
+              <svg width="18" height="18" aria-hidden="true" focusable="false">
+                <use href="../../assets/icons/sprite.svg#icon-x" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-hint" id="nickname-hint" aria-live="polite"></p>
+        </div>
+
+        <!-- 비밀번호 -->
+        <div class="flex flex-col gap-1.5">
+          <div class="form-input">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="has-two-actions"
+              placeholder=" "
+              autocomplete="new-password"
+              aria-labelledby="password-label"
+              aria-describedby="password-hint"
+              required
+            />
+            <label for="password" id="password-label">비밀번호</label>
+            <button
+              type="button"
+              class="action-btn toggle"
+              id="password-toggle"
+              aria-label="비밀번호 표시"
+              aria-pressed="false"
+            >
+              <svg
+                id="icon-eye"
+                width="18"
+                height="12"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="../../assets/icons/sprite.svg#icon-eye" />
+              </svg>
+              <svg
+                id="icon-eye-off"
+                width="22"
+                height="22"
+                aria-hidden="true"
+                focusable="false"
+                style="display: none"
+              >
+                <use href="../../assets/icons/sprite.svg#icon-eye-hide" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="action-btn clear"
+              id="password-clear"
+              aria-label="비밀번호 입력값 삭제"
+              tabindex="0"
+            >
+              <svg width="18" height="18" aria-hidden="true" focusable="false">
+                <use href="../../assets/icons/sprite.svg#icon-x" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-hint" id="password-hint" aria-live="polite"></p>
+        </div>
+
+        <!-- 비밀번호 확인 -->
+        <div class="flex flex-col gap-1.5">
+          <div class="form-input">
+            <input
+              type="password"
+              id="password-confirm"
+              name="password-confirm"
+              class="has-two-actions"
+              placeholder=" "
+              autocomplete="new-password"
+              aria-labelledby="password-confirm-label"
+              aria-describedby="password-confirm-hint"
+              required
+            />
+            <label for="password-confirm" id="password-confirm-label"
+              >비밀번호 확인</label
+            >
+            <button
+              type="button"
+              class="action-btn toggle"
+              id="password-confirm-toggle"
+              aria-label="비밀번호 확인 표시"
+              aria-pressed="false"
+            >
+              <svg
+                id="icon-eye-confirm"
+                width="18"
+                height="12"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="../../assets/icons/sprite.svg#icon-eye" />
+              </svg>
+              <svg
+                id="icon-eye-off-confirm"
+                width="22"
+                height="22"
+                aria-hidden="true"
+                focusable="false"
+                style="display: none"
+              >
+                <use href="../../assets/icons/sprite.svg#icon-eye-hide" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="action-btn clear"
+              id="password-confirm-clear"
+              aria-label="비밀번호 확인 입력값 삭제"
+              tabindex="0"
+            >
+              <svg width="18" height="18" aria-hidden="true" focusable="false">
+                <use href="../../assets/icons/sprite.svg#icon-x" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-hint" id="password-confirm-hint" aria-live="polite"></p>
+        </div>
+
+        <button
+          type="submit"
+          class="border-0 w-full h-[52px] rounded-lg text-[0.95rem] font-semibold mt-3 cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+        >
+          회원가입
+        </button>
+      </form>
+
+      <button
+        type="button"
+        class="w-full h-[52px] rounded-lg text-[0.95rem] font-semibold mt-3 border-0 bg-transparent text-[var(--text-secondary)] cursor-pointer transition-colors duration-150 hover:text-[var(--text-primary)] active:scale-[0.99]"
+        onclick="location.href = '../../landing/landing.html'"
+      >
+        홈으로 돌아가기
+      </button>
+    </div>
+
+    <script type="module" src="./signup.js"></script>
+  </body>
+</html>

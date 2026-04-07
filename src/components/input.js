@@ -75,6 +75,8 @@ function setupInput(id) {
 function setupToggle(id) {
   const input = document.getElementById(id);
   const toggle = document.getElementById(`${id}-toggle`);
+  const eyeOn = toggle.querySelector("svg:first-child");
+  const eyeOff = toggle.querySelector("svg:last-child");
 
   toggle.addEventListener("click", () => {
     const hidden = input.type === "password";
@@ -84,14 +86,9 @@ function setupToggle(id) {
       hidden ? "비밀번호 숨기기" : "비밀번호 보기",
     );
     toggle.setAttribute("aria-pressed", hidden ? "true" : "false");
-    document.getElementById("eye").style.display = hidden ? "none" : "block";
-    document.getElementById("eye-hide").style.display = hidden
-      ? "block"
-      : "none";
+    eyeOn.style.display = hidden ? "none" : "";
+    eyeOff.style.display = hidden ? "" : "none";
   });
 }
 
-setupInput("username");
-setupInput("nickname");
-setupInput("password");
-setupToggle("password");
+export { setupInput, setupToggle };
