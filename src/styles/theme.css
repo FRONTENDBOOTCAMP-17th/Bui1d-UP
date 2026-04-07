@@ -8,9 +8,12 @@
   --text-primary: #ffffff;
   --text-secondary: #737373;
   --text-tertiary: #d4d4d4;
+  --text-detail: #e5e5e5;
 
   --color-primary: #dc2626;
   --color-primary-hover: #fb2c36;
   --color-disabled: #737373;
   --color-star: #ffba00;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
 }
