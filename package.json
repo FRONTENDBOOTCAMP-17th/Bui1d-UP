@@ -1,4 +1,7 @@
 {
+  "name": "bui1d-up",
+  "version": "0.1.0",
+  "description": "바닐라 JS + Vite 프론트엔드 프로젝트 : 영화 리뷰 기록 및 관리 웹 애플리케이션",
   "type": "module",
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.2",
