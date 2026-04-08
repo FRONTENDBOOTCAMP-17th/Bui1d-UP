@@ -1,9 +1,10 @@
 export const getDetail = async (postId) => {
   try {
+    console.log("Fetching detail for postId:", postId);
     const response = await fetch(
-      `${import.meta.VITE_API_URL}/movies/${postId}`,
+      `${import.meta.env.VITE_API_BASE_URL}/movies/${postId}`,
       {
-        mehtod: "GET",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -16,6 +17,6 @@ export const getDetail = async (postId) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching detail:", error);
+    console.error(error);
   }
 };
