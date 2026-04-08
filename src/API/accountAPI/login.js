@@ -10,13 +10,12 @@ export const login = async (id, password) => {
     );
 
     const json = await response.json();
-
     if (!response.ok) {
-      throw new Error(json.errorCode ?? "로그인 실패");
+      throw new Error(json.message ?? "로그인 실패");
     }
 
-    alert(`로그인에 성공하였습니다!`);
-
+    console.log("LogIn response:", json);
+    localStorage.setItem("accessToken", json.data.token);
     return json.data;
   } catch (error) {
     console.error("로그인 에러가 발생하였습니다:", error.message);
