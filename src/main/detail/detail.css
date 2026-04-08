@@ -1,0 +1,347 @@
+/* ===== Reset & Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0b0b0b;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100dvh;
+}
+
+/* ===== Header ===== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: gray;
+}
+
+.back-btn:hover {
+  color: #fff;
+}
+
+.close-btn {
+  display: none; /* 모바일에서 숨김, 데스크탑에서만 표시 */
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 데스크탑 블러 오버레이 (기본 숨김) */
+.backdrop-overlay {
+  display: none;
+}
+
+/* ===== Layout ===== */
+.detail-layout {
+  display: block;
+}
+
+/* ===== Backdrop (모바일: img 태그로 표시) ===== */
+.backdrop {
+  position: relative;
+  width: 100%;
+}
+
+.backdrop-img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* hero-info: 이미지 아래 일반 흐름 */
+.hero-info {
+  padding: 20px 20px 16px;
+  background: linear-gradient(to bottom, #1a1a1a, #0b0b0b);
+}
+
+.hero-info h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #f5c518;
+  font-weight: bold;
+}
+
+.rating img {
+  width: 16px;
+  height: 16px;
+}
+
+/* 모바일에서 상세정보 버튼 숨김 */
+.detail-btn {
+  display: none;
+}
+
+/* ===== Detail Panel (모바일: 항상 표시) ===== */
+.detail-panel {
+  padding: 20px;
+}
+
+/* 모바일: 패널 내 포스터 숨김 */
+.poster-wrap {
+  display: none;
+}
+
+.poster-wrap img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  aspect-ratio: 2 / 3;
+}
+
+.detail-panel h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.panel-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f5c518;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.panel-rating img {
+  width: 18px;
+  height: 18px;
+}
+
+/* 메타 정보 */
+.movie-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 0;
+  margin-bottom: 20px;
+}
+
+.meta-row dt {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.meta-row dd {
+  font-size: 14px;
+  color: #fff;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #2a2a2a;
+  margin: 20px 0;
+}
+
+/* 명대사 */
+.quotes h3 {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.quotes ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quotes li {
+  font-style: italic;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid #e50914;
+}
+
+/* ===== Desktop (min-width: 768px) ===== */
+@media (min-width: 768px) {
+  body {
+    overflow: hidden;
+    height: 100dvh;
+  }
+
+  /* 닫기 버튼: 패널 우상단 */
+  .close-btn {
+    display: block;
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    z-index: 1;
+  }
+
+  .close-btn:hover {
+    color: #fff;
+  }
+
+  /* 블러 오버레이: 패널 열릴 때 배경 위에 씌움 */
+  .backdrop-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 14;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .backdrop-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* 레이아웃: 배경이 100% 차지 */
+  .detail-layout {
+    display: block;
+    position: relative;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* backdrop: 전체 화면 배경 이미지 */
+  .backdrop {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* 어두운 그라데이션 오버레이 */
+  .backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+  }
+
+  /* 데스크탑에서 img 태그 숨김 (background-image 사용) */
+  .backdrop-img {
+    display: none;
+  }
+
+  /* hero-info: 좌하단 오버레이 */
+  .hero-info {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    background: none;
+    padding: 0;
+    z-index: 1;
+  }
+
+  .hero-info h1 {
+    font-size: 48px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    margin-bottom: 12px;
+  }
+
+  .hero-meta {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  /* 상세정보 버튼 데스크탑에서 표시 */
+  .detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .detail-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  /* 패널: 우측에서 슬라이드 인 */
+  .detail-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(400px, 40vw);
+    height: 100dvh;
+    overflow-y: auto;
+    padding: 60px 28px 40px;
+    background: #141414;
+    scrollbar-width: thin;
+    scrollbar-color: #333 transparent;
+    z-index: 15;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .detail-panel.is-open {
+    transform: translateX(0);
+  }
+
+  /* 데스크탑에서 포스터 썸네일 표시 */
+  .poster-wrap {
+    display: block;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .movie-meta {
+    gap: 20px 0;
+  }
+}
