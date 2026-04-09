@@ -4,19 +4,31 @@ const rules = {
     regex: /^[a-z0-9_]{4,20}$/,
     hint: "4~20자, 영문 소문자+숫자+밑줄(_)만 사용 가능합니다.",
     error: "형식이 맞지 않습니다. (4~20자, 영문 소문자+숫자+_)",
-    ok: "사용 가능한 아이디입니다.",
+    ok: "유효한 아이디입니다.",
   },
   nickname: {
     regex: /^[^\n]{1,10}$/,
     hint: "1~10자로 입력해야 합니다.",
     error: "1~10자로 입력해야 합니다.",
-    ok: "사용 가능한 닉네임입니다.",
+    ok: "유효한 닉네임입니다.",
   },
   password: {
     regex: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,50}$/,
     hint: "8~50자, 영문 대문자+숫자+특수문자를 포함해야 합니다.",
     error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
-    ok: "사용 가능한 비밀번호입니다.",
+    ok: "유효한 비밀번호입니다.",
+  },
+  email: {
+    regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    hint: "이메일 주소를 입력하세요.",
+    error: "유효한 이메일 주소를 입력하세요.",
+    ok: "유효한 이메일입니다.",
+  },
+  "email-code": {
+    regex: /^\d{4}$/,
+    hint: "이메일로 발송된 4자리 코드를 입력하세요.",
+    error: "4자리 숫자 코드를 입력하세요.",
+    ok: "인증 코드가 입력되었습니다.",
   },
 };
 
@@ -100,4 +112,50 @@ function setupToggle(id) {
   });
 }
 
-export { setupInput, setupToggle };
+// 비밀번호 확인 (중복 체크)
+function setupPasswordCheck() {
+  const input = document.getElementById("password-check");
+  const clear = document.getElementById("password-check-clear");
+  const hint = document.getElementById("password-check-hint");
+  const passwordInput = document.getElementById("password");
+  // 기본 텍스트
+  const hintText = "비밀번호를 다시 입력하세요.";
+
+  // 이하 input 세부 설정 (토글, 삭제 버튼 등) - 유효성 검사 대신 비밀번호 일치 여부 검사
+  // input에 사용자가 입력값을 1자 이상 입력 시 보여줌
+  input.addEventListener("input", () => {
+    clear.classList.toggle("show", input.value.length > 0);
+  });
+
+  // 클릭 시 입력값 삭제/ input 상태 리셋/ input에는 focus
+  clear.addEventListener("click", () => {
+    input.value = "";
+    clear.classList.remove("show");
+    resetState(input, hint, hintText);
+    input.focus();
+  });
+
+  // focus out 시 비밀번호 일치 여부 검사 + 해당 일치 여부에 따른 상태 변경
+  input.addEventListener("blur", () => {
+    if (!input.value) {
+      resetState(input, hint, hintText);
+      return;
+    }
+    const match = input.value === passwordInput.value;
+    setupState(
+      input,
+      hint,
+      match ? "success" : "error",
+      match ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다.",
+    );
+  });
+
+  // error 상태에서 재입력 시 현재 input 상태 변경 (리셋)
+  input.addEventListener("focus", () => {
+    if (input.classList.contains("is-error")) {
+      resetState(input, hint, hintText);
+    }
+  });
+}
+
+export { setupInput, setupToggle, setupPasswordCheck };
