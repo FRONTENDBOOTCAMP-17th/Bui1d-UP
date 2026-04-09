@@ -32,6 +32,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        max-width: 400px;
         gap: 10px;
       }
       .right {
@@ -54,12 +55,14 @@
       }
 
       textarea {
-        height: 140px;
+        height: 200px;
       }
 
       .preview {
-        width: 150px;
-        height: 200px;
+        width: 100%;
+        max-width: 300px;
+        aspect-ratio: 2 / 3;
+        height: auto;
         background: #222;
         margin-top: 10px;
         object-fit: cover;
@@ -171,12 +174,45 @@
         outline: none;
         border: 1px solid #e50914;
       }
+      .textarea-wrapper {
+        position: relative;
+      }
+
+      .char-count {
+        position: absolute;
+        bottom: 8px;
+        right: 10px;
+        font-size: 12px;
+        color: #aaa;
+      }
+      #content {
+        height: 400px; /* 원하는 만큼 늘리기 */
+      }
+      .preview-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .preview-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #aaa;
+        font-size: 14px;
+        pointer-events: none;
+      }
+
+      .preview.dragover {
+        border: 2px dashed #e50914;
+        background: rgba(229, 9, 20, 0.1);
+      }
       /*  반응형 (모바일) */
       @media (max-width: 767px) {
         .container {
-          display: flex;
-          gap: 40px;
-          align-items: center;
+          flex-direction: column; /*  핵심 */
+          gap: 20px;
         }
 
         .preview {
@@ -203,6 +239,26 @@
           gap: 5px;
         }
       }
+      .drop-zone {
+        width: 100%;
+        max-width: 300px;
+        height: 80px;
+        border: 2px dashed #555;
+        border-radius: 8px;
+        color: #aaa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .drop-zone.dragover {
+        border-color: #e50914;
+        color: white;
+        background: rgba(229, 9, 20, 0.1);
+      }
       @media (min-width: 768px) and (max-width: 1080px) {
         .container {
           flex-direction: row; /* 다시 가로 */
@@ -216,8 +272,9 @@
           gap: 10px;
         }
         .preview {
-          width: 120px;
-          height: 160px;
+          width: 100%;
+          height: auto;
+          aspect-ratio: 2 / 3; /* 포스터 비율 */
         }
 
         .wrapper {
@@ -256,7 +313,10 @@
           <label>포스터 URL</label>
           <input id="poster" placeholder="이미지 URL 입력" />
           <input type="file" id="file" />
-          <img id="preview" class="preview" />
+          <div class="preview-wrapper">
+            <img id="preview" class="preview" />
+            <span class="preview-text">이미지를 드래그하세요</span>
+          </div>
 
           <label>영화 제목</label>
           <input id="title" placeholder="영화 제목을 입력하세요" />
@@ -338,15 +398,29 @@
         <!-- 우측 -->
         <div class="right">
           <label>명대사</label>
-          <textarea id="description"></textarea>
+          <div class="textarea-wrapper">
+            <textarea
+              id="description"
+              maxlength="500"
+              placeholder="기억에 남는 명대사를 적어주세요"
+            ></textarea>
+            <div class="char-count" id="descCount">0/500자</div>
+          </div>
 
-          <label>내 리뷰</label>
-          <textarea id="content"></textarea>
+          <label>나의 후기</label>
+          <div class="textarea-wrapper">
+            <textarea
+              id="content"
+              maxlength="1500"
+              placeholder="영화에 대한 생각과 감상을 자유롭게 작성해주세요"
+            ></textarea>
+            <div class="char-count" id="contentCount">0/1500자</div>
+          </div>
         </div>
       </div>
 
       <div class="buttons">
-        <button class="cancel" onclick="history.back()">취소</button>
+        <button type="button" class="cancel" id="cancelBtn">취소</button>
         <button class="submit" onclick="updateMovie()">수정하기</button>
       </div>
     </div>
@@ -374,6 +448,20 @@
       });
 
       /*  기존 데이터 불러오기 */
+
+      document.getElementById("file").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const preview = document.getElementById("preview");
+        const poster = document.getElementById("poster");
+
+        preview.src = URL.createObjectURL(file);
+
+        /* URL 입력값 초기화 */
+        poster.value = "";
+      });
+
       async function getMovie() {
         const res = await fetch(`${API}/${postId}`, {
           headers: {
@@ -392,6 +480,8 @@
         actors.value = movie.cast?.join(", ") || "";
         description.value = movie.famousLine;
         content.value = movie.content;
+        descCount.innerText = `${description.value.length}/500자`;
+        contentCount.innerText = `${content.value.length}/1500자`;
 
         rating = movie.star;
         ratingRange.value = rating;
@@ -412,6 +502,7 @@
 
         const fileInput = document.getElementById("file");
 
+        /* 파일 업로드 우선 */
         if (fileInput && fileInput.files[0]) {
           const formData = new FormData();
           formData.append("file", fileInput.files[0]);
@@ -421,20 +512,28 @@
             {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, // ⭐ 여기 token으로 수정
               },
               body: formData,
             },
           );
 
+          if (!imgRes.ok) {
+            const errorData = await imgRes.json();
+            console.error("이미지 업로드 실패:", errorData);
+            alert("이미지 업로드 실패");
+            return;
+          }
+
           const imgData = await imgRes.json();
           imageUrl = imgData.data.imageUrl;
+        } else {
+          /* 파일 없으면 URL 사용 */
+          imageUrl = document.getElementById("poster").value || "";
         }
-
         const genre = document.querySelector(
           "input[type=checkbox]:checked",
         )?.value;
-
         const body = {};
 
         // 값 있는 것만 추가
@@ -442,10 +541,9 @@
         if (genre) body.genre = genre;
         if (content.value) body.content = content.value;
 
-        if (rating !== null && rating !== undefined) {
+        if (rating && rating !== 0) {
           body.star = Number(rating);
         }
-
         // 이미지
         if (imageUrl) body.imageUrl = imageUrl;
         else if (poster.value) body.imageUrl = poster.value;
@@ -478,7 +576,12 @@
             body: JSON.stringify(body),
           });
 
-          if (!res.ok) throw new Error();
+          if (!res.ok) {
+            const errorData = await res.json();
+            console.error("수정 실패:", errorData);
+            alert(errorData.message || "수정 실패");
+            return;
+          }
 
           alert("수정 완료!");
           location.href = `/detail.html?id=${postId}`;
@@ -487,6 +590,112 @@
         }
       }
       ratingText.innerText = "⭐ 0.0";
+      /* 글자수 카운트 */
+      const desc = document.getElementById("description");
+      const descCount = document.getElementById("descCount");
+
+      desc.addEventListener("input", () => {
+        descCount.innerText = `${desc.value.length}/500자`;
+      });
+
+      const contentInput = document.getElementById("content");
+      const contentCount = document.getElementById("contentCount");
+
+      contentInput.addEventListener("input", () => {
+        contentCount.innerText = `${contentInput.value.length}/1500자`;
+      });
+      const dropZone = document.getElementById("preview");
+      const fileInput = document.getElementById("file");
+
+      /* 드래그 중 */
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+
+      /* 드래그 나감 */
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+      });
+
+      /* 드롭 */
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+
+        const preview = document.getElementById("preview");
+        const poster = document.getElementById("poster");
+
+        preview.src = URL.createObjectURL(file);
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
+        poster.value = "";
+      });
+
+      document.getElementById("preview").onload = () => {
+        const text = document.querySelector(".preview-text");
+        if (text) text.style.display = "none";
+      };
+      function resetForm(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const scrollY = window.scrollY; //  현재 위치 저장
+
+        if (!confirm("작성한 내용을 모두 지우시겠습니까?")) return;
+
+        // 1. input 초기화
+        document.querySelectorAll("input").forEach((input) => {
+          if (input.type === "file") {
+            input.value = "";
+          } else if (input.type === "checkbox") {
+            input.checked = false;
+          } else {
+            input.value = "";
+          }
+        });
+
+        // 2. textarea 초기화
+        document.querySelectorAll("textarea").forEach((textarea) => {
+          textarea.value = "";
+        });
+
+        // 3. 이미지 초기화
+        const preview = document.getElementById("preview");
+        preview.src = "";
+
+        const text = document.querySelector(".preview-text");
+        if (text) text.style.display = "block";
+
+        // 4. 별점 초기화
+        const ratingRange = document.getElementById("ratingRange");
+        const ratingText = document.getElementById("ratingValue");
+
+        ratingRange.value = 0;
+        rating = 0;
+        ratingText.innerText = "⭐ 0.0";
+
+        // 5. 글자 수 초기화
+        document.getElementById("descCount").innerText = "0/500자";
+        document.getElementById("contentCount").innerText = "0/1500자";
+        window.scrollTo(0, scrollY); //  위치 복원
+      }
+      const cancelBtn = document.getElementById("cancelBtn");
+
+      // 포커스 이동 막기
+      cancelBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+      });
+
+      // 실제 실행
+      cancelBtn.addEventListener("click", (e) => {
+        resetForm(e);
+      });
     </script>
   </body>
 </html>

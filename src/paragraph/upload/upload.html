@@ -32,6 +32,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        max-width: 400px;
         gap: 10px;
       }
       .right {
@@ -54,12 +55,14 @@
       }
 
       textarea {
-        height: 140px;
+        height: 200px;
       }
 
       .preview {
-        width: 150px;
-        height: 200px;
+        width: 100%;
+        max-width: 300px;
+        aspect-ratio: 2 / 3;
+        height: auto;
         background: #222;
         margin-top: 10px;
         object-fit: cover;
@@ -171,14 +174,40 @@
         outline: none;
         border: 1px solid #e50914;
       }
+      .textarea-wrapper {
+        position: relative;
+      }
+
+      .char-count {
+        position: absolute;
+        bottom: 8px;
+        right: 10px;
+        font-size: 12px;
+        color: #aaa;
+      }
+      #content {
+        height: 400px; /* 원하는 만큼 늘리기 */
+      }
+      .preview-wrapper {
+        position: relative; /*  이 줄 추가 */
+        width: 100%;
+        max-width: 300px;
+      }
+      .preview-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #aaa;
+        font-size: 14px;
+        pointer-events: none;
+      }
       /*  반응형 (모바일) */
       @media (max-width: 767px) {
         .container {
-          display: flex;
-          gap: 40px;
-          align-items: center;
+          flex-direction: column;
+          gap: 20px;
         }
-
         .preview {
           width: 100%; /* 이미지 꽉 채우기 */
           height: auto;
@@ -203,10 +232,21 @@
           gap: 5px;
         }
       }
+
+      .preview.dragover {
+        border: 2px dashed #e50914;
+        background: rgba(229, 9, 20, 0.1);
+      }
       @media (min-width: 768px) and (max-width: 1080px) {
         .container {
           flex-direction: row; /* 다시 가로 */
           gap: 20px;
+        }
+
+        .drop-zone.dragover {
+          border-color: #e50914;
+          color: white;
+          background: rgba(229, 9, 20, 0.1);
         }
 
         .left,
@@ -216,10 +256,9 @@
           gap: 10px;
         }
         .preview {
-          width: 120px;
-          height: 160px;
+          width: 100%;
+          height: auto;
         }
-
         .wrapper {
           padding: 0 20px;
         }
@@ -256,7 +295,10 @@
           <label>포스터 URL</label>
           <input id="poster" placeholder="이미지 URL 입력" />
           <input type="file" id="file" />
-          <img id="preview" class="preview" />
+          <div class="preview-wrapper">
+            <img id="preview" class="preview" />
+            <span class="preview-text">이미지를 드래그하세요</span>
+          </div>
 
           <label>영화 제목</label>
           <input id="title" placeholder="영화 제목을 입력하세요" />
@@ -331,24 +373,51 @@
         <!-- 우측 -->
         <div class="right">
           <label>명대사</label>
-          <textarea id="description"></textarea>
+          <div class="textarea-wrapper">
+            <textarea
+              id="description"
+              maxlength="500"
+              placeholder="기억에 남는 명대사를 적어주세요"
+            ></textarea>
+            <div class="char-count" id="descCount">0/500자</div>
+          </div>
 
-          <label>내 리뷰</label>
-          <textarea id="content"></textarea>
+          <label>나의 후기</label>
+          <div class="textarea-wrapper">
+            <textarea
+              id="content"
+              maxlength="1500"
+              placeholder="영화에 대한 생각과 감상을 자유롭게 작성해주세요"
+            ></textarea>
+            <div class="char-count" id="contentCount">0/1500자</div>
+          </div>
         </div>
       </div>
 
       <div class="buttons">
-        <button class="cancel" onclick="history.back()">취소</button>
-        <button class="submit" onclick="createMovie()">등록하기</button>
+        <button type="button" class="cancel" id="cancelBtn">취소</button>
+        <button type="button" class="submit" onclick="createMovie()">
+          등록하기
+        </button>
       </div>
     </div>
 
     <script>
       const API = "https://api.fullstackfamily.com/api/buildup/v1/movies";
-      const token = localStorage.getItem("token");
+      const accesstoken = localStorage.getItem("token");
 
       let rating = 0;
+      const posterInput = document.getElementById("poster");
+      const previewImg = document.getElementById("preview");
+
+      /* URL 입력 시 미리보기 */
+      posterInput.addEventListener("input", () => {
+        const url = posterInput.value.trim();
+
+        if (url) {
+          previewImg.src = url;
+        }
+      });
 
       /*  별점 */
       const ratingRange = document.getElementById("ratingRange");
@@ -360,16 +429,44 @@
       });
 
       /*  포스터 미리보기 */
-      document.getElementById("poster").addEventListener("input", (e) => {
-        document.getElementById("preview").src = e.target.value;
+      document.getElementById("file").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const preview = document.getElementById("preview");
+        const poster = document.getElementById("poster");
+
+        preview.src = URL.createObjectURL(file);
+        poster.value = "";
       });
 
       /*  업로드 API */
 
       async function createMovie() {
+        console.log("함수 실행됨");
         let imageUrl = "";
 
         const fileInput = document.getElementById("file");
+        const file = fileInput.files[0];
+
+        if (file) {
+          const validTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif",
+          ];
+
+          if (!validTypes.includes(file.type)) {
+            alert("이미지 파일만 업로드 가능합니다.");
+            return;
+          }
+
+          if (file.size > 5 * 1024 * 1024) {
+            alert("5MB 이하 파일만 업로드 가능합니다.");
+            return;
+          }
+        }
 
         if (fileInput && fileInput.files[0]) {
           const formData = new FormData();
@@ -380,27 +477,55 @@
             {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${accesstoken}`,
               },
               body: formData,
             },
           );
 
+          if (!imgRes.ok) {
+            const errorData = await imgRes.json();
+            console.error("이미지 업로드 실패:", errorData);
+            alert("이미지 업로드 실패");
+            return;
+          }
+
           const imgData = await imgRes.json();
           imageUrl = imgData.data.imageUrl;
+        } else {
+          /* 파일 없으면 URL 사용 */
+          imageUrl = document.getElementById("poster").value || "";
         }
         const genre = document.querySelector(
           "input[type=checkbox]:checked",
         )?.value;
+        if (!title.value.trim()) {
+          alert("영화 제목을 입력해주세요");
+          return;
+        }
 
+        if (!genre) {
+          alert("장르를 선택해주세요");
+          return;
+        }
+
+        if (!content.value.trim()) {
+          alert("후기를 입력해주세요");
+          return;
+        }
+
+        if (!rating || rating === 0) {
+          alert("별점을 입력해주세요");
+          return;
+        }
         const body = {
           title: title.value,
           genre: genre,
           content: content.value,
           star: Number(rating),
 
-          imageUrl: imageUrl || undefined,
-          year: Number(year.value) || undefined,
+          imageUrl: imageUrl || "",
+          year: year.value ? Number(year.value) : undefined,
 
           director: director.value
             ? director.value.split(",").map((v) => v.trim())
@@ -418,12 +543,17 @@
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accesstoken}`,
             },
             body: JSON.stringify(body),
           });
 
-          if (!res.ok) throw new Error();
+          if (!res.ok) {
+            const errorData = await res.json();
+            console.error("등록 실패:", errorData);
+            alert(errorData.message || "등록 실패");
+            return;
+          }
 
           alert("등록 완료!");
           location.href = "/mypage.html";
@@ -432,6 +562,123 @@
         }
       }
       ratingText.innerText = "⭐ 0.0";
+      window.addEventListener("DOMContentLoaded", () => {
+        /* 명대사 글자수 */
+        const desc = document.getElementById("description");
+        const descCount = document.getElementById("descCount");
+
+        desc.addEventListener("input", () => {
+          descCount.innerText = `${desc.value.length}/500자`;
+        });
+
+        /* 후기 글자수 */
+        const contentInput = document.getElementById("content");
+        const contentCount = document.getElementById("contentCount");
+
+        contentInput.addEventListener("input", () => {
+          contentCount.innerText = `${contentInput.value.length}/1500자`;
+        });
+        const poster = document.getElementById("poster");
+        const preview = document.getElementById("preview");
+
+        if (poster && poster.value) {
+          preview.src = poster.value;
+        }
+      });
+
+      const dropZone = document.getElementById("preview");
+      const fileInput = document.getElementById("file");
+
+      /* 드래그 중 */
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+
+      /* 드래그 나감 */
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+      });
+
+      /* 드롭 */
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+
+        const preview = document.getElementById("preview"); // ⭐ 추가
+        const poster = document.getElementById("poster"); // ⭐ 추가
+
+        preview.src = URL.createObjectURL(file);
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
+        poster.value = "";
+      });
+
+      document.getElementById("preview").onload = () => {
+        const text = document.querySelector(".preview-text");
+        if (text) text.style.display = "none";
+      };
+      function resetForm(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const scrollY = window.scrollY;
+
+        if (!confirm("작성한 내용을 모두 지우시겠습니까?")) return;
+
+        // 1. input 초기화
+        document.querySelectorAll("input").forEach((input) => {
+          if (input.type === "file") {
+            input.value = "";
+          } else if (input.type === "checkbox") {
+            input.checked = false;
+          } else {
+            input.value = "";
+          }
+        });
+
+        // 2. textarea 초기화
+        document.querySelectorAll("textarea").forEach((textarea) => {
+          textarea.value = "";
+        });
+
+        // 3. 이미지 초기화
+        const preview = document.getElementById("preview");
+        preview.src = "";
+
+        const text = document.querySelector(".preview-text");
+        if (text) text.style.display = "block";
+
+        // 4. 별점 초기화
+        const ratingRange = document.getElementById("ratingRange");
+        const ratingText = document.getElementById("ratingValue");
+
+        ratingRange.value = 0;
+        rating = 0;
+        ratingText.innerText = "⭐ 0.0";
+
+        // 5. 글자 수 초기화
+        document.getElementById("descCount").innerText = "0/500자";
+        document.getElementById("contentCount").innerText = "0/1500자";
+        window.scrollTo(0, scrollY);
+      }
+      const cancelBtn = document.getElementById("cancelBtn");
+
+      // 1. mousedown에서 포커스만 막기
+      cancelBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+      });
+
+      // 2. click에서 실제 실행
+      cancelBtn.addEventListener("click", (e) => {
+        resetForm(e);
+      });
     </script>
   </body>
 </html>
