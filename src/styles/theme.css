@@ -28,14 +28,12 @@
   font-weight: 700;
   line-height: 1.4;
   margin-bottom: 1.5rem;
-  white-space: nowrap;
 }
 .subtext-left-text {
-  font-size: 1.1rem;
-  color: var(--text-secondary, #737373);
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  color: var(--text-tertiary, #d4d4d4);
   line-height: 1.8;
   max-width: 400px;
-  white-space: nowrap;
 }
 /* 우측 타이틀 텍스트 설정 */
 .heading-right-text {
