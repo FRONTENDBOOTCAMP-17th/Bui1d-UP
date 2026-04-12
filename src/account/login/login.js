@@ -6,7 +6,6 @@ setupInput("password");
 setupToggle("password");
 
 const form = document.getElementById("login-form");
-const submitBtn = form.querySelector("[type=submit]");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const usernameHint = document.getElementById("username-hint");
@@ -15,6 +14,7 @@ const logInInfo = [
   [username, usernameHint],
   [password, passwordHint],
 ];
+const submitBtn = form.querySelector("[type=submit]");
 
 // input에 다시 입력 시 힌트 메세지 초기화
 logInInfo.forEach(([input, hint]) => {
@@ -24,6 +24,7 @@ logInInfo.forEach(([input, hint]) => {
   });
 });
 
+// 로그인 버튼 클릭 시 이벤트
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
