@@ -104,7 +104,7 @@ function setupToggle(id) {
     input.type = hidden ? "text" : "password";
     toggle.setAttribute(
       "aria-label",
-      hidden ? "비밀번호 숨기기" : "비밀번호 보기",
+      hidden ? "비밀번호 숨기기" : "비밀번호 표시",
     );
     toggle.setAttribute("aria-pressed", hidden ? "true" : "false");
     eyeOn.style.display = hidden ? "none" : "";
