@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="../../components/button.css" />
   </head>
   <body
-    class="min-h-screen flex overflow-hidden bg-(--background-base,#171717) text-(--text-primary,#ffffff)"
+    class="min-h-screen flex bg-(--background-base,#171717) text-(--text-primary,#ffffff)"
   >
     <!-- LEFT -->
     <div
       class="hidden md:flex w-1/2 flex-col justify-center items-start p-25 relative overflow-hidden"
+      aria-hidden="true"
     >
       <!-- 그라디언트 오버레이 -->
       <div
@@ -109,12 +110,7 @@
               </svg>
             </button>
           </div>
-          <p
-            class="text-hint"
-            id="username-hint"
-            aria-live="polite"
-            role="status"
-          >
+          <p class="text-hint" id="username-hint" role="status">
             4~20자, 영문 소문자+숫자+밑줄(_)만 사용 가능합니다.
           </p>
         </div>
@@ -168,12 +164,7 @@
               </svg>
             </button>
           </div>
-          <p
-            class="text-hint"
-            id="password-hint"
-            aria-live="polite"
-            role="status"
-          >
+          <p class="text-hint" id="password-hint" role="status">
             8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
           </p>
         </div>
