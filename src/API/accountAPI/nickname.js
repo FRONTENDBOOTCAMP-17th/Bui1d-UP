@@ -5,7 +5,6 @@ export const getProfileNickname = async () => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       },
@@ -14,7 +13,7 @@ export const getProfileNickname = async () => {
       throw new Error("Failed to fetch user profile");
     }
     const res = await response.json();
-    return res;
+    return res.data;
   } catch (error) {
     console.error("Error fetching user profile:", error);
   }

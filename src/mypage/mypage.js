@@ -1,5 +1,13 @@
-import { getMyProfile } from "../API/mypageAPI/getMyProfile.js";
+import { getProfileNickname } from "../API/accountAPI/nickname.js";
+import { setupInput, setupToggle } from "../components/input.js";
+import { changePassword } from "../API/mypageAPI/changePassword.js";
 import { changeNickname } from "../API/mypageAPI/changeNickname.js";
+
+setupInput("email");
+setupInput("nickname");
+setupToggle("current-password");
+setupToggle("new-password");
+setupToggle("password-check");
 
 const welcomeNickname = document.getElementById("welcome-nickname");
 const displayEmail = document.getElementById("display-email");
@@ -7,7 +15,7 @@ const displayNickname = document.getElementById("display-nickname");
 
 // 프로필 불러오기
 try {
-  const profile = await getMyProfile();
+  const profile = await getProfileNickname();
   welcomeNickname.textContent = profile.nickname;
   displayEmail.textContent = profile.email;
   displayNickname.textContent = profile.nickname;
@@ -97,22 +105,32 @@ window.handleEmailChange = async function () {
   showToast("이메일 변경 기능은 준비 중입니다.", "error");
 };
 
+// 비밀번호 변경
 window.handlePasswordChange = async function () {
-  const currentPw = document.getElementById("current-password").value;
-  const newPw = document.getElementById("new-password").value;
-  const checkPw = document.getElementById("password-check").value;
+  const currentPwd = document.getElementById("current-password").value;
+  const newPwd = document.getElementById("new-password").value;
+  const checkPwd = document.getElementById("password-check").value;
 
-  if (!currentPw || !newPw || !checkPw) {
+  if (!currentPwd || !newPwd || !checkPwd) {
     showToast("모든 항목을 입력해주세요.", "error");
     return;
   }
-  if (newPw !== checkPw) {
+  if (newPwd !== checkPwd) {
     showToast("새 비밀번호가 일치하지 않습니다.", "error");
     return;
   }
-  showToast("비밀번호 변경 기능은 준비 중입니다.", "error");
+  try {
+    await changePassword(newPwd);
+    document.getElementById("current-password").value = "";
+    document.getElementById("new-password").value = "";
+    document.getElementById("password-check").value = "";
+    showToast("비밀번호가 변경되었습니다.", "success");
+  } catch (error) {
+    showToast(error.message ?? "비밀번호 변경에 실패했습니다.", "error");
+  }
 };
 
+// 닉네임 변경
 window.handleNicknameChange = async function () {
   const nickname = document.getElementById("nickname").value.trim();
   if (!nickname) {
@@ -130,6 +148,7 @@ window.handleNicknameChange = async function () {
   }
 };
 
+// 회원탈퇴
 window.openDeleteDialog = function () {
   showToast("회원탈퇴 기능은 준비 중입니다.", "error");
 };
