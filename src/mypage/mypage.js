@@ -2,12 +2,14 @@ import { getProfileNickname } from "../API/accountAPI/nickname.js";
 import { setupInput, setupToggle } from "../components/input.js";
 import { changePassword } from "../API/mypageAPI/changePassword.js";
 import { changeNickname } from "../API/mypageAPI/changeNickname.js";
+import { withdraw } from "../API/accountAPI/withdraw.js";
 
 setupInput("email");
 setupInput("nickname");
 setupToggle("current-password");
 setupToggle("new-password");
 setupToggle("password-check");
+setupToggle("password");
 
 const welcomeNickname = document.getElementById("welcome-nickname");
 const displayEmail = document.getElementById("display-email");
@@ -149,6 +151,32 @@ window.handleNicknameChange = async function () {
 };
 
 // 회원탈퇴
-window.openDeleteDialog = function () {
-  showToast("회원탈퇴 기능은 준비 중입니다.", "error");
+const withdrawDialog = document.getElementById("withdrawDialog");
+
+window.openWithdrawDialog = function () {
+  withdrawDialog.showModal();
 };
+
+document.getElementById("withdrawCancel").addEventListener("click", () => {
+  withdrawDialog.close();
+});
+
+document
+  .getElementById("withdrawConfirm")
+  .addEventListener("click", async () => {
+    const password = document.getElementById("password").value;
+    if (!password) {
+      showToast("비밀번호를 입력해주세요.", "error");
+      return;
+    }
+    try {
+      await withdraw(password);
+      withdrawDialog.close();
+      showToast("탈퇴되었습니다.");
+      setTimeout(() => {
+        location.href = "../landing/landing.html";
+      }, 1500);
+    } catch (error) {
+      showToast(error.message ?? "회원탈퇴에 실패했습니다.", "error");
+    }
+  });
