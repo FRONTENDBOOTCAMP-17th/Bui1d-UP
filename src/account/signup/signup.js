@@ -31,6 +31,7 @@ const usernameInput = document.getElementById("username");
 const nicknameInput = document.getElementById("nickname");
 const passwordInput = document.getElementById("password");
 const usernameHint = document.getElementById("username-hint");
+const nicknameHint = document.getElementById("nickname-hint");
 const passwordHint = document.getElementById("password-hint");
 const signupForm = document.getElementById("signup-form");
 const submitBtn = signupForm.querySelector("button[type='submit']");
@@ -102,7 +103,15 @@ verifyCodeBtn.addEventListener("click", async () => {
 });
 
 // input에 다시 입력 시 힌트 메세지 초기화
-logInInfo.forEach(([input, hint]) => {
+const signupInfo = [
+  [usernameInput, usernameHint],
+  [nicknameInput, nicknameHint],
+  [passwordInput, passwordHint],
+  [emailInput, emailHint],
+  [emailCodeInput, emailCodeHint],
+];
+
+signupInfo.forEach(([input, hint]) => {
   input.addEventListener("input", () => {
     hint.textContent = "";
     hint.className = "text-hint";
