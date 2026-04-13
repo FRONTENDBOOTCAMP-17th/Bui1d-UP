@@ -1,3 +1,6 @@
+import { requireAuth } from "@/utils/auth.js";
+requireAuth();
+
 import "./main_list.css";
 import { renderHeader } from "../header/header.js";
 import { getMainList } from "../../API/main_list.js";

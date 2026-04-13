@@ -1,3 +1,6 @@
+import { requireAuth } from "@/utils/auth.js";
+requireAuth();
+
 import "./genre_more.css";
 import { renderHeader } from "../header/header.js";
 import { getGenreMore } from "../../API/genre_more.js";

@@ -1,8 +1,11 @@
+import { requireAuth } from "@/utils/auth.js";
+requireAuth();
+
 import { getProfileNickname } from "../API/accountAPI/nickname.js";
-import { setupInput, setupToggle } from "../components/input.js";
-import { changePassword } from "../API/mypageAPI/changePassword.js";
 import { changeNickname } from "../API/mypageAPI/changeNickname.js";
+import { changePassword } from "../API/mypageAPI/changePassword.js";
 import { withdraw } from "../API/accountAPI/withdraw.js";
+import { setupInput, setupToggle } from "../components/input.js";
 
 setupInput("email");
 setupInput("nickname");
