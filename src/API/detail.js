@@ -1,3 +1,5 @@
+import { redirectOnAuthFail } from "@/utils/auth.js";
+
 export const getDetail = async (postId) => {
   try {
     console.log("Fetching detail for postId:", postId);
@@ -12,6 +14,7 @@ export const getDetail = async (postId) => {
       },
     );
     if (!response.ok) {
+      if (redirectOnAuthFail(response)) return null;
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();

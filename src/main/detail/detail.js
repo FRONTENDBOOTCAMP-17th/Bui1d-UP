@@ -1,3 +1,6 @@
+import { requireAuth } from "@/utils/auth.js";
+requireAuth();
+
 import { getDetail } from "../../API/detail.js";
 import { deletePatagraph } from "../../API/paragraphAPI/delete.js";
 
