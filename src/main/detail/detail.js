@@ -1,4 +1,5 @@
 import { getDetail } from "../../API/detail.js";
+import { deletePatagraph } from "../../API/paragraphAPI/delete.js";
 
 const GENRE_MAP = {
   animation: "애니메이션",
@@ -86,7 +87,9 @@ function initDetailBtn() {
 /* ── 닫기 버튼 & 오버레이 클릭 (데스크탑) ── */
 function initCloseBtn() {
   document.getElementById("closeBtn").addEventListener("click", closePanel);
-  document.getElementById("backdropOverlay").addEventListener("click", closePanel);
+  document
+    .getElementById("backdropOverlay")
+    .addEventListener("click", closePanel);
 }
 
 /* ── 뒤로가기 ── */
@@ -100,15 +103,17 @@ window.matchMedia("(min-width: 768px)").addEventListener("change", () => {
   location.reload();
 });
 
+const postId = new URLSearchParams(location.search).get("postId");
+
 /* ── 초기 로드 ── */
 async function init() {
-  const params = new URLSearchParams(location.search);
-  const postId = params.get("postId");
-
   if (!postId) {
     console.error("postId가 없습니다.");
     return;
   }
+
+  document.getElementById("editLink").href =
+    `../../paragraph/edit/edit.html?id=${postId}`;
 
   if (isDesktop()) {
     initCloseBtn();
@@ -123,5 +128,20 @@ async function init() {
 
   renderDetail(data.data);
 }
+
+document.getElementById("delete_btn").addEventListener("click", async () => {
+  if (!postId) {
+    console.error("postId가 없습니다.");
+    return;
+  }
+
+  if (!confirm("정말로 삭제하시겠습니까?")) return;
+
+  const res = await deletePatagraph(postId);
+  if (res) {
+    alert("영화가 삭제되었습니다. 메인화면으로 이동합니다.");
+    window.location.href = "../../main_list/main_list.html";
+  }
+});
 
 init();
