@@ -32,6 +32,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        max-width: 400px;
         gap: 10px;
       }
       .right {
@@ -54,12 +55,14 @@
       }
 
       textarea {
-        height: 140px;
+        height: 200px;
       }
 
       .preview {
-        width: 150px;
-        height: 200px;
+        width: 100%;
+        max-width: 300px;
+        aspect-ratio: 2 / 3;
+        height: auto;
         background: #222;
         margin-top: 10px;
         object-fit: cover;
@@ -171,14 +174,40 @@
         outline: none;
         border: 1px solid #e50914;
       }
+      .textarea-wrapper {
+        position: relative;
+      }
+
+      .char-count {
+        position: absolute;
+        bottom: 8px;
+        right: 10px;
+        font-size: 12px;
+        color: #aaa;
+      }
+      #content {
+        height: 400px; /* 원하는 만큼 늘리기 */
+      }
+      .preview-wrapper {
+        position: relative; /*  이 줄 추가 */
+        width: 100%;
+        max-width: 300px;
+      }
+      .preview-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #aaa;
+        font-size: 14px;
+        pointer-events: none;
+      }
       /*  반응형 (모바일) */
       @media (max-width: 767px) {
         .container {
-          display: flex;
-          gap: 40px;
-          align-items: center;
+          flex-direction: column;
+          gap: 20px;
         }
-
         .preview {
           width: 100%; /* 이미지 꽉 채우기 */
           height: auto;
@@ -203,10 +232,21 @@
           gap: 5px;
         }
       }
+
+      .preview.dragover {
+        border: 2px dashed #e50914;
+        background: rgba(229, 9, 20, 0.1);
+      }
       @media (min-width: 768px) and (max-width: 1080px) {
         .container {
           flex-direction: row; /* 다시 가로 */
           gap: 20px;
+        }
+
+        .drop-zone.dragover {
+          border-color: #e50914;
+          color: white;
+          background: rgba(229, 9, 20, 0.1);
         }
 
         .left,
@@ -216,10 +256,9 @@
           gap: 10px;
         }
         .preview {
-          width: 120px;
-          height: 160px;
+          width: 100%;
+          height: auto;
         }
-
         .wrapper {
           padding: 0 20px;
         }
@@ -256,7 +295,10 @@
           <label>포스터 URL</label>
           <input id="poster" placeholder="이미지 URL 입력" />
           <input type="file" id="file" />
-          <img id="preview" class="preview" />
+          <div class="preview-wrapper">
+            <img id="preview" class="preview" />
+            <span class="preview-text">이미지를 드래그하세요</span>
+          </div>
 
           <label>영화 제목</label>
           <input id="title" placeholder="영화 제목을 입력하세요" />
@@ -331,107 +373,35 @@
         <!-- 우측 -->
         <div class="right">
           <label>명대사</label>
-          <textarea id="description"></textarea>
+          <div class="textarea-wrapper">
+            <textarea
+              id="description"
+              maxlength="500"
+              placeholder="기억에 남는 명대사를 적어주세요"
+            ></textarea>
+            <div class="char-count" id="descCount">0/500자</div>
+          </div>
 
-          <label>내 리뷰</label>
-          <textarea id="content"></textarea>
+          <label>나의 후기</label>
+          <div class="textarea-wrapper">
+            <textarea
+              id="content"
+              maxlength="1500"
+              placeholder="영화에 대한 생각과 감상을 자유롭게 작성해주세요"
+            ></textarea>
+            <div class="char-count" id="contentCount">0/1500자</div>
+          </div>
         </div>
       </div>
 
       <div class="buttons">
-        <button class="cancel" onclick="history.back()">취소</button>
-        <button class="submit" onclick="createMovie()">등록하기</button>
+        <button type="button" class="cancel" id="cancelBtn">취소</button>
+        <button type="button" class="submit" onclick="createMovie()">
+          등록하기
+        </button>
       </div>
     </div>
 
-    <script>
-      const API = "https://api.fullstackfamily.com/api/buildup/v1/movies";
-      const token = localStorage.getItem("token");
-
-      let rating = 0;
-
-      /*  별점 */
-      const ratingRange = document.getElementById("ratingRange");
-      const ratingText = document.getElementById("ratingValue");
-
-      ratingRange.addEventListener("input", () => {
-        rating = ratingRange.value;
-        ratingText.innerText = "⭐ " + Number(rating).toFixed(1);
-      });
-
-      /*  포스터 미리보기 */
-      document.getElementById("poster").addEventListener("input", (e) => {
-        document.getElementById("preview").src = e.target.value;
-      });
-
-      /*  업로드 API */
-
-      async function createMovie() {
-        let imageUrl = "";
-
-        const fileInput = document.getElementById("file");
-
-        if (fileInput && fileInput.files[0]) {
-          const formData = new FormData();
-          formData.append("file", fileInput.files[0]);
-
-          const imgRes = await fetch(
-            "https://api.fullstackfamily.com/api/buildup/v1/movies/images",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              body: formData,
-            },
-          );
-
-          const imgData = await imgRes.json();
-          imageUrl = imgData.data.imageUrl;
-        }
-        const genre = document.querySelector(
-          "input[type=checkbox]:checked",
-        )?.value;
-
-        const body = {
-          title: title.value,
-          genre: genre,
-          content: content.value,
-          star: Number(rating),
-
-          imageUrl: imageUrl || undefined,
-          year: Number(year.value) || undefined,
-
-          director: director.value
-            ? director.value.split(",").map((v) => v.trim())
-            : undefined,
-
-          cast: actors.value
-            ? actors.value.split(",").map((v) => v.trim())
-            : undefined,
-
-          famousLine: description.value || undefined,
-        };
-
-        try {
-          const res = await fetch(API, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(body),
-          });
-
-          if (!res.ok) throw new Error();
-
-          alert("등록 완료!");
-          location.href = "/mypage.html";
-        } catch (err) {
-          alert("등록 실패");
-        }
-      }
-      ratingText.innerText = "⭐ 0.0";
-    </script>
+    <script type="module" src="./upload.js"></script>
   </body>
 </html>

@@ -1,0 +1,11 @@
+.accordion-body {
+  transform-origin: top;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.icon-chevron {
+  transition: transform 0.2s ease;
+}
+.accordion-head.open .icon-chevron {
+  transform: rotate(180deg);
+}

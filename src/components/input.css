@@ -2,14 +2,15 @@
 
 .form-input {
   position: relative;
+  width: 100%;
 }
 
 .form-input input {
   box-sizing: border-box;
   width: 100%;
-  height: 48px;
+  height: 56px;
   padding: 0 44px 0 12px;
-  font-size: 14px;
+  font-size: 16px;
   background: var(--background-surface, #262626);
   color: var(--text-primary, #ffffff);
   border: 1px solid var(--text-secondary, #737373);
@@ -46,6 +47,7 @@
   position: absolute;
   left: 12px;
   top: 46%;
+  right: 48px;
   transform: translateY(-50%);
   font-size: 16px;
   color: var(--text-secondary, #737373);
@@ -58,6 +60,9 @@
   padding: 0 5px;
   border-radius: 2px;
   line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .form-input input:focus + label,
@@ -65,6 +70,7 @@
   top: 2px;
   font-size: 12px;
   color: var(--text-primary, #ffffff);
+  right: auto;
 }
 
 .form-input input:not(:focus):not(:placeholder-shown) + label {

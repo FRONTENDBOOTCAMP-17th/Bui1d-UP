@@ -1,3 +1,5 @@
+import { redirectOnAuthFail } from "@/utils/auth.js";
+
 export const getGenreMore = async (genre, offset = 0, limit = 20) => {
   try {
     const params = new URLSearchParams({ offset, limit });
@@ -16,6 +18,7 @@ export const getGenreMore = async (genre, offset = 0, limit = 20) => {
       },
     );
     if (!response.ok) {
+      if (redirectOnAuthFail(response)) return null;
       throw new Error("Failed to fetch genre list");
     }
     const json = await response.json();
