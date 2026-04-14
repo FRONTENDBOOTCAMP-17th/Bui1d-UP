@@ -91,10 +91,17 @@
           <ul id="quoteList"></ul>
         </section>
 
-        <div class="w-full flex justify-center gap-6 mt-4">
+        <hr />
+
+        <section class="review">
+          <h3>후기</h3>
+          <p id="reviewContent"></p>
+        </section>
+
+        <div class="w-full flex justify-center gap-6 mt-8">
           <a
             id="editLink"
-            class="border-0 rounded-lg box-border items-center inline-flex button-responsive"
+            class="border rounded-lg box-border items-center inline-flex button-responsive"
             href="../../paragraph/edit/edit.html?id="
           >
             <span class="hidden min-[768px]:inline text-sm">수정하기</span>
@@ -103,7 +110,7 @@
             type="button"
             id="delete_btn"
             class="border-0 rounded-lg box-border items-center inline-flex button-primary button-responsive"
-            aria-label="새 리뷰 작성"
+            aria-label="삭제버튼"
           >
             <span class="hidden min-[768px]:inline text-sm">삭제하기</span>
           </button>

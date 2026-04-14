@@ -35,6 +35,25 @@ function renderDetail(movie) {
     if (imageUrl) backdropImg.src = imageUrl;
   }
 
+  // 이미지 비율 감지 → portrait / landscape 클래스 적용
+  if (imageUrl) {
+    const tempImg = new Image();
+    tempImg.onload = function () {
+      const isPortrait = this.naturalHeight > this.naturalWidth;
+      if (isPortrait) {
+        if (isDesktop()) {
+          backdrop.classList.add("portrait-mode");
+        } else {
+          backdropImg.classList.add("portrait-img");
+        }
+      } else {
+        // 가로 이미지: 사이드바 포스터도 16:9로
+        document.getElementById("poster").classList.add("landscape-img");
+      }
+    };
+    tempImg.src = imageUrl;
+  }
+
   /* ── hero 영역 (좌측 하단 / 모바일 이미지 아래) ── */
   document.getElementById("title").textContent = title ?? "";
   document.getElementById("year").textContent = year ?? "";
@@ -69,6 +88,12 @@ function renderDetail(movie) {
       .map((line) => `<li>"${line.trim()}"</li>`)
       .join("");
   }
+}
+
+/* ── 영화 후기 ── */
+const review = document.getElementById("reviewContent");
+function renderReview(content) {
+  review.textContent = content ?? "리뷰가 없습니다.";
 }
 
 /* ── 패널 열기/닫기 헬퍼 ── */
@@ -130,6 +155,7 @@ async function init() {
   }
 
   renderDetail(data.data);
+  renderReview(data.data.content);
 }
 
 document.getElementById("delete_btn").addEventListener("click", async () => {

@@ -13,6 +13,7 @@ import { changeEmail } from "../API/mypageAPI/changeEmail.js";
 import { sendEmailCode } from "../API/accountAPI/sendEmailCode.js";
 import { checkEmailCode } from "../API/accountAPI/checkEmailCode.js";
 import { withdraw } from "../API/accountAPI/withdraw.js";
+import { setupInput, setupToggle } from "../components/input.js";
 
 setupInput("email");
 setupInput("email-code");

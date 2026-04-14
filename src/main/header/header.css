@@ -2,6 +2,7 @@
 
 .site-header {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
@@ -21,14 +22,13 @@
 }
 
 .header-logo {
-  height: 28px;
+  height: 36px;
   width: auto;
 }
 
 .header-text-logo {
-  height: 20px;
+  height: 28px;
   width: auto;
-  max-width: 100px;
 }
 
 .header-nav {
@@ -45,9 +45,9 @@
   cursor: pointer;
   border: none;
   padding: 6px;
-  gap: 6px;
+  gap: 2px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px;
   color: #ffffff;
   background-color: transparent;
   transition: background-color 0.2s;
@@ -55,7 +55,7 @@
 
 .nav-btn--red {
   background-color: #dc2626;
-  padding: 6px 8px;
+  padding: 6px 10px 6px 8px;
 }
 
 .nav-btn img {
@@ -107,16 +107,20 @@
 @media (min-width: 768px) {
   .site-header {
     flex-wrap: nowrap;
+    padding: 12px 24px;
   }
 
   .header-logo-link {
     flex: 0 0 auto;
   }
 
+  .header-nav {
+    gap: 12px;
+  }
+
   .search-bar {
     order: 0;
-    flex: 1;
-    width: auto;
+    max-width: 50%;
   }
 
   .btn-label {
