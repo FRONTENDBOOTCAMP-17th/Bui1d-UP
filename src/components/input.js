@@ -18,6 +18,18 @@ const rules = {
     error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
     ok: "유효한 비밀번호입니다.",
   },
+  "current-password": {
+    regex: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,50}$/,
+    hint: "현재 비밀번호를 입력하세요.",
+    error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
+    ok: " ",
+  },
+  "new-password": {
+    regex: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,50}$/,
+    hint: "8~50자, 영문 대문자+숫자+특수문자를 포함해야 합니다.",
+    error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
+    ok: "유효한 비밀번호입니다.",
+  },
   email: {
     regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     hint: "이메일 주소를 입력하세요.",
@@ -117,7 +129,7 @@ function setupPasswordCheck() {
   const input = document.getElementById("password-check");
   const clear = document.getElementById("password-check-clear");
   const hint = document.getElementById("password-check-hint");
-  const passwordInput = document.getElementById("password");
+  const passwordInput = document.getElementById("new-password");
   // 기본 텍스트
   const hintText = "비밀번호를 다시 입력하세요.";
 
