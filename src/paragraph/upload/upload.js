@@ -48,12 +48,7 @@ async function createMovie() {
   const file = fileInput.files[0];
 
   if (file) {
-    const validTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/gif",
-    ];
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
     if (!validTypes.includes(file.type)) {
       alert("이미지 파일만 업로드 가능합니다.");
@@ -94,9 +89,7 @@ async function createMovie() {
     /* 파일 없으면 URL 사용 */
     imageUrl = document.getElementById("poster").value || "";
   }
-  const genre = document.querySelector(
-    "input[type=checkbox]:checked",
-  )?.value;
+  const genre = document.querySelector("input[name=genre]:checked")?.value;
   if (!title.value.trim()) {
     alert("영화 제목을 입력해주세요");
     return;
@@ -125,13 +118,8 @@ async function createMovie() {
     imageUrl: imageUrl || "",
     year: year.value ? Number(year.value) : undefined,
 
-    director: director.value
-      ? director.value.split(",").map((v) => v.trim())
-      : undefined,
-
-    cast: actors.value
-      ? actors.value.split(",").map((v) => v.trim())
-      : undefined,
+    director: directorList.length ? directorList : undefined,
+    cast: actorsList.length ? actorsList : undefined,
 
     famousLine: description.value || undefined,
   };
@@ -154,7 +142,7 @@ async function createMovie() {
     }
 
     alert("등록 완료!");
-    location.href = "/mypage.html";
+    location.href = "/src/main/main_list/main_list.html";
   } catch (err) {
     alert("등록 실패");
   }
@@ -272,6 +260,63 @@ function resetForm(event) {
 }
 
 const cancelBtn = document.getElementById("cancelBtn");
+/* ===== 감독 버블 ===== */
+const directorInput = document.getElementById("director");
+const directorContainer = document.getElementById("director-bubbles");
+
+let directorList = [];
+
+directorInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    const value = directorInput.value.trim();
+    if (!value) return;
+
+    directorList.push(value);
+
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.innerText = value;
+
+    bubble.addEventListener("click", () => {
+      directorList = directorList.filter((v) => v !== value);
+      bubble.remove();
+    });
+
+    directorContainer.appendChild(bubble);
+    directorInput.value = "";
+  }
+});
+
+/* ===== 출연진 버블 ===== */
+const actorsInput = document.getElementById("actors");
+const actorsContainer = document.getElementById("actors-bubbles");
+
+let actorsList = [];
+
+actorsInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    const value = actorsInput.value.trim();
+    if (!value) return;
+
+    actorsList.push(value);
+
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.innerText = value;
+
+    bubble.addEventListener("click", () => {
+      actorsList = actorsList.filter((v) => v !== value);
+      bubble.remove();
+    });
+
+    actorsContainer.appendChild(bubble);
+    actorsInput.value = "";
+  }
+});
 
 // 1. mousedown에서 포커스만 막기
 cancelBtn.addEventListener("mousedown", (e) => {

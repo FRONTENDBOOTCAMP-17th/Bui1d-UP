@@ -58,8 +58,41 @@ async function getMovie() {
   preview.src = movie.imageUrl;
   title.value = movie.title;
   year.value = movie.year;
-  director.value = movie.director?.join(", ") || "";
-  actors.value = movie.cast?.join(", ") || "";
+  // 감독 버블 생성
+  if (movie.director) {
+    directorList = movie.director;
+
+    directorList.forEach((name) => {
+      const bubble = document.createElement("span");
+      bubble.className = "bubble";
+      bubble.innerText = name;
+
+      bubble.addEventListener("click", () => {
+        directorList = directorList.filter((v) => v !== name);
+        bubble.remove();
+      });
+
+      directorContainer.appendChild(bubble);
+    });
+  }
+
+  // 출연진 버블 생성
+  if (movie.cast) {
+    actorsList = movie.cast;
+
+    actorsList.forEach((name) => {
+      const bubble = document.createElement("span");
+      bubble.className = "bubble";
+      bubble.innerText = name;
+
+      bubble.addEventListener("click", () => {
+        actorsList = actorsList.filter((v) => v !== name);
+        bubble.remove();
+      });
+
+      actorsContainer.appendChild(bubble);
+    });
+  }
   description.value = movie.famousLine;
   content.value = movie.content;
   descCount.innerText = `${description.value.length}/500자`;
@@ -69,11 +102,10 @@ async function getMovie() {
   ratingRange.value = rating;
   ratingText.innerText = "⭐ " + rating;
 
-  document.querySelectorAll("input[type=checkbox]").forEach((cb) => {
-    if (movie.genre === cb.value) {
-      cb.checked = true;
-    }
-  });
+  const genreRadio = document.querySelector(
+    `input[name="genre"][value="${movie.genre}"]`,
+  );
+  if (genreRadio) genreRadio.checked = true;
 }
 
 getMovie();
@@ -113,9 +145,7 @@ async function updateMovie() {
     /* 파일 없으면 URL 사용 */
     imageUrl = document.getElementById("poster").value || "";
   }
-  const genre = document.querySelector(
-    "input[type=checkbox]:checked",
-  )?.value;
+  const genre = document.querySelector("input[name=genre]:checked")?.value;
   const body = {};
 
   // 값 있는 것만 추가
@@ -134,13 +164,13 @@ async function updateMovie() {
   if (year.value) body.year = Number(year.value);
 
   // 감독
-  if (director.value) {
-    body.director = director.value.split(",").map((v) => v.trim());
+  if (directorList.length) {
+    body.director = directorList;
   }
 
   // 출연진
-  if (actors.value) {
-    body.cast = actors.value.split(",").map((v) => v.trim());
+  if (actorsList.length) {
+    body.cast = actorsList;
   }
 
   // 명대사
@@ -241,7 +271,7 @@ function resetForm(event) {
   document.querySelectorAll("input").forEach((input) => {
     if (input.type === "file") {
       input.value = "";
-    } else if (input.type === "checkbox") {
+    } else if (input.type === "checkbox" || input.type === "radio") {
       input.checked = false;
     } else {
       input.value = "";
@@ -275,6 +305,63 @@ function resetForm(event) {
 }
 
 const cancelBtn = document.getElementById("cancelBtn");
+/* ===== 감독 버블 ===== */
+const directorInput = document.getElementById("director");
+const directorContainer = document.getElementById("director-bubbles");
+
+let directorList = [];
+
+directorInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    const value = directorInput.value.trim();
+    if (!value) return;
+
+    directorList.push(value);
+
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.innerText = value;
+
+    bubble.addEventListener("click", () => {
+      directorList = directorList.filter((v) => v !== value);
+      bubble.remove();
+    });
+
+    directorContainer.appendChild(bubble);
+    directorInput.value = "";
+  }
+});
+
+/* ===== 출연진 버블 ===== */
+const actorsInput = document.getElementById("actors");
+const actorsContainer = document.getElementById("actors-bubbles");
+
+let actorsList = [];
+
+actorsInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    const value = actorsInput.value.trim();
+    if (!value) return;
+
+    actorsList.push(value);
+
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.innerText = value;
+
+    bubble.addEventListener("click", () => {
+      actorsList = actorsList.filter((v) => v !== value);
+      bubble.remove();
+    });
+
+    actorsContainer.appendChild(bubble);
+    actorsInput.value = "";
+  }
+});
 
 // 포커스 이동 막기
 cancelBtn.addEventListener("mousedown", (e) => {
