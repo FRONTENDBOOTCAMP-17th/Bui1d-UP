@@ -1,21 +1,45 @@
 import { requireAuth } from "@/utils/auth.js";
 requireAuth();
 
+import {
+  setupInput,
+  setupToggle,
+  setupPasswordCheck,
+} from "../components/input.js";
 import { getProfileNickname } from "../API/accountAPI/nickname.js";
 import { changeNickname } from "../API/mypageAPI/changeNickname.js";
 import { changePassword } from "../API/mypageAPI/changePassword.js";
+import { changeEmail } from "../API/mypageAPI/changeEmail.js";
+import { sendEmailCode } from "../API/accountAPI/sendEmailCode.js";
+import { checkEmailCode } from "../API/accountAPI/checkEmailCode.js";
 import { withdraw } from "../API/accountAPI/withdraw.js";
 import { setupInput, setupToggle } from "../components/input.js";
 
 setupInput("email");
+setupInput("email-code");
+setupInput("current-password");
+setupInput("new-password");
+setupPasswordCheck();
 setupInput("nickname");
+
 setupToggle("current-password");
 setupToggle("new-password");
-setupToggle("password-check");
 setupToggle("password");
+setupToggle("password-check");
+
+// 이메일 인증 상태
+let emailUuid = null;
+let isEmailVerified = false;
 
 const welcomeNickname = document.getElementById("welcome-nickname");
 const displayEmail = document.getElementById("display-email");
+
+const emailInput = document.getElementById("email");
+const emailHint = document.getElementById("email-hint");
+const emailCodeInput = document.getElementById("email-code");
+const emailCodeHint = document.getElementById("email-code-hint");
+const sendCodeBtn = document.getElementById("send-code-btn");
+const verifyCodeBtn = document.getElementById("verify-code-btn");
 const displayNickname = document.getElementById("display-nickname");
 
 // 프로필 불러오기
@@ -101,14 +125,97 @@ accordions.forEach((accordion) => {
 });
 
 // 핸들러
+// 이메일 변경
 window.handleEmailChange = async function () {
-  const email = document.getElementById("email").value.trim();
-  if (!email) {
-    showToast("이메일을 입력해주세요.", "error");
+  if (!isEmailVerified) {
+    showToast("인증을 먼저 완료해주세요.", "error");
     return;
   }
-  showToast("이메일 변경 기능은 준비 중입니다.", "error");
+  const email = emailInput.value.trim();
+  try {
+    await changeEmail(email, emailUuid);
+    showToast("이메일이 변경되었습니다.", "success");
+    document.getElementById("email").value = "";
+    document.getElementById("email-code").value = "";
+    emailUuid = null;
+    isEmailVerified = false;
+    displayEmail.textContent = email;
+  } catch (error) {
+    showToast(error.message ?? "이메일 변경에 실패했습니다.", "error");
+  }
 };
+
+// 이메일 인증코드 발송
+sendCodeBtn.addEventListener("click", async () => {
+  const email = emailInput.value.trim();
+  if (!email) {
+    emailHint.textContent = "이메일을 입력하세요.";
+    emailHint.className = "text-hint error";
+    return;
+  }
+
+  // 새로 입력한 이메일 = 현재 이메일(display해둔 주소와 비교)
+  if (email === displayEmail.textContent) {
+    emailHint.textContent = "지금 사용하는 이메일과 동일한 주소입니다.";
+    emailHint.className = "text-hint error";
+    return;
+  }
+
+  sendCodeBtn.disabled = true;
+  sendCodeBtn.textContent = "인증코드 발송 중...";
+
+  try {
+    emailUuid = await sendEmailCode(email);
+    isEmailVerified = false;
+    emailHint.textContent = "인증코드가 발송되었습니다. 이메일을 확인하세요.";
+    emailHint.className = "text-hint success";
+  } catch (e) {
+    console.error(e);
+    emailHint.textContent = "인증코드 발송에 실패했습니다.";
+    emailHint.className = "text-hint error";
+  } finally {
+    sendCodeBtn.disabled = false;
+    sendCodeBtn.textContent = "인증코드 발송";
+  }
+});
+
+// 인증코드 확인
+verifyCodeBtn.addEventListener("click", async () => {
+  if (!emailUuid) {
+    emailCodeHint.textContent = "먼저 인증코드를 발송하세요.";
+    emailCodeHint.className = "text-hint error";
+    return;
+  }
+
+  const code = emailCodeInput.value.trim();
+  if (!code) {
+    emailCodeHint.textContent = "인증 코드를 입력하세요.";
+    emailCodeHint.className = "text-hint error";
+    return;
+  }
+
+  verifyCodeBtn.disabled = true;
+  verifyCodeBtn.textContent = "인증코드 확인 중...";
+
+  try {
+    await checkEmailCode(emailUuid, code);
+    isEmailVerified = true;
+    emailCodeHint.textContent = "이메일 인증이 완료되었습니다.";
+    emailCodeHint.className = "text-hint success";
+  } catch (e) {
+    isEmailVerified = false;
+    if (e.message === "EXPIRED") {
+      emailCodeHint.textContent =
+        "인증코드가 만료되었습니다. 다시 발송해주세요.";
+    } else {
+      emailCodeHint.textContent = "인증코드가 잘못되었습니다.";
+    }
+    emailCodeHint.className = "text-hint error";
+  } finally {
+    verifyCodeBtn.disabled = false;
+    verifyCodeBtn.textContent = "확인";
+  }
+});
 
 // 비밀번호 변경
 window.handlePasswordChange = async function () {
@@ -125,13 +232,17 @@ window.handlePasswordChange = async function () {
     return;
   }
   try {
-    await changePassword(newPwd);
+    await changePassword(currentPwd, newPwd);
     document.getElementById("current-password").value = "";
     document.getElementById("new-password").value = "";
     document.getElementById("password-check").value = "";
     showToast("비밀번호가 변경되었습니다.", "success");
   } catch (error) {
-    showToast(error.message ?? "비밀번호 변경에 실패했습니다.", "error");
+    const currentPasswordHint = document.getElementById(
+      "current-password-hint",
+    );
+    currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
+    currentPasswordHint.className = "text-hint error";
   }
 };
 
@@ -149,7 +260,11 @@ window.handleNicknameChange = async function () {
     document.getElementById("nickname").value = "";
     showToast("닉네임이 변경되었습니다.", "success");
   } catch (error) {
-    showToast(error.message ?? "닉네임 변경에 실패했습니다.", "error");
+    const currentPasswordHint = document.getElementById(
+      "current-password-hint",
+    );
+    currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
+    currentPasswordHint.className = "text-hint error";
   }
 };
 

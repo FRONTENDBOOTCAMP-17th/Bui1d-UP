@@ -1,4 +1,4 @@
-export const changePassword = async (password) => {
+export const changePassword = async (password, newPassword) => {
   try {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -15,7 +15,7 @@ export const changePassword = async (password) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password, newPassword }),
       },
     );
 
