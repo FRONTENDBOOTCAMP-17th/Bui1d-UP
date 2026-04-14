@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Button Component</title>
+    <link rel="stylesheet" href="./button.css" />
+    <link rel="stylesheet" href="../styles/theme.css" />
+  </head>
+  <body class="bg-black">
+    <div class="flex flex-wrap gap-4 p-8">
+      <!-- 구조 복붙용 컴포넌트 파일입니다. 개발 완료 후 삭제되어야 합니다.-->
+      <!-- 기본 버튼 -->
+      <button
+        type="submit"
+        class="border-0 py-2 px-4 rounded-lg button-primary"
+      >
+        회원가입
+      </button>
+
+      <!-- 로그인 전용 버튼 (흰 테두리) -->
+      <button
+        type="submit"
+        class="border-0 py-2 px-4 rounded-lg button-secondary"
+      >
+        로그인
+      </button>
+
+      <!-- 아이콘+텍스트 -->
+      <button
+        type="button"
+        class="py-1.5 px-3.5 rounded-lg box-border gap-3 items-center inline-flex border-2 border-current button-outline"
+      >
+        <span class="icon icon-recycle-bin" aria-hidden="true"></span>
+        회원탈퇴
+      </button>
+
+      <!-- 반응형 버튼 (아이콘+텍스트) -->
+      <button
+        type="button"
+        class="border-0 rounded-lg box-border items-center inline-flex button-primary button-responsive"
+        aria-label="새 리뷰 작성"
+      >
+        <span class="icon icon-add" aria-hidden="true"></span>
+        <span class="hidden min-[768px]:inline text-sm">새 리뷰 작성</span>
+      </button>
+    </div>
+  </body>
+</html>

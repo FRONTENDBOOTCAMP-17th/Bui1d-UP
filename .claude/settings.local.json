@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(wc -l \"/Users/kangjaehoon/bootcamp/프로젝트 모음/Bui1d-UP/src/API/mypageAPI/\"*)"
+    ]
+  }
+}

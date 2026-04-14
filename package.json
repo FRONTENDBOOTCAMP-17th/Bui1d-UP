@@ -1,0 +1,22 @@
+{
+  "name": "bui1d-up",
+  "version": "0.1.0",
+  "description": "바닐라 JS + Vite 프론트엔드 프로젝트 : 영화 리뷰 기록 및 관리 웹 애플리케이션",
+  "type": "module",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "eslint": "^10.1.0",
+    "jest": "^30.3.0",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.3"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "jest",
+    "clean": "rm -rf dist build",
+    "tailwind": "tailwindcss -i ./src/styles/input.css -o ./src/styles/output.css",
+    "watch": "npm run tailwind -- --watch"
+  }
+}

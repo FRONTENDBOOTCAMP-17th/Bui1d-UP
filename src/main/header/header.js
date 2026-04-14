@@ -1,0 +1,33 @@
+import "./header.css";
+
+export function renderHeader(targetSelector = "body") {
+  const html = `
+    <header class="site-header">
+      <a href="/src/main/main_list/main_list.html" class="header-logo-link">
+        <img src="/bui1d-boxLogo.png" alt="빌드업 로고" class="header-logo" />
+        <img src="/public/Bui1dBox.png" alt="빌드업 텍스트 로고" class="header-text-logo" />
+      </a>
+      <div class="search-bar">
+        <img src="/public/Search_icon.svg" alt="검색" class="search-icon" />
+        <input class="search-input" type="text" placeholder="작성한 글 검색..." />
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn nav-btn--red" id="btn-new-post">
+          <img src="/Add_round.svg" alt="새 포스트" />
+          <span class="btn-label">새 포스트</span>
+        </button>
+        <button class="nav-btn" id="btn-myinfo">
+          <img src="/myinfo.png" alt="내 정보" />
+          <span class="btn-label" id="nickname"></span>
+        </button>
+        <button class="nav-btn" id="btn-logout">
+          <img src="/logout.png" alt="로그아웃" />
+          <span class="btn-label">로그아웃</span>
+        </button>
+      </nav>
+    </header>
+  `;
+
+  const target = document.querySelector(targetSelector);
+  target.insertAdjacentHTML("afterbegin", html);
+}

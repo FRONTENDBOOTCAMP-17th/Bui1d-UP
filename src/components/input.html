@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>input 컴포넌트</title>
+    <link rel="stylesheet" href="./input.css" />
+    <link rel="stylesheet" href="../styles/theme.css" />
+  </head>
+  <body class="bg-[#171717] p-8 flex flex-col gap-4">
+    <!-- 구조 복붙용 컴포넌트 파일입니다. 개발 완료 후 삭제되어야 합니다.-->
+    <!-- 아이디 -->
+    <div class="flex flex-col gap-1.5 w-91">
+      <span class="text-sm font-medium pb-1" id="username-label">아이디</span>
+      <div class="form-input">
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder=" "
+          autocomplete="username"
+          aria-labelledby="username-label"
+          aria-describedby="username-hint"
+          required
+        />
+        <label for="username">4~20자, 영문 소문자+숫자+밑줄(_)</label>
+        <button
+          type="button"
+          class="action-btn clear"
+          id="username-clear"
+          aria-label="아이디 입력값 삭제"
+          tabindex="0"
+        >
+          <svg width="18" height="18" aria-hidden="true" focusable="false">
+            <use href="../assets/icons/sprite.svg#icon-x" />
+          </svg>
+        </button>
+      </div>
+      <p class="text-hint" id="username-hint" aria-live="polite">
+        4~20자, 영문 소문자+숫자+밑줄(_)만 사용 가능합니다.
+      </p>
+    </div>
+
+    <!-- 닉네임 -->
+    <div class="flex flex-col gap-1.5 w-91">
+      <span class="text-sm font-medium pb-1" id="nickname-label">닉네임</span>
+      <div class="form-input">
+        <input
+          type="text"
+          id="nickname"
+          name="nickname"
+          placeholder=" "
+          autocomplete="nickname"
+          aria-describedby="nickname-hint"
+          required
+        />
+        <label for="nickname">1~10자로 입력</label>
+        <button
+          type="button"
+          class="action-btn clear"
+          id="nickname-clear"
+          aria-label="닉네임 입력값 삭제"
+          tabindex="0"
+        >
+          <svg width="18" height="18" aria-hidden="true" focusable="false">
+            <use href="../assets/icons/sprite.svg#icon-x" />
+          </svg>
+        </button>
+      </div>
+      <p class="text-hint" id="nickname-hint">1~10자로 입력해야 합니다.</p>
+    </div>
+
+    <!-- 비밀번호 -->
+    <div class="flex flex-col gap-1.5 w-91">
+      <span class="text-sm font-medium pb-1" id="password-label">비밀번호</span>
+      <div class="form-input">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="has-two-actions"
+          placeholder=" "
+          autocomplete="new-password"
+          aria-labelledby="password-label"
+          aria-describedby="password-hint"
+          required
+        />
+        <label for="password">8~50자, 영문 대문자+숫자+특수문자</label>
+        <button
+          type="button"
+          class="action-btn toggle"
+          id="password-toggle"
+          aria-label="비밀번호 표시"
+          aria-pressed="false"
+        >
+          <svg
+            id="eye"
+            width="18"
+            height="12"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="../assets/icons/sprite.svg#icon-eye" />
+          </svg>
+          <svg
+            id="eye-hide"
+            width="22"
+            height="22"
+            aria-hidden="true"
+            focusable="false"
+            style="display: none"
+          >
+            <use href="../assets/icons/sprite.svg#icon-eye-hide" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="action-btn clear"
+          id="password-clear"
+          aria-label="비밀번호 입력값 삭제"
+          tabindex="0"
+        >
+          <svg width="18" height="18" aria-hidden="true" focusable="false">
+            <use href="../assets/icons/sprite.svg#icon-x" />
+          </svg>
+        </button>
+      </div>
+      <p class="text-hint" id="password-hint" aria-live="polite">
+        8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
+      </p>
+    </div>
+
+    <script type="module" src="./input.js"></script>
+  </body>
+</html>
