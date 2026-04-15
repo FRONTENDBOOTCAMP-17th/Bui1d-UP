@@ -19,7 +19,6 @@ export const getMainList = async () => {
       throw new Error("Failed to fetch main list");
     }
     const json = await response.json();
-    console.log("Main list response:", json);
     return json.data;
   } catch (error) {
     console.error("Error fetching main list:", error);
