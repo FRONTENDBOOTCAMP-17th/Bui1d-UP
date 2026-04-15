@@ -15,17 +15,17 @@ export const changePassword = async (password, newPassword) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ currentPassword: password, newPassword }),
+        body: JSON.stringify({ password: newPassword }),
       },
     );
 
-    const json = await response.json();
-
     if (!response.ok) {
+      const json = await response.json().catch(() => ({}));
       throw new Error(json.errorCode ?? "비밀번호 변경 실패");
     }
 
-    return json.data;
+    const text = await response.text();
+    return text ? JSON.parse(text).data : null;
   } catch (error) {
     console.error("비밀번호 변경 에러가 발생하였습니다:", error.message);
     throw error;

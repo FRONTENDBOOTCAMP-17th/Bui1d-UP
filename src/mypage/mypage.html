@@ -90,6 +90,7 @@
             stroke="currentColor"
             stroke-width="2"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <polyline points="15 18 9 12 15 6" />
           </svg>
@@ -101,7 +102,11 @@
         내 정보
       </h1>
 
-      <section id="accordion-components-wrap" class="space-y-3">
+      <section
+        id="accordion-components-wrap"
+        aria-labelledby="form-title"
+        class="space-y-3"
+      >
         <!-- 이메일 변경 -->
         <div class="accordion-components rounded-lg overflow-hidden">
           <button
@@ -116,6 +121,7 @@
               stroke="currentColor"
               stroke-width="2"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <polyline points="6 9 12 15 18 9" />
             </svg>
@@ -123,14 +129,17 @@
           <div
             id="accordion-body-email"
             class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
+            hidden
           >
-            <div>
-              <p class="text-(--text-secondary,#737373) text-sm">현재 이메일</p>
-              <p
+            <dl>
+              <dt class="text-(--text-secondary,#737373) text-sm">
+                현재 이메일
+              </dt>
+              <dd
                 id="display-email"
                 class="text-(--text-primary,#ffffff) mt-1"
-              ></p>
-            </div>
+              ></dd>
+            </dl>
             <!-- 새 이메일 -->
             <div class="flex flex-col gap-1">
               <span class="text-sm font-medium pb-1" id="email-label"
@@ -233,6 +242,7 @@
 
             <!-- 이메일 변경 버튼 -->
             <button
+              type="button"
               onclick="handleEmailChange()"
               class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
             >
@@ -255,6 +265,7 @@
               stroke="currentColor"
               stroke-width="2"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <polyline points="6 9 12 15 18 9" />
             </svg>
@@ -262,6 +273,7 @@
           <div
             id="accordion-body-password"
             class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
+            hidden
           >
             <form id="password-change-form" novalidate>
               <input
@@ -497,6 +509,7 @@
               stroke="currentColor"
               stroke-width="2"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <polyline points="6 9 12 15 18 9" />
             </svg>
@@ -504,14 +517,17 @@
           <div
             id="accordion-body-nickname"
             class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
+            hidden
           >
-            <div>
-              <p class="text-(--text-secondary,#737373) text-sm">현재 닉네임</p>
-              <p
+            <dl>
+              <dt class="text-(--text-secondary,#737373) text-sm">
+                현재 닉네임
+              </dt>
+              <dd
                 id="display-nickname"
                 class="text-(--text-primary,#ffffff) mt-1"
-              ></p>
-            </div>
+              ></dd>
+            </dl>
             <div class="flex flex-col gap-1.5">
               <span class="text-sm font-medium pb-1" id="nickname-label"
                 >새 닉네임</span
@@ -551,6 +567,7 @@
 
             <!-- 닉네임 변경 버튼 -->
             <button
+              type="button"
               onclick="handleNicknameChange()"
               class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
             >
@@ -577,10 +594,17 @@
     <dialog
       id="withdrawDialog"
       class="m-auto w-full max-w-sm rounded-xl p-8 bg-(--background-surface,#262626) text-(--text-primary,#ffffff) shadow-xl backdrop:bg-black/60"
+      aria-labelledby="withdraw-dialog-title"
+      aria-describedby="withdraw-dialog-sub"
     >
       <form method="dialog">
-        <h2 class="text-xl font-bold mb-2">정말 탈퇴하시겠습니까?</h2>
-        <p class="text-(--text-tertiary,#d4d4d4) text-sm mb-6 leading-6">
+        <h2 id="withdraw-dialog-title" class="text-xl font-bold mb-2">
+          정말 탈퇴하시겠습니까?
+        </h2>
+        <p
+          id="withdraw-dialog-sub"
+          class="text-(--text-tertiary,#d4d4d4) text-sm mb-6 leading-6"
+        >
           탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.<br />
           탈퇴 후에는 같은 아이디로 재가입할 수 있습니다.<br />
           비밀번호를 입력하고 탈퇴하기를 누르면, 탈퇴 처리가 즉시 진행됩니다.

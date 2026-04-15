@@ -13,6 +13,7 @@ import { changeEmail } from "../API/mypageAPI/changeEmail.js";
 import { sendEmailCode } from "../API/accountAPI/sendEmailCode.js";
 import { checkEmailCode } from "../API/accountAPI/checkEmailCode.js";
 import { withdraw } from "../API/accountAPI/withdraw.js";
+import { login } from "../API/accountAPI/login.js";
 
 setupInput("email");
 setupInput("email-code");
@@ -29,6 +30,9 @@ setupToggle("password-check");
 // 이메일 인증 상태
 let emailUuid = null;
 let isEmailVerified = false;
+
+// 현재 비밀번호 검증에 사용할 로그인 아이디 (프로필 로드 후 저장)
+let userId = null;
 
 const welcomeNickname = document.getElementById("welcome-nickname");
 const displayEmail = document.getElementById("display-email");
@@ -47,6 +51,8 @@ try {
   welcomeNickname.textContent = profile.nickname;
   displayEmail.textContent = profile.email;
   displayNickname.textContent = profile.nickname;
+  // 현재 비밀번호 검증 시 login() 호출에 필요한 아이디 저장
+  userId = profile.id;
 } catch (error) {
   console.error("에러가 발생하였습니다:", error.message);
 }
@@ -57,6 +63,7 @@ function showToast(message, type = "success") {
   const toast = document.createElement("div");
   const bgColor = type === "success" ? "bg-green-600" : "bg-red-600";
   toast.className = `${bgColor} px-6 py-3 rounded-lg text-white text-sm font-medium opacity-0 transition-opacity duration-300 whitespace-nowrap`;
+  toast.setAttribute("role", type === "error" ? "alert" : "status");
   toast.textContent = message;
   container.appendChild(toast);
   requestAnimationFrame(() =>
@@ -251,6 +258,23 @@ window.handlePasswordChange = async function () {
     showToast("새 비밀번호가 일치하지 않습니다.", "error");
     return;
   }
+  // 서버의 PUT /users/password가 현재 비밀번호를 검증하지 않으므로
+  // 로그인 API로 현재 비밀번호 일치 여부를 프론트에서 먼저 검증
+  try {
+    await login(userId, currentPwd);
+  } catch {
+    // 로그인 실패 = 현재 비밀번호 불일치
+    const currentPasswordHint = document.getElementById(
+      "current-password-hint",
+    );
+    currentPwdInput.classList.remove("is-success");
+    currentPwdInput.classList.add("is-error");
+    currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
+    currentPasswordHint.className = "text-hint error";
+    return;
+  }
+
+  // 현재 비밀번호 검증 통과 후 실제 비밀번호 변경 요청
   try {
     await changePassword(currentPwd, newPwd);
     [
@@ -272,19 +296,8 @@ window.handlePasswordChange = async function () {
     });
     showToast("비밀번호가 변경되었습니다.", "success");
   } catch (error) {
-    const currentPasswordHint = document.getElementById(
-      "current-password-hint",
-    );
-    // 현재 비밀번호 불일치 에러 시 input 에러 상태로 표시
-    if (error.message === "PASSWORD_MISMATCH") {
-      currentPwdInput.classList.remove("is-success");
-      currentPwdInput.classList.add("is-error");
-      currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
-      currentPasswordHint.className = "text-hint error";
-    } else {
-      // 그 외 에러 (토큰 만료, 형식 오류 등)
-      showToast(error.message ?? "비밀번호 변경에 실패했습니다.", "error");
-    }
+    // 그 외 에러 (토큰 만료, 형식 오류 등)
+    showToast(error.message ?? "비밀번호 변경에 실패했습니다.", "error");
   }
 };
 
