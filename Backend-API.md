@@ -1588,6 +1588,13 @@ PUT /api/users/nickname
 >
 > **진행 순서:** 인증코드 전송(`6-1`) → 인증코드 확인(`6-2`) → 비밀번호 재설정(`6-3`)
 
+> 🔐 **보안 설계 (UUID 기반 resetToken)**
+>
+> - `6-2` 인증 성공 시 서버는 무작위 UUID v4를 생성해 DB에 저장하고 클라이언트에 반환함.
+> - UUID는 내용이 없는 불투명(opaque) 토큰이므로 디코딩해도 사용자 정보가 노출되지 않음.
+> - 서버는 `reset_tokens` 테이블에서 UUID ↔ user_id ↔ 만료시각을 관리함.
+> - `6-3`에서 사용 완료 즉시 해당 row를 삭제해 재사용을 원천 차단함.
+
 ---
 
 ### 6-1. 비밀번호 재설정용 인증코드 전송
@@ -1662,8 +1669,9 @@ POST /api/auth/password/reset/verify
 > ⚠️ **주의사항**
 >
 > - 인증코드는 **5분간** 유효하며, 만료 시 재전송(`6-1`) 필요.
-> - 인증 성공 시 서버는 `resetToken`을 발급하며, `6-3` 요청 시 사용함.
-> - `resetToken`은 **10분간** 유효함.
+> - 인증 성공 시 서버는 UUID v4 형식의 `resetToken`을 생성해 DB에 저장하고 반환함.
+> - `resetToken`은 **10분간** 유효하며, `6-3` 완료 즉시 서버에서 삭제됨.
+> - 클라이언트는 `resetToken`을 `sessionStorage`에 임시 보관 후 `6-3` 페이지로 전달할 것.
 
 **Request Headers**
 
@@ -1687,16 +1695,16 @@ POST /api/auth/password/reset/verify
 
 **Response (200 OK)**
 
-| 변수명                   | 타입   | 설명                                        |
-| ------------------------ | ------ | ------------------------------------------- |
-| resetToken (재설정 토큰) | string | 비밀번호 재설정용 임시 토큰 (유효시간 10분) |
+| 변수명                   | 타입   | 설명                                                          |
+| ------------------------ | ------ | ------------------------------------------------------------- |
+| resetToken (재설정 토큰) | string | UUID v4 형식의 비밀번호 재설정용 토큰 (유효시간 10분, 1회용) |
 
 ```json
 {
   "success": true,
   "message": "code verified",
   "data": {
-    "resetToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    "resetToken": "a3f7c2d1-8e4b-4f3a-b1c2-d3e4f5a6b7c8"
   }
 }
 ```
@@ -1727,20 +1735,21 @@ POST /api/auth/password/reset/verify
 PUT /api/auth/password/reset
 ```
 
-**🔓 로그인 토큰 불필요** (대신 `resetToken` 필요)
+**🔓 로그인 토큰 불필요** (대신 UUID `resetToken` 필요)
 
 > ⚠️ **주의사항**
 >
-> - `6-2`에서 발급받은 `resetToken`을 헤더에 포함해야 함.
-> - `resetToken`은 1회 사용 후 즉시 만료됨.
+> - `6-2`에서 발급받은 UUID `resetToken`을 헤더에 포함해야 함.
+> - 서버는 DB에서 UUID 조회 → 만료시각 확인 → 비밀번호 변경 → **row 즉시 삭제** 순서로 처리함.
+> - `resetToken` 삭제 후 동일 토큰으로 재요청하면 401 반환 (재사용 불가).
 > - `newPassword` : 대문자 1자 이상, 숫자, 특수문자를 반드시 포함해야 함.
 
 **Request Headers**
 
-| 변수명                      | 필수 | 설명                                   |
-| --------------------------- | ---- | -------------------------------------- |
-| Authorization (재설정 토큰) | ✅   | `Bearer {resetToken}` (`6-2`에서 발급) |
-| Content-Type (콘텐츠 타입)  | ✅   | `application/json`                     |
+| 변수명                      | 필수 | 설명                                          |
+| --------------------------- | ---- | --------------------------------------------- |
+| Authorization (재설정 토큰) | ✅   | `Bearer {resetToken}` (UUID, `6-2`에서 발급)  |
+| Content-Type (콘텐츠 타입)  | ✅   | `application/json`                            |
 
 **Request Body**
 
