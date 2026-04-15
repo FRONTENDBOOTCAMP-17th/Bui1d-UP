@@ -1,7 +1,7 @@
 import { requireAuth, getToken, redirectOnAuthFail } from "@/utils/auth.js";
 requireAuth();
 
-const API = "https://api.fullstackfamily.com/api/buildup/v1/movies";
+const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const token = getToken();
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -122,7 +122,7 @@ async function updateMovie() {
     formData.append("file", fileInput.files[0]);
 
     const imgRes = await fetch(
-      "https://api.fullstackfamily.com/api/buildup/v1/movies/images",
+      `${import.meta.env.VITE_API_BASE_URL}/movies/images`,
       {
         method: "POST",
         headers: {
@@ -221,43 +221,15 @@ contentInput.addEventListener("input", () => {
   contentCount.innerText = `${contentInput.value.length}/1500자`;
 });
 
-const dropZone = document.getElementById("preview");
-const fileInput = document.getElementById("file");
-
-/* 드래그 중 */
-dropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  dropZone.classList.add("dragover");
-});
-
-/* 드래그 나감 */
-dropZone.addEventListener("dragleave", () => {
-  dropZone.classList.remove("dragover");
-});
-
-/* 드롭 */
-dropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  dropZone.classList.remove("dragover");
-
-  const file = e.dataTransfer.files[0];
-  if (!file) return;
-
-  const preview = document.getElementById("preview");
-  const poster = document.getElementById("poster");
-
-  preview.src = URL.createObjectURL(file);
-
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(file);
-  fileInput.files = dataTransfer.files;
-
-  poster.value = "";
-});
-
-document.getElementById("preview").onload = () => {
+document.getElementById("preview").onload = function () {
   const text = document.querySelector(".preview-text");
   if (text) text.style.display = "none";
+
+  if (this.naturalWidth > this.naturalHeight) {
+    this.style.aspectRatio = "16 / 9";
+  } else {
+    this.style.aspectRatio = "2 / 3";
+  }
 };
 
 function resetForm(event) {
