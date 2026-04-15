@@ -15,7 +15,7 @@ export const changePassword = async (password, newPassword) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ password, newPassword }),
+        body: JSON.stringify({ currentPassword: password, newPassword }),
       },
     );
 
