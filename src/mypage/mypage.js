@@ -13,7 +13,6 @@ import { changeEmail } from "../API/mypageAPI/changeEmail.js";
 import { sendEmailCode } from "../API/accountAPI/sendEmailCode.js";
 import { checkEmailCode } from "../API/accountAPI/checkEmailCode.js";
 import { withdraw } from "../API/accountAPI/withdraw.js";
-import { setupInput, setupToggle } from "../components/input.js";
 
 setupInput("email");
 setupInput("email-code");
@@ -219,30 +218,73 @@ verifyCodeBtn.addEventListener("click", async () => {
 
 // 비밀번호 변경
 window.handlePasswordChange = async function () {
-  const currentPwd = document.getElementById("current-password").value;
-  const newPwd = document.getElementById("new-password").value;
-  const checkPwd = document.getElementById("password-check").value;
+  const currentPwdInput = document.getElementById("current-password");
+  const newPwdInput = document.getElementById("new-password");
+  const checkPwdInput = document.getElementById("password-check");
 
+  const currentPwd = currentPwdInput.value;
+  const newPwd = newPwdInput.value;
+  const checkPwd = checkPwdInput.value;
+
+  // 빈 값 체크
   if (!currentPwd || !newPwd || !checkPwd) {
     showToast("모든 항목을 입력해주세요.", "error");
     return;
   }
+
+  // 현재 비밀번호 형식 체크 (blur 없이 버튼 클릭 시 미검사 방지)
+  const passwordRule = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,50}$/;
+  if (!passwordRule.test(currentPwd)) {
+    const currentPasswordHint = document.getElementById(
+      "current-password-hint",
+    );
+    currentPwdInput.classList.remove("is-success");
+    currentPwdInput.classList.add("is-error");
+    currentPasswordHint.textContent =
+      "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)";
+    currentPasswordHint.className = "text-hint error";
+    return;
+  }
+
+  // 새 비밀번호 일치 여부 체크
   if (newPwd !== checkPwd) {
     showToast("새 비밀번호가 일치하지 않습니다.", "error");
     return;
   }
   try {
     await changePassword(currentPwd, newPwd);
-    document.getElementById("current-password").value = "";
-    document.getElementById("new-password").value = "";
-    document.getElementById("password-check").value = "";
+    [
+      { id: "current-password", hint: "현재 비밀번호를 입력하세요." },
+      {
+        id: "new-password",
+        hint: "8~50자, 영문 대문자+숫자+특수문자를 포함해야 합니다.",
+      },
+      { id: "password-check", hint: "비밀번호를 다시 입력하세요." },
+    ].forEach(({ id, hint }) => {
+      const input = document.getElementById(id);
+      const hintEl = document.getElementById(`${id}-hint`);
+      const clearBtn = document.getElementById(`${id}-clear`);
+      input.value = "";
+      input.classList.remove("is-success", "is-error");
+      hintEl.textContent = hint;
+      hintEl.className = "text-hint";
+      clearBtn.classList.remove("show");
+    });
     showToast("비밀번호가 변경되었습니다.", "success");
   } catch (error) {
     const currentPasswordHint = document.getElementById(
       "current-password-hint",
     );
-    currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
-    currentPasswordHint.className = "text-hint error";
+    // 현재 비밀번호 불일치 에러 시 input 에러 상태로 표시
+    if (error.message === "PASSWORD_MISMATCH") {
+      currentPwdInput.classList.remove("is-success");
+      currentPwdInput.classList.add("is-error");
+      currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
+      currentPasswordHint.className = "text-hint error";
+    } else {
+      // 그 외 에러 (토큰 만료, 형식 오류 등)
+      showToast(error.message ?? "비밀번호 변경에 실패했습니다.", "error");
+    }
   }
 };
 
@@ -260,11 +302,9 @@ window.handleNicknameChange = async function () {
     document.getElementById("nickname").value = "";
     showToast("닉네임이 변경되었습니다.", "success");
   } catch (error) {
-    const currentPasswordHint = document.getElementById(
-      "current-password-hint",
-    );
-    currentPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
-    currentPasswordHint.className = "text-hint error";
+    const nicknameHint = document.getElementById("nickname-hint");
+    nicknameHint.textContent = "닉네임 변경에 실패했습니다.";
+    nicknameHint.className = "text-hint error";
   }
 };
 
