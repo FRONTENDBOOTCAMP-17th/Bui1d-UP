@@ -3,7 +3,18 @@ requireAuth();
 
 const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const token = getToken();
+const title = document.getElementById("title");
+const year = document.getElementById("year");
+const content = document.getElementById("content");
+const description = document.getElementById("description");
+const directorInput = document.getElementById("director");
+const directorContainer = document.getElementById("director-bubbles");
+let directorList = [];
 
+const actorsInput = document.getElementById("actors");
+const actorsContainer = document.getElementById("actors-bubbles");
+
+let actorsList = [];
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("id");
 
@@ -278,10 +289,6 @@ function resetForm(event) {
 
 const cancelBtn = document.getElementById("cancelBtn");
 /* ===== 감독 버블 ===== */
-const directorInput = document.getElementById("director");
-const directorContainer = document.getElementById("director-bubbles");
-
-let directorList = [];
 
 directorInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
@@ -307,10 +314,6 @@ directorInput.addEventListener("keydown", (e) => {
 });
 
 /* ===== 출연진 버블 ===== */
-const actorsInput = document.getElementById("actors");
-const actorsContainer = document.getElementById("actors-bubbles");
-
-let actorsList = [];
 
 actorsInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
