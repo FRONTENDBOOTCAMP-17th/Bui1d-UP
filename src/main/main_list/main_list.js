@@ -58,11 +58,11 @@ function renderSmallCard(post) {
   `;
 }
 
-// 전체 섹션: featured(index 0) + header + grid(index 1~)
+// 전체 섹션: featured(index 0)는 배너로 분리, 나머지는 content-section으로 감싸기
 function renderLatestSection(latest) {
   return `
-    <section class="genre-section">
-      ${renderFeaturedCard(latest[0])}
+    ${renderFeaturedCard(latest[0])}
+    <section class="genre-section content-section">
       ${renderSectionHeader("전체", "/src/main/genre_more/genre_more.html")}
       <div class="genre-section__grid">
         ${latest.slice(1).map(renderSmallCard).join("")}
@@ -181,5 +181,5 @@ async function loadMainList() {
   }
 }
 
-renderHeader("#header-container");
+renderHeader("body");
 loadMainList();

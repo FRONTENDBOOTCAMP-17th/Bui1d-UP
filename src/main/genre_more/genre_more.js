@@ -70,5 +70,5 @@ document.getElementById("back-btn").addEventListener("click", () => {
 
 loadMoreBtn.addEventListener("click", loadMore);
 
-renderHeader("#header-container"); // 헤더 렌더링
+renderHeader("body"); // 헤더 렌더링
 loadMore(); // 초기 로드

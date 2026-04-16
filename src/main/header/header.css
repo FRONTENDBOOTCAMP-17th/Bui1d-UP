@@ -10,6 +10,9 @@
   gap: 8px;
   border-bottom: 1px solid var(--neutral-800, #262626);
   background: var(--neutral-900, #171717);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .header-logo-link {
