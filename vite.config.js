@@ -17,6 +17,10 @@ export default defineConfig({
         landing: path.resolve(__dirname, "src/landing/landing.html"),
         login: path.resolve(__dirname, "src/account/login/login.html"),
         signup: path.resolve(__dirname, "src/account/signup/signup.html"),
+        resetPassword: path.resolve(
+          __dirname,
+          "src/account/resetPassword/resetPassword.html",
+        ),
         main_list: path.resolve(__dirname, "src/main/main_list/main_list.html"),
         detail: path.resolve(__dirname, "src/main/detail/detail.html"),
         genre_more: path.resolve(
