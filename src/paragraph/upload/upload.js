@@ -1,6 +1,8 @@
 import { requireAuth, getToken } from "@/utils/auth.js";
 requireAuth();
 
+import { showToast } from "@/utils/toast.js";
+
 const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const accesstoken = getToken();
 
@@ -87,12 +89,12 @@ async function createMovie() {
     const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
     if (!validTypes.includes(file.type)) {
-      alert("이미지 파일만 업로드 가능합니다.");
+      showToast("이미지 파일만 업로드 가능합니다.", "error");
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("5MB 이하 파일만 업로드 가능합니다.");
+      showToast("5MB 이하 파일만 업로드 가능합니다.", "error");
       return;
     }
   }
@@ -115,7 +117,7 @@ async function createMovie() {
     if (!imgRes.ok) {
       const errorData = await imgRes.json();
       console.error("이미지 업로드 실패:", errorData);
-      alert("이미지 업로드 실패");
+      showToast("이미지 업로드 실패", "error");
       return;
     }
 
@@ -137,7 +139,7 @@ async function createMovie() {
   }
 
   if (!genre) {
-    alert("장르를 선택해주세요");
+    showToast("장르를 선택해주세요", "error");
     return;
   }
 
@@ -148,6 +150,33 @@ async function createMovie() {
 
   if (!rating || rating === 0) {
     alert("별점을 입력해주세요");
+    return;
+  }
+  const description = document.getElementById("description");
+  //  입력창에 값 남아있으면 막기
+  if (directorInput.value.trim()) {
+    alert("감독 이름을 입력 후 Enter를 눌러주세요");
+    return;
+  }
+  //  개봉연도 형식 검증
+  // 🔥 개봉연도 필수 + 형식 검증
+  if (!year.value) {
+    alert("개봉 연도를 입력해주세요");
+    return;
+  }
+
+  if (!/^\d{4}$/.test(year.value)) {
+    alert("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)");
+    return;
+  }
+
+  if (actorsInput.value.trim()) {
+    alert("출연진 이름을 입력 후 Enter를 눌러주세요");
+    return;
+  }
+
+  if (description.value && !isValidText(description.value)) {
+    alert("명대사를 제대로 입력해주세요");
     return;
   }
   const description = document.getElementById("description");
@@ -205,14 +234,16 @@ async function createMovie() {
     if (!res.ok) {
       const errorData = await res.json();
       console.error("등록 실패:", errorData);
-      alert(errorData.message || "등록 실패");
+      showToast(errorData.message || "등록 실패", "error");
       return;
     }
 
-    alert("등록 완료!");
-    location.href = "/src/main/main_list/main_list.html";
+    showToast("등록 완료!");
+    setTimeout(() => {
+      location.href = "/src/main/main_list/main_list.html";
+    }, 1500);
   } catch (err) {
-    alert("등록 실패");
+    showToast("등록 실패", "error");
   }
 }
 

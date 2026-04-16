@@ -1,6 +1,8 @@
 import { requireAuth } from "@/utils/auth.js";
 requireAuth();
 
+import { showToast } from "@/utils/toast.js";
+
 import {
   setupInput,
   setupToggle,
@@ -56,26 +58,6 @@ try {
   userId = profile.id;
 } catch (error) {
   console.error("에러가 발생하였습니다:", error.message);
-}
-
-// 토스트 - 추후 수정 필요
-function showToast(message, type = "success") {
-  const container = document.getElementById("toast-container");
-  const toast = document.createElement("div");
-  const bgColor = type === "success" ? "bg-green-600" : "bg-red-600";
-  toast.className = `${bgColor} px-6 py-3 rounded-lg text-white text-sm font-medium opacity-0 transition-opacity duration-300 whitespace-nowrap`;
-  toast.setAttribute("role", type === "error" ? "alert" : "status");
-  toast.textContent = message;
-  container.appendChild(toast);
-  requestAnimationFrame(() =>
-    toast.classList.replace("opacity-0", "opacity-100"),
-  );
-  setTimeout(() => {
-    toast.classList.replace("opacity-100", "opacity-0");
-    toast.addEventListener("transitionend", () => toast.remove(), {
-      once: true,
-    });
-  }, 2000);
 }
 
 // 아코디언

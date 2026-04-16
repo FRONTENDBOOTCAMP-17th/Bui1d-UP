@@ -1,15 +1,16 @@
 import "./header.css";
 import { getProfileNickname } from "../../API/accountAPI/nickname.js";
 import { logout } from "../../API/accountAPI/logout.js";
+import { showToast } from "@/utils/toast.js";
 
 export function renderHeader(targetSelector = "body") {
   const html = `
   <header class="site-header">
-  <a href="/src/main/main_list/main_list.html" class="header-logo-link">
-  <img src="/logo.webp" alt="빌드업 로고" class="header-logo" />
+  <a href="/src/main/main_list/main_list.html" class="header-logo-link" aria-label="Bui1dBox 홈으로 이동">
+  <img src="/logo.webp" alt="" class="header-logo" />
   </a>
   <div class="search-bar">
-  <img src="/public/Search_icon.svg" alt="검색" class="search-icon" />
+  <img src="/Search_icon.svg" alt="검색" class="search-icon" />
   <input class="search-input" type="text" placeholder="작성한 글 검색..." />
   </div>
   <nav class="header-nav">
@@ -62,8 +63,10 @@ const userLogout = async () => {
   try {
     await logout();
 
-    alert("로그아웃되었습니다. 로그인 페이지로 이동합니다.");
-    window.location.href = "/src/account/login/login.html";
+    showToast("로그아웃되었습니다. 잠시 후 로그인 페이지로 이동합니다.");
+    setTimeout(() => {
+      window.location.href = "/src/account/login/login.html";
+    }, 1500);
   } catch (error) {
     console.error("Error during logout:", error);
   }

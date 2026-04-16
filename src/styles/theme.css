@@ -20,7 +20,15 @@
   font-family: Arial, sans-serif; /* 임시 폰트 */
 }
 
-/* 폰트 설정과 더불어 저희 코드도 분리할 필요가 있어 보여요 */
+/* 로고 */
+.header-logo {
+  height: clamp(56px, 6vw, 96px);
+  width: auto;
+}
+.header-logo-mobile {
+  height: clamp(40px, 28vw, 64px);
+  width: auto;
+}
 
 /* 회원가입, 로그인, 마이페이지 좌측 텍스트 설정 */
 .heading-left-text {
