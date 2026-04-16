@@ -4,9 +4,15 @@ requireAuth();
 import "./main_list.css";
 import { renderHeader } from "../header/header.js";
 import { getMainList } from "../../API/main_list.js";
+import { searchMovies } from "../../API/search.js";
 import { GENRE_MAP } from "@/utils/genres.js";
 
 const GENRE_ORDER = Object.keys(GENRE_MAP);
+const searchQuery = new URLSearchParams(window.location.search).get("query");
+
+const SEARCH_LIMIT = 20;
+let searchOffset = 0;
+let searchIsLoading = false;
 
 function renderSectionHeader(title, href) {
   return `
@@ -79,11 +85,78 @@ function renderGenreSection(genreKey, posts) {
   `;
 }
 
+// 검색 결과 섹션 초기 뼈대
+function renderSearchSection(query) {
+  return `
+    <section class="genre-section">
+      <div class="genre-section__header">
+        <h2 class="genre-section__title">"${query}" 검색 결과</h2>
+      </div>
+      <div class="genre-section__grid" id="search-grid"></div>
+      <div class="load-more-wrap">
+        <button class="load-more-btn" id="search-load-more">더보기</button>
+      </div>
+    </section>
+  `;
+}
+
+// 검색 결과 페이지네이션 로드
+async function loadSearchResults() {
+  if (searchIsLoading) return;
+  searchIsLoading = true;
+
+  const loadMoreBtn = document.getElementById("search-load-more");
+  if (loadMoreBtn) loadMoreBtn.disabled = true;
+
+  const results = await searchMovies(searchQuery, searchOffset, SEARCH_LIMIT);
+  searchIsLoading = false;
+
+  const gridEl = document.getElementById("search-grid");
+
+  if (results === null) {
+    gridEl.innerHTML = "<p class='empty-message'>검색 중 오류가 발생했습니다.</p>";
+    return;
+  }
+
+  if (results.length === 0 && searchOffset === 0) {
+    gridEl.innerHTML = "<p class='empty-message'>검색 결과가 없습니다.</p>";
+    if (loadMoreBtn) {
+      loadMoreBtn.textContent = "더 이상 없습니다";
+      loadMoreBtn.disabled = true;
+    }
+    return;
+  }
+
+  gridEl.insertAdjacentHTML("beforeend", results.map(renderSmallCard).join(""));
+  searchOffset += SEARCH_LIMIT;
+
+  if (loadMoreBtn) {
+    if (results.length < SEARCH_LIMIT) {
+      loadMoreBtn.textContent = "더 이상 없습니다";
+      loadMoreBtn.disabled = true;
+    } else {
+      loadMoreBtn.disabled = false;
+    }
+  }
+}
+
 // 장르별 데이터 존재시 섹션 렌더링
 async function loadMainList() {
+  const searchSectionEl = document.getElementById("search-section");
   const latestSectionEl = document.getElementById("latest-section");
   const genreListEl = document.getElementById("genre-list");
 
+  // 검색 모드
+  if (searchQuery) {
+    searchSectionEl.innerHTML = renderSearchSection(searchQuery);
+    document
+      .getElementById("search-load-more")
+      .addEventListener("click", loadSearchResults);
+    await loadSearchResults();
+    return;
+  }
+
+  // 일반 홈 모드
   try {
     const data = await getMainList();
     if (!data) throw new Error("데이터 없음");

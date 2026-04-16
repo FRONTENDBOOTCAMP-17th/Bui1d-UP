@@ -147,6 +147,29 @@ body {
   font-size: 14px;
 }
 
+/* ── 검색 결과 더보기 버튼 ── */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 16px;
+}
+
+.load-more-btn {
+  background: none;
+  border: 1px solid #525252;
+  color: #d4d4d4;
+  padding: 10px 32px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.load-more-btn:disabled {
+  color: #525252;
+  border-color: #404040;
+  cursor: default;
+}
+
 @media screen and (min-width: 768px) {
   .featured-card__info {
     padding: 64px 32px 32px;

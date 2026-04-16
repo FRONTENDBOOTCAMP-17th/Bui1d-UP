@@ -35,6 +35,18 @@ export function renderHeader(targetSelector = "body") {
 
   document.getElementById("btn-logout").addEventListener("click", userLogout);
 
+  // 검색창: 현재 검색어 복원 + Enter 시 main_list 검색 모드로 이동
+  const searchInput = target.querySelector(".search-input");
+  const currentQuery = new URLSearchParams(window.location.search).get("query");
+  if (currentQuery) searchInput.value = currentQuery;
+
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const query = searchInput.value.trim();
+    if (!query) return;
+    window.location.href = `/src/main/main_list/main_list.html?query=${encodeURIComponent(query)}`;
+  });
+
   // 페이지 로드 시 닉네임 가져오기
   callNickname();
 }
