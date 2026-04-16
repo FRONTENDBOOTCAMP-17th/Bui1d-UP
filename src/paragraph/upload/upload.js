@@ -167,7 +167,7 @@ async function createMovie() {
   }
 
   if (!/^\d{4}$/.test(year.value)) {
-    alert("개봉 연도는 4자리 숫자로j 입력해주세요 (예: 2024)");
+    alert("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)");
     return;
   }
 
