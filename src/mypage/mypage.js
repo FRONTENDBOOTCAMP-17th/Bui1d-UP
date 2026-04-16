@@ -21,6 +21,7 @@ setupInput("current-password");
 setupInput("new-password");
 setupPasswordCheck();
 setupInput("nickname");
+setupInput("password");
 
 setupToggle("current-password");
 setupToggle("new-password");
@@ -323,8 +324,20 @@ window.handleNicknameChange = async function () {
 
 // 회원탈퇴
 const withdrawDialog = document.getElementById("withdrawDialog");
+const withdrawPasswordInput = document.getElementById("password");
+const withdrawPasswordHint = document.getElementById("password-hint");
+
+function resetWithdrawInput() {
+  withdrawPasswordInput.value = "";
+  withdrawPasswordInput.classList.remove("is-error", "is-success");
+  withdrawPasswordHint.textContent =
+    "8~50자, 대문자·숫자·특수문자를 포함해야 합니다.";
+  withdrawPasswordHint.className = "text-hint";
+  document.getElementById("password-clear").classList.remove("show");
+}
 
 window.openWithdrawDialog = function () {
+  resetWithdrawInput();
   withdrawDialog.showModal();
 };
 
@@ -335,9 +348,12 @@ document.getElementById("withdrawCancel").addEventListener("click", () => {
 document
   .getElementById("withdrawConfirm")
   .addEventListener("click", async () => {
-    const password = document.getElementById("password").value;
+    const password = withdrawPasswordInput.value;
     if (!password) {
-      showToast("비밀번호를 입력해주세요.", "error");
+      withdrawPasswordInput.classList.remove("is-success");
+      withdrawPasswordInput.classList.add("is-error");
+      withdrawPasswordHint.textContent = "비밀번호를 입력해주세요.";
+      withdrawPasswordHint.className = "text-hint error";
       return;
     }
     try {
@@ -347,7 +363,10 @@ document
       setTimeout(() => {
         location.href = "../landing/landing.html";
       }, 1500);
-    } catch (error) {
-      showToast(error.message ?? "회원탈퇴에 실패했습니다.", "error");
+    } catch {
+      withdrawPasswordInput.classList.remove("is-success");
+      withdrawPasswordInput.classList.add("is-error");
+      withdrawPasswordHint.textContent = "현재 비밀번호가 올바르지 않습니다.";
+      withdrawPasswordHint.className = "text-hint error";
     }
   });
