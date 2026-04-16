@@ -188,3 +188,9 @@ header {
   margin-top: 15px;
   opacity: 0.8;
 }
+
+/* 로고 크기 조절 */
+.logo img {
+  height: 50px;
+  width: auto;
+}
