@@ -1,24 +1,18 @@
-import { signup } from "../../API/accountAPI/signup.js";
-import {
-  setupInput,
-  setupToggle,
-  setupPasswordCheck,
-} from "../../components/input.js";
-import { sendEmailCode } from "../../API/accountAPI/sendEmailCode.js";
-import { checkEmailCode } from "../../API/accountAPI/checkEmailCode.js";
+import { sendResetCode } from "../../API/accountAPI/sendResetCode.js";
+import { verifyResetCode } from "../../API/accountAPI/verifyResetCode.js";
+import { resetPassword } from "../../API/accountAPI/resetPassword.js";
+import { setupInput, setupToggle } from "../../components/input.js";
 
-setupInput("username");
-setupInput("nickname");
-setupInput("password");
-setupToggle("password");
 setupInput("email");
 setupInput("email-code");
-setupPasswordCheck();
+setupInput("password");
+setupToggle("password");
 setupToggle("password-check");
 
 // 이메일 인증 상태
 let emailUuid = null;
 let isEmailVerified = false;
+let resetToken = null;
 
 const emailInput = document.getElementById("email");
 const emailHint = document.getElementById("email-hint");
@@ -27,14 +21,12 @@ const emailCodeHint = document.getElementById("email-code-hint");
 const sendCodeBtn = document.getElementById("send-code-btn");
 const verifyCodeBtn = document.getElementById("verify-code-btn");
 
-const usernameInput = document.getElementById("username");
-const nicknameInput = document.getElementById("nickname");
 const passwordInput = document.getElementById("password");
-const usernameHint = document.getElementById("username-hint");
-const nicknameHint = document.getElementById("nickname-hint");
 const passwordHint = document.getElementById("password-hint");
-const signupForm = document.getElementById("signup-form");
-const submitBtn = signupForm.querySelector("button[type='submit']");
+const passwordCheckInput = document.getElementById("password-check");
+const passwordCheckHint = document.getElementById("password-check-hint");
+const resetPasswordForm = document.getElementById("reset-password-form");
+const submitBtn = resetPasswordForm.querySelector("button[type='submit']");
 
 // 이메일 인증코드 발송
 sendCodeBtn.addEventListener("click", async () => {
@@ -49,8 +41,9 @@ sendCodeBtn.addEventListener("click", async () => {
   sendCodeBtn.textContent = "인증코드 발송 중...";
 
   try {
-    emailUuid = await sendEmailCode(email);
+    emailUuid = await sendResetCode(email);
     isEmailVerified = false;
+    resetToken = null;
     emailHint.textContent = "인증코드가 발송되었습니다. 이메일을 확인하세요.";
     emailHint.className = "text-hint success";
     emailCodeInput.focus();
@@ -84,13 +77,14 @@ verifyCodeBtn.addEventListener("click", async () => {
   verifyCodeBtn.textContent = "인증코드 확인 중...";
 
   try {
-    await checkEmailCode(emailUuid, code);
+    resetToken = await verifyResetCode(emailUuid, code);
     isEmailVerified = true;
     emailCodeHint.textContent = "이메일 인증이 완료되었습니다.";
     emailCodeHint.className = "text-hint success";
-    usernameInput.focus();
+    passwordInput.focus();
   } catch (e) {
     isEmailVerified = false;
+    resetToken = null;
     if (e.message === "EXPIRED") {
       emailCodeHint.textContent =
         "인증코드가 만료되었습니다. 다시 발송해주세요.";
@@ -105,69 +99,52 @@ verifyCodeBtn.addEventListener("click", async () => {
 });
 
 // input에 다시 입력 시 힌트 메세지 초기화
-const signupInfo = [
-  [usernameInput, usernameHint],
-  [nicknameInput, nicknameHint],
-  [passwordInput, passwordHint],
+const resetInfo = [
   [emailInput, emailHint],
   [emailCodeInput, emailCodeHint],
+  [passwordInput, passwordHint],
 ];
 
-signupInfo.forEach(([input, hint]) => {
+resetInfo.forEach(([input, hint]) => {
   input.addEventListener("input", () => {
     hint.textContent = "";
     hint.className = "text-hint";
   });
 });
 
-// 회원가입 버튼 클릭 시 이벤트
-signupForm.addEventListener("submit", async (e) => {
+// 비밀번호 재설정 버튼 클릭 시 이벤트
+resetPasswordForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (!isEmailVerified) {
+  if (!isEmailVerified || !resetToken) {
     emailCodeHint.textContent = "이메일 인증을 완료해주세요.";
     emailCodeHint.className = "text-hint error";
+    emailCodeInput.focus();
     return;
   }
 
-  const id = usernameInput.value.trim();
   const pwd = passwordInput.value;
-  const pwdCheck = document.getElementById("password-check").value;
-  const nickname = nicknameInput.value.trim();
-  const email = emailInput.value.trim();
-
-  if (!id || !pwd || !nickname || !email) {
-    passwordHint.textContent = "모든 항목을 입력해주세요.";
-    passwordHint.className = "text-hint error";
-    return;
-  }
+  const pwdCheck = passwordCheckInput.value;
 
   // 비밀번호 일치 여부 확인
   if (pwd !== pwdCheck) {
-    const passwordCheckHint = document.getElementById("password-check-hint");
     passwordCheckHint.textContent = "비밀번호가 일치하지 않습니다.";
     passwordCheckHint.className = "text-hint error";
+    passwordCheckInput.focus();
     return;
   }
 
-  // 회원가입 요청 시 버튼 비활성화
+  // 비밀번호 재설정 요청 시 버튼 비활성화
   submitBtn.disabled = true;
 
   try {
-    await signup(id, pwd, email, nickname, emailUuid);
-    location.href = "../../account/login/login.html";
+    await resetPassword(resetToken, pwd);
+    alert("비밀번호가 재설정되었습니다. 다시 로그인해주세요.");
+    location.href = "../login/login.html";
   } catch (error) {
-    if (error.message === "DUPLICATE_ID") {
-      usernameHint.textContent = "이미 사용 중인 아이디입니다.";
-      usernameHint.className = "text-hint error";
-    } else if (error.message === "DUPLICATE_NICKNAME") {
-      const nicknameHint = document.getElementById("nickname-hint");
-      nicknameHint.textContent = "이미 사용 중인 닉네임입니다.";
-      nicknameHint.className = "text-hint error";
-    } else {
-      passwordHint.textContent = "회원가입에 실패했습니다. 다시 시도해주세요.";
-      passwordHint.className = "text-hint error";
-    }
+    passwordHint.textContent =
+      "비밀번호 재설정에 실패했습니다. 다시 시도해주세요.";
+    passwordHint.className = "text-hint error";
   } finally {
     submitBtn.disabled = false;
   }
