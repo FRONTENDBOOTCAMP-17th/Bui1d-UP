@@ -60,7 +60,7 @@
     </div>
 
     <!-- RIGHT -->
-    <div
+    <main
       class="w-full md:w-1/2 flex flex-col justify-center p-12 md:px-14 md:py-16 overflow-hidden"
     >
       <!-- 모바일 로고. 이것도 나중에 수정 필요. 좌측 로고와는 md, mb만 다름. -->
@@ -197,7 +197,6 @@
             <button
               type="button"
               id="send-code-btn"
-              aria-controls="email"
               class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
             >
               인증코드 발송
@@ -248,7 +247,6 @@
             <button
               type="button"
               id="verify-code-btn"
-              aria-controls="email-code"
               class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
             >
               확인
@@ -378,11 +376,19 @@
 
       <!-- 구분선 -->
       <div
+        role="separator"
+        aria-label="또는"
         class="flex items-center my-6 text-(--text-tertiary,#d4d4d4)/80 text-sm"
       >
-        <div class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"></div>
-        <span class="mx-3">또는</span>
-        <div class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"></div>
+        <div
+          class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"
+          aria-hidden="true"
+        ></div>
+        <span class="mx-3" aria-hidden="true">또는</span>
+        <div
+          class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"
+          aria-hidden="true"
+        ></div>
       </div>
       <!-- 홈 버튼 -->
       <a
@@ -390,7 +396,7 @@
         class="flex items-center justify-center w-full h-10 rounded-lg text-[0.95rem] font-semibold mt-3 border-0 bg-transparent text-(--text-secondary,#737373) cursor-pointer transition-colors duration-150 hover:text-(--text-primary,#ffffff) active:scale-[0.99]"
         >처음으로 돌아가기</a
       >
-    </div>
+    </main>
 
     <script type="module" src="./signup.js"></script>
   </body>
