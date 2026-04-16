@@ -10,7 +10,7 @@ export function renderHeader(targetSelector = "body") {
   <img src="/logo.webp" alt="" class="header-logo" />
   </a>
   <div class="search-bar">
-  <img src="/public/Search_icon.svg" alt="검색" class="search-icon" />
+  <img src="/Search_icon.svg" alt="검색" class="search-icon" />
   <input class="search-input" type="text" placeholder="작성한 글 검색..." />
   </div>
   <nav class="header-nav">
