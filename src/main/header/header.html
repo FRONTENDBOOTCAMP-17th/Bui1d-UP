@@ -4,28 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>헤더</title>
-    <link
-      rel="shortcut icon"
-      href="/favicon/likelion.ico"
-      type="image/x-icon"
-    />
-    <link rel="icon" href="/favicon/likelion.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" />
     <link rel="preload" as="font" href="/font/suit/SUIT-Variable.woff2" />
     <link rel="stylesheet" href="/font/suit/SUIT-Variable.css" />
     <link rel="stylesheet" href="/src/main/header/header.css" />
   </head>
   <body>
     <header class="site-header">
-      <a href="/main_list.html" class="header-logo-link">
-        <img src="/bui1d-boxLogo.png" alt="빌드업 로고" class="header-logo" />
-        <img
-          src="/public/Bui1dBox.png"
-          alt="빌드업 텍스트 로고"
-          class="header-text-logo"
-        />
+      <a
+        href="/main_list.html"
+        class="header-logo-link"
+        aria-label="Bui1dBox 홈으로 이동"
+      >
+        <img src="/bui1d-boxLogo.png" alt="" class="header-logo" />
+        <img src="/Bui1dBox.png" alt="" class="header-text-logo" />
       </a>
       <div class="search-bar">
-        <img src="/public/Search_icon.svg" alt="검색" class="search-icon" />
+        <img src="/Search_icon.svg" alt="검색" class="search-icon" />
         <input
           class="search-input"
           type="text"
@@ -33,14 +28,14 @@
         />
       </div>
       <nav class="header-nav">
-        <button class="nav-btn nav-btn--red" id="btn-new-post">
+        <a href="/upload.html" class="nav-btn nav-btn--red" id="btn-new-post">
           <img src="/Add_round.svg" alt="새 포스트" />
           <span class="btn-label">새 포스트</span>
-        </button>
-        <button class="nav-btn" id="btn-myinfo">
+        </a>
+        <a href="/mypage.html" class="nav-btn" id="btn-myinfo">
           <img src="/myinfo.png" alt="내 정보" />
           <span class="btn-label" id="nickname"></span>
-        </button>
+        </a>
         <button class="nav-btn" id="btn-logout">
           <img src="/logout.png" alt="로그아웃" />
           <span class="btn-label">로그아웃</span>

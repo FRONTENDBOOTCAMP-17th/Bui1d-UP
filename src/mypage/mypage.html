@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bui1dBox 내 정보 변경</title>
+    <link rel="stylesheet" href="../styles/theme.css" />
+    <link rel="stylesheet" href="../components/input.css" />
+    <link rel="stylesheet" href="../components/button.css" />
+    <link rel="stylesheet" href="../components/accordion.css" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" />
+  </head>
+  <body
+    class="min-h-screen flex bg-(--background-base,#171717) text-(--text-primary,#ffffff)"
+  >
+    <!-- LEFT -->
+    <div
+      class="hidden md:flex w-1/2 flex-col justify-center items-start p-25 relative overflow-hidden"
+      aria-hidden="true"
+    >
+      <!-- 그라디언트 오버레이 -->
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="
+          background: radial-gradient(
+            ellipse 80% 60% at 20% 50%,
+            rgba(229, 9, 20, 0.18) 0%,
+            transparent 55%
+          );
+        "
+      ></div>
+      <!-- 콘텐츠 -->
+      <div class="relative z-10">
+        <!-- 로고 -->
+        <div class="flex items-center gap-3 mb-8">
+          <img src="/logo.webp" alt="Bui1dBox 로고" class="header-logo" />
+        </div>
+
+        <p class="heading-left-text">
+          <span style="white-space: nowrap"> 안녕하세요,<br /></span>
+          <span style="white-space: nowrap">
+            <span id="welcome-nickname" class="text-(--color-primary,#dc2626)"
+              >로딩 중</span
+            >
+            님!</span
+          >
+        </p>
+        <p class="subtext-left-text">
+          <span style="white-space: nowrap">계정 정보를 관리하고</span>
+          <span style="white-space: nowrap">프로필을 업데이트하세요.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <main
+      class="w-full md:w-1/2 flex flex-col justify-center p-12 md:px-14 md:py-16 overflow-hidden"
+    >
+      <!-- 모바일 로고 -->
+      <div class="flex md:hidden items-center gap-3 mb-8">
+        <img
+          src="/logo.webp"
+          alt=""
+          aria-hidden="true"
+          class="header-logo-mobile"
+        />
+      </div>
+
+      <!-- 뒤로가기 -->
+      <div class="mb-8">
+        <button
+          onclick="history.back()"
+          class="flex items-center gap-2 text-(--text-tertiary,#d4d4d4) hover:text-(--text-primary,#ffffff) text-sm transition-colors font-medium"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          뒤로가기
+        </button>
+      </div>
+
+      <h1 class="heading-right-text" id="form-title" aria-label="내 정보 설정">
+        내 정보
+      </h1>
+
+      <section
+        id="accordion-components-wrap"
+        aria-labelledby="form-title"
+        class="space-y-3"
+      >
+        <!-- 이메일 변경 -->
+        <div class="accordion-components rounded-lg overflow-hidden">
+          <button
+            class="accordion-head w-full flex items-center justify-between p-4 bg-(--background-surface,#262626) hover:bg-(--text-secondary,#737373)/40 transition-colors rounded-lg"
+            aria-expanded="false"
+            aria-controls="accordion-body-email"
+          >
+            <span class="font-semibold">이메일 변경</span>
+            <svg
+              class="icon-chevron w-5 h-5 text-(--text-secondary,#737373)"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <div
+            id="accordion-body-email"
+            class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
+            hidden
+          >
+            <dl>
+              <dt class="text-(--text-secondary,#737373) text-sm">
+                현재 이메일
+              </dt>
+              <dd
+                id="display-email"
+                class="text-(--text-primary,#ffffff) mt-1 py-3"
+              ></dd>
+            </dl>
+            <!-- 새 이메일 -->
+            <div class="flex flex-col gap-1">
+              <span class="text-sm font-medium pb-1" id="email-label"
+                >새 이메일</span
+              >
+              <div class="flex gap-2">
+                <div class="form-input flex-1">
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder=" "
+                    autocomplete="email"
+                    aria-labelledby="email-label"
+                    aria-describedby="email-hint"
+                    required
+                  />
+                  <label for="email">이메일 주소를 입력하세요.</label>
+                  <button
+                    type="button"
+                    class="action-btn clear"
+                    id="email-clear"
+                    aria-label="이메일 입력값 삭제"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-x" />
+                    </svg>
+                  </button>
+                </div>
+                <!-- 인증코드 발송 버튼 -->
+                <button
+                  type="button"
+                  id="send-code-btn"
+                  class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+                >
+                  인증코드 발송
+                </button>
+              </div>
+              <p class="text-hint" id="email-hint" role="status">
+                이메일 주소를 입력하세요.
+              </p>
+            </div>
+
+            <!-- 인증 코드 -->
+            <div class="flex flex-col gap-1">
+              <span class="text-sm font-medium pb-1" id="email-code-label"
+                >인증 코드</span
+              >
+              <div class="flex gap-2">
+                <div class="form-input flex-1">
+                  <input
+                    type="text"
+                    id="email-code"
+                    name="email-code"
+                    placeholder=" "
+                    autocomplete="one-time-code"
+                    aria-labelledby="email-code-label"
+                    aria-describedby="email-code-hint"
+                    required
+                  />
+                  <label for="email-code"
+                    >이메일로 발송된 4자리 코드를 입력하세요.</label
+                  >
+                  <button
+                    type="button"
+                    class="action-btn clear"
+                    id="email-code-clear"
+                    aria-label="인증 코드 입력값 삭제"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-x" />
+                    </svg>
+                  </button>
+                </div>
+                <!-- 확인 버튼 -->
+                <button
+                  type="button"
+                  id="verify-code-btn"
+                  class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+                >
+                  확인
+                </button>
+              </div>
+              <p class="text-hint" id="email-code-hint" role="status">
+                이메일로 발송된 4자리 코드를 입력하세요.
+              </p>
+            </div>
+
+            <!-- 이메일 변경 버튼 -->
+            <button
+              type="button"
+              onclick="handleEmailChange()"
+              class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+            >
+              이메일 변경하기
+            </button>
+          </div>
+        </div>
+
+        <!-- 비밀번호 변경 -->
+        <div class="accordion-components rounded-lg overflow-hidden">
+          <button
+            class="accordion-head w-full flex items-center justify-between p-4 bg-(--background-surface,#262626) hover:bg-(--text-secondary,#737373)/40 transition-colors rounded-lg"
+            aria-expanded="false"
+            aria-controls="accordion-body-password"
+          >
+            <span class="font-semibold">비밀번호 변경</span>
+            <svg
+              class="icon-chevron w-5 h-5 text-(--text-secondary,#737373)"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <div
+            id="accordion-body-password"
+            class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
+            hidden
+          >
+            <form id="password-change-form" novalidate>
+              <input
+                type="text"
+                id="password-form-username"
+                name="username"
+                autocomplete="username"
+                hidden
+              />
+              <!-- 현재 비밀번호 -->
+              <div class="flex flex-col gap-1.5">
+                <span
+                  class="text-sm font-medium pb-1"
+                  id="current-password-label"
+                  >현재 비밀번호</span
+                >
+                <div class="form-input">
+                  <input
+                    type="password"
+                    id="current-password"
+                    name="current-password"
+                    class="has-two-actions"
+                    placeholder=" "
+                    autocomplete="current-password"
+                    aria-labelledby="current-password-label"
+                    aria-describedby="current-password-hint"
+                    required
+                  />
+                  <label for="current-password"
+                    >8~50자, 영문 대문자+숫자+특수문자</label
+                  >
+                  <button
+                    type="button"
+                    class="action-btn toggle"
+                    id="current-password-toggle"
+                    aria-label="비밀번호 표시"
+                    aria-pressed="false"
+                  >
+                    <svg
+                      width="18"
+                      height="12"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-eye" />
+                    </svg>
+                    <svg
+                      width="22"
+                      height="22"
+                      aria-hidden="true"
+                      focusable="false"
+                      style="display: none"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-eye-hide" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="action-btn clear"
+                    id="current-password-clear"
+                    aria-label="비밀번호 입력값 삭제"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-x" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-hint" id="current-password-hint" role="status">
+                  8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
+                </p>
+              </div>
+
+              <!-- 새 비밀번호 -->
+              <div class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium pb-1" id="new-password-label"
+                  >새 비밀번호</span
+                >
+                <div class="form-input">
+                  <input
+                    type="password"
+                    id="new-password"
+                    name="new-password"
+                    class="has-two-actions"
+                    placeholder=" "
+                    autocomplete="new-password"
+                    aria-labelledby="new-password-label"
+                    aria-describedby="new-password-hint"
+                    required
+                  />
+                  <label for="new-password"
+                    >8~50자, 영문 대문자+숫자+특수문자</label
+                  >
+                  <button
+                    type="button"
+                    class="action-btn toggle"
+                    id="new-password-toggle"
+                    aria-label="새 비밀번호 표시"
+                    aria-pressed="false"
+                  >
+                    <svg
+                      width="18"
+                      height="12"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-eye" />
+                    </svg>
+                    <svg
+                      width="22"
+                      height="22"
+                      aria-hidden="true"
+                      focusable="false"
+                      style="display: none"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-eye-hide" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="action-btn clear"
+                    id="new-password-clear"
+                    aria-label="새 비밀번호 입력값 삭제"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-x" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-hint" id="new-password-hint" role="status">
+                  8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
+                </p>
+              </div>
+
+              <!-- 새 비밀번호 확인 -->
+              <div class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium pb-1" id="password-check-label"
+                  >새 비밀번호 확인</span
+                >
+                <div class="form-input">
+                  <input
+                    type="password"
+                    id="password-check"
+                    name="password-check"
+                    class="has-two-actions"
+                    placeholder=" "
+                    autocomplete="new-password"
+                    aria-labelledby="password-check-label"
+                    aria-describedby="password-check-hint"
+                    required
+                  />
+                  <label for="password-check"
+                    >비밀번호를 다시 입력하세요.</label
+                  >
+                  <button
+                    type="button"
+                    class="action-btn toggle"
+                    id="password-check-toggle"
+                    aria-label="비밀번호 확인 표시"
+                    aria-pressed="false"
+                  >
+                    <svg
+                      width="18"
+                      height="12"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-eye" />
+                    </svg>
+                    <svg
+                      width="22"
+                      height="22"
+                      aria-hidden="true"
+                      focusable="false"
+                      style="display: none"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-eye-hide" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="action-btn clear"
+                    id="password-check-clear"
+                    aria-label="비밀번호 확인 입력값 삭제"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-x" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-hint" id="password-check-hint" role="status">
+                  비밀번호를 다시 입력하세요.
+                </p>
+              </div>
+
+              <!-- 비밀번호 변경 버튼 -->
+              <button
+                type="button"
+                onclick="handlePasswordChange()"
+                class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+              >
+                비밀번호 변경하기
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- 닉네임 변경 -->
+        <div class="accordion-components rounded-lg overflow-hidden">
+          <button
+            class="accordion-head w-full flex items-center justify-between p-4 bg-(--background-surface,#262626) hover:bg-(--text-secondary,#737373)/40 transition-colors rounded-lg"
+            aria-expanded="false"
+            aria-controls="accordion-body-nickname"
+          >
+            <span class="font-semibold">닉네임 변경</span>
+            <svg
+              class="icon-chevron w-5 h-5 text-(--text-secondary,#737373)"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <div
+            id="accordion-body-nickname"
+            class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
+            hidden
+          >
+            <dl>
+              <dt class="text-(--text-secondary,#737373) text-sm">
+                현재 닉네임
+              </dt>
+              <dd
+                id="display-nickname"
+                class="text-(--text-primary,#ffffff) mt-1 py-3"
+              ></dd>
+            </dl>
+            <div class="flex flex-col gap-1.5">
+              <span class="text-sm font-medium pb-1" id="nickname-label"
+                >새 닉네임</span
+              >
+              <div class="form-input">
+                <input
+                  type="text"
+                  id="nickname"
+                  name="nickname"
+                  placeholder=" "
+                  autocomplete="nickname"
+                  aria-labelledby="nickname-label"
+                  aria-describedby="nickname-hint"
+                  required
+                />
+                <label for="nickname">1~10자로 입력하세요.</label>
+                <button
+                  type="button"
+                  class="action-btn clear"
+                  id="nickname-clear"
+                  aria-label="닉네임 입력값 삭제"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="../assets/icons/sprite.svg#icon-x" />
+                  </svg>
+                </button>
+              </div>
+              <p class="text-hint" id="nickname-hint" role="status">
+                1~10자로 입력해야 합니다.
+              </p>
+            </div>
+
+            <!-- 닉네임 변경 버튼 -->
+            <button
+              type="button"
+              onclick="handleNicknameChange()"
+              class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+            >
+              닉네임 변경하기
+            </button>
+          </div>
+        </div>
+
+        <!-- 회원 탈퇴 버튼 -->
+        <div class="pt-4">
+          <button
+            onclick="openWithdrawDialog()"
+            type="button"
+            class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold mt-4 cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-secondary button-responsive"
+          >
+            <span class="icon icon-recycle-bin" aria-hidden="true"></span>
+            회원탈퇴
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 회원 탈퇴 다이얼로그 -->
+    <dialog
+      id="withdrawDialog"
+      class="m-auto w-full max-w-sm rounded-xl p-8 bg-(--background-surface,#262626) text-(--text-primary,#ffffff) shadow-xl backdrop:bg-black/60"
+      aria-labelledby="withdraw-dialog-title"
+      aria-describedby="withdraw-dialog-sub"
+    >
+      <form method="dialog">
+        <h2 id="withdraw-dialog-title" class="text-xl font-bold mb-2">
+          정말 탈퇴하시겠습니까?
+        </h2>
+        <p
+          id="withdraw-dialog-sub"
+          class="text-(--text-tertiary,#d4d4d4) text-sm mb-6 leading-6"
+        >
+          탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.<br />
+          탈퇴 후에는 같은 아이디로 재가입할 수 있습니다.<br />
+          비밀번호를 입력하고 탈퇴하기를 누르면, 탈퇴 처리가 즉시 진행됩니다.
+        </p>
+        <div class="flex flex-col gap-1.5 w-full">
+          <span class="text-sm font-medium pb-1" id="password-label"
+            >현재 비밀번호</span
+          >
+          <div class="form-input">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="has-two-actions"
+              placeholder=" "
+              autocomplete="current-password"
+              aria-labelledby="password-label"
+              aria-describedby="password-hint"
+              required
+            />
+            <label for="password">8~50자, 영문 대문자+숫자+특수문자</label>
+            <button
+              type="button"
+              class="action-btn toggle"
+              id="password-toggle"
+              aria-label="비밀번호 표시"
+              aria-pressed="false"
+            >
+              <svg
+                id="eye"
+                width="18"
+                height="12"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="../assets/icons/sprite.svg#icon-eye" />
+              </svg>
+              <svg
+                id="eye-hide"
+                width="22"
+                height="22"
+                aria-hidden="true"
+                focusable="false"
+                style="display: none"
+              >
+                <use href="../assets/icons/sprite.svg#icon-eye-hide" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="action-btn clear"
+              id="password-clear"
+              aria-label="비밀번호 입력값 삭제"
+              tabindex="0"
+            >
+              <svg width="18" height="18" aria-hidden="true" focusable="false">
+                <use href="../assets/icons/sprite.svg#icon-x" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-hint" id="password-hint" role="status">
+            8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3 w-full">
+          <button
+            id="withdrawConfirm"
+            type="button"
+            class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+          >
+            탈퇴하기
+          </button>
+          <button
+            id="withdrawCancel"
+            type="button"
+            autofocus
+            class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-secondary"
+          >
+            취소
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="./mypage.js"></script>
+  </body>
+</html>

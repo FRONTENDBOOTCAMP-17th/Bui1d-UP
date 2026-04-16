@@ -1,0 +1,167 @@
+import { requireAuth } from "@/utils/auth.js";
+requireAuth();
+
+import { getDetail } from "../../API/detail.js";
+import { deletePatagraph } from "../../API/paragraphAPI/delete.js";
+import { GENRE_MAP } from "@/utils/genres.js";
+import { showToast } from "@/utils/toast.js";
+
+const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
+
+function renderDetail(movie) {
+  const { title, star, year, genre, director, cast, famousLine, imageUrl } =
+    movie;
+
+  /* ── 배경 ── */
+  const backdrop = document.getElementById("backdrop");
+  const backdropImg = document.getElementById("backdropImg");
+
+  if (isDesktop()) {
+    // 데스크탑: CSS background-image
+    backdrop.style.backgroundImage = imageUrl ? `url(${imageUrl})` : "none";
+  } else {
+    // 모바일: <img> 태그
+    if (imageUrl) backdropImg.src = imageUrl;
+  }
+
+  // 이미지 비율 감지 → portrait / landscape 클래스 적용
+  if (imageUrl) {
+    const tempImg = new Image();
+    tempImg.onload = function () {
+      const isPortrait = this.naturalHeight > this.naturalWidth;
+      if (isPortrait) {
+        if (isDesktop()) {
+          backdrop.classList.add("portrait-mode");
+        } else {
+          backdropImg.classList.add("portrait-img");
+        }
+      } else {
+        // 가로 이미지: 사이드바 포스터도 16:9로
+        document.getElementById("poster").classList.add("landscape-img");
+      }
+    };
+    tempImg.src = imageUrl;
+  }
+
+  /* ── hero 영역 (좌측 하단 / 모바일 이미지 아래) ── */
+  document.getElementById("title").textContent = title ?? "";
+  document.getElementById("year").textContent = year ?? "";
+  document.getElementById("rating").textContent = star ?? "";
+
+  /* ── 패널 ── */
+  // 포스터 썸네일 (데스크탑 전용)
+  const poster = document.getElementById("poster");
+  if (imageUrl) poster.src = imageUrl;
+  poster.alt = title ?? "영화 포스터";
+
+  document.getElementById("panelTitle").textContent = title ?? "";
+  document.getElementById("panelRating").textContent = star ?? "";
+  document.getElementById("panelYear").textContent = year ?? "";
+  document.getElementById("genre").textContent =
+    GENRE_MAP[genre] ?? genre ?? "";
+  document.getElementById("director").textContent = Array.isArray(director)
+    ? director.join(", ")
+    : (director ?? "");
+  document.getElementById("cast").textContent = Array.isArray(cast)
+    ? cast.join(", ")
+    : (cast ?? "");
+
+  /* ── 명대사 ── */
+  const quoteList = document.getElementById("quoteList");
+  const lines = famousLine
+    ? famousLine.split("\n").filter((l) => l.trim())
+    : [];
+
+  if (lines.length) {
+    quoteList.innerHTML = lines
+      .map((line) => `<li>"${line.trim()}"</li>`)
+      .join("");
+  }
+}
+
+/* ── 영화 후기 ── */
+const review = document.getElementById("reviewContent");
+function renderReview(content) {
+  review.textContent = content ?? "리뷰가 없습니다.";
+}
+
+/* ── 패널 열기/닫기 헬퍼 ── */
+function openPanel() {
+  document.getElementById("detailPanel").classList.add("is-open");
+  document.getElementById("backdropOverlay").classList.add("is-visible");
+}
+
+function closePanel() {
+  document.getElementById("detailPanel").classList.remove("is-open");
+  document.getElementById("backdropOverlay").classList.remove("is-visible");
+}
+
+/* ── 상세정보 버튼 토글 (데스크탑) ── */
+function initDetailBtn() {
+  document.getElementById("detailBtn").addEventListener("click", openPanel);
+}
+
+/* ── 닫기 버튼 & 오버레이 클릭 (데스크탑) ── */
+function initCloseBtn() {
+  document.getElementById("closeBtn").addEventListener("click", closePanel);
+  document
+    .getElementById("backdropOverlay")
+    .addEventListener("click", closePanel);
+}
+
+/* ── 뒤로가기 ── */
+document.getElementById("backBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  history.back();
+});
+
+/* ── 반응형 전환 시 패널 상태 초기화 ── */
+window.matchMedia("(min-width: 768px)").addEventListener("change", () => {
+  location.reload();
+});
+
+const postId = new URLSearchParams(location.search).get("postId");
+
+/* ── 초기 로드 ── */
+async function init() {
+  if (!postId) {
+    console.error("postId가 없습니다.");
+    return;
+  }
+
+  document.getElementById("editLink").href =
+    `../../paragraph/edit/edit.html?id=${postId}`;
+
+  if (isDesktop()) {
+    initCloseBtn();
+    initDetailBtn();
+  }
+
+  const data = await getDetail(postId);
+  if (!data?.data) {
+    console.error("영화 데이터를 불러오지 못했습니다.");
+    return;
+  }
+
+  renderDetail(data.data);
+  renderReview(data.data.content);
+}
+
+document.getElementById("delete_btn").addEventListener("click", async () => {
+  if (!postId) {
+    console.error("postId가 없습니다.");
+    return;
+  }
+
+  if (!confirm("정말로 삭제하시겠습니까?")) return;
+
+  const res = await deletePatagraph(postId);
+  if (res) {
+    showToast("리뷰가 삭제되었습니다. 잠시 후 메인화면으로 이동합니다.");
+    setTimeout(() => {
+      window.location.href = "../main_list/main_list.html";
+    }, 1500);
+  }
+});
+
+init();

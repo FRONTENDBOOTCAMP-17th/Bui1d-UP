@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+body {
+  background-color: #171717;
+  color: #ffffff;
+  margin: 0;
+}
+
+.genre-more-content {
+  width: 100%;
+  padding: 12px 32px;
+  box-sizing: border-box;
+}
+
+.genre-more-header {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: gray;
+}
+
+.genre-more-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* 모바일: 2열 */
+.genre-more-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* 데스크탑: 5열 */
+@media screen and (min-width: 768px) {
+  .genre-more-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ── Card ── */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #262626;
+}
+
+.movie-card__poster {
+  background-color: #404040;
+  overflow: hidden;
+}
+
+.movie-card__poster img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
+.movie-card__info {
+  padding: 8px;
+}
+
+.movie-card__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-card__star {
+  font-size: 12px;
+  color: #facc15;
+}
+
+/* ── 더보기 버튼 ── */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.load-more-btn {
+  background: none;
+  border: 1px solid #525252;
+  color: #d4d4d4;
+  padding: 10px 32px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.load-more-btn:disabled {
+  color: #525252;
+  border-color: #404040;
+  cursor: default;
+}

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>포스트 등록</title>
+
+    <link rel="stylesheet" href="./upload.css" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="top-header">
+        <span class="back-btn" onclick="history.back()">← 나가기</span>
+        <span class="title">새 영화 추가</span>
+      </div>
+
+      <div class="container">
+        <!-- 좌측 -->
+        <div class="left">
+          <label>포스터 URL</label>
+          <input id="poster" placeholder="이미지 URL 입력" />
+          <input type="file" id="file" />
+          <div class="preview-wrapper">
+            <img id="preview" class="preview" />
+          </div>
+
+          <label>영화 제목</label>
+          <input id="title" placeholder="영화 제목을 입력하세요" />
+
+          <label>별점</label>
+          <div class="rating-box">
+            <input
+              type="range"
+              id="ratingRange"
+              min="0"
+              max="5"
+              step="0.5"
+              value="0"
+            />
+            <span id="ratingValue">⭐ 0.0</span>
+          </div>
+          <label>개봉 연도</label>
+          <input id="year" placeholder="예: 2024" />
+
+          <label>장르</label>
+          <div class="genres">
+            <label
+              ><input type="radio" name="genre" value="animation" /><span
+                >애니메이션</span
+              ></label
+            >
+            <label
+              ><input type="radio" name="genre" value="comedy" />
+              <span>코미디</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="romance" />
+              <span>로맨스</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="action_thriller_crime" />
+              <span>액션 / 스릴러 / 범죄</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="horror" />
+              <span>호러</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="sf_fantasy" />
+              <span>SF / 판타지</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="drama" />
+              <span>드라마</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="documentary" />
+              <span>다큐멘터리</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="music_musical" />
+              <span>음악 / 뮤지컬</span></label
+            >
+            <label
+              ><input type="radio" name="genre" value="etc" />
+              <span>기타</span></label
+            >
+          </div>
+          <label>감독</label>
+          <input
+            id="director"
+            placeholder="감독 이름 입력 (여러 명은 ,로 구분)"
+          />
+          <div id="director-bubbles" class="bubble-container"></div>
+
+          <label>출연진</label>
+          <input id="actors" placeholder="출연진 입력 (여러 명은 ,로 구분)" />
+          <div id="actors-bubbles" class="bubble-container"></div>
+        </div>
+
+        <!-- 우측 -->
+        <div class="right">
+          <label>명대사</label>
+          <div class="textarea-wrapper">
+            <textarea
+              id="description"
+              maxlength="500"
+              placeholder="기억에 남는 명대사를 적어주세요"
+            ></textarea>
+            <div class="char-count" id="descCount">0/500자</div>
+          </div>
+
+          <label>나의 후기</label>
+          <div class="textarea-wrapper">
+            <textarea
+              id="content"
+              maxlength="1500"
+              placeholder="영화에 대한 생각과 감상을 자유롭게 작성해주세요"
+            ></textarea>
+            <div class="char-count" id="contentCount">0/1500자</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="cancel" id="cancelBtn">취소</button>
+        <button type="button" class="submit" onclick="createMovie()">
+          등록하기
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="./upload.js"></script>
+  </body>
+</html>

@@ -1,3 +1,5 @@
+import { redirectOnAuthFail } from "@/utils/auth.js";
+
 export const getMainList = async () => {
   try {
     console.log("Fetching main list from API...");
@@ -13,10 +15,10 @@ export const getMainList = async () => {
       },
     );
     if (!response.ok) {
+      if (redirectOnAuthFail(response)) return null;
       throw new Error("Failed to fetch main list");
     }
     const json = await response.json();
-    console.log("Main list response:", json);
     return json.data;
   } catch (error) {
     console.error("Error fetching main list:", error);
