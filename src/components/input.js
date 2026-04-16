@@ -18,6 +18,18 @@ const rules = {
     error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
     ok: "유효한 비밀번호입니다.",
   },
+  "current-password": {
+    regex: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,50}$/,
+    hint: "현재 비밀번호를 입력하세요.",
+    error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
+    ok: "확인되었습니다.",
+  },
+  "new-password": {
+    regex: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,50}$/,
+    hint: "8~50자, 영문 대문자+숫자+특수문자를 포함해야 합니다.",
+    error: "형식이 맞지 않습니다. (8~50자, 영문 대문자+숫자+특수문자)",
+    ok: "유효한 비밀번호입니다.",
+  },
   email: {
     regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     hint: "이메일 주소를 입력하세요.",
@@ -36,6 +48,7 @@ const rules = {
 function setupState(input, hint, type, text) {
   input.classList.remove("is-error", "is-success");
   input.classList.add(type === "error" ? "is-error" : "is-success");
+  input.setAttribute("aria-invalid", type === "error" ? "true" : "false");
   hint.textContent = text;
   hint.className = `text-hint ${type}`;
   hint.style.color = "";
@@ -44,6 +57,7 @@ function setupState(input, hint, type, text) {
 // 사용자의 input 입력값 리셋에 따른 상태 변경 (hint 현재 상태 삭제)
 function resetState(input, hint, defaultText) {
   input.classList.remove("is-error", "is-success");
+  input.removeAttribute("aria-invalid");
   hint.textContent = defaultText;
   hint.className = "text-hint";
   hint.style.color = "";
@@ -117,7 +131,7 @@ function setupPasswordCheck() {
   const input = document.getElementById("password-check");
   const clear = document.getElementById("password-check-clear");
   const hint = document.getElementById("password-check-hint");
-  const passwordInput = document.getElementById("password");
+  const passwordInput = document.getElementById("new-password");
   // 기본 텍스트
   const hintText = "비밀번호를 다시 입력하세요.";
 

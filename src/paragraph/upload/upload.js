@@ -1,12 +1,15 @@
 import { requireAuth, getToken } from "@/utils/auth.js";
 requireAuth();
 
-const API = "https://api.fullstackfamily.com/api/buildup/v1/movies";
+const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const accesstoken = getToken();
 
 let rating = 0;
 const posterInput = document.getElementById("poster");
 const previewImg = document.getElementById("preview");
+const title = document.getElementById("title");
+const year = document.getElementById("year");
+const content = document.getElementById("content");
 
 /* URL 입력 시 미리보기 */
 posterInput.addEventListener("input", () => {
@@ -48,12 +51,7 @@ async function createMovie() {
   const file = fileInput.files[0];
 
   if (file) {
-    const validTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/gif",
-    ];
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
     if (!validTypes.includes(file.type)) {
       alert("이미지 파일만 업로드 가능합니다.");
@@ -71,7 +69,7 @@ async function createMovie() {
     formData.append("file", fileInput.files[0]);
 
     const imgRes = await fetch(
-      "https://api.fullstackfamily.com/api/buildup/v1/movies/images",
+      `${import.meta.env.VITE_API_BASE_URL}/movies/images`,
       {
         method: "POST",
         headers: {
@@ -94,9 +92,7 @@ async function createMovie() {
     /* 파일 없으면 URL 사용 */
     imageUrl = document.getElementById("poster").value || "";
   }
-  const genre = document.querySelector(
-    "input[type=checkbox]:checked",
-  )?.value;
+  const genre = document.querySelector("input[name=genre]:checked")?.value;
   if (!title.value.trim()) {
     alert("영화 제목을 입력해주세요");
     return;
@@ -125,13 +121,8 @@ async function createMovie() {
     imageUrl: imageUrl || "",
     year: year.value ? Number(year.value) : undefined,
 
-    director: director.value
-      ? director.value.split(",").map((v) => v.trim())
-      : undefined,
-
-    cast: actors.value
-      ? actors.value.split(",").map((v) => v.trim())
-      : undefined,
+    director: directorList.length ? directorList : undefined,
+    cast: actorsList.length ? actorsList : undefined,
 
     famousLine: description.value || undefined,
   };
@@ -154,7 +145,7 @@ async function createMovie() {
     }
 
     alert("등록 완료!");
-    location.href = "/mypage.html";
+    location.href = "/src/main/main_list/main_list.html";
   } catch (err) {
     alert("등록 실패");
   }
@@ -187,43 +178,15 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-const dropZone = document.getElementById("preview");
-const fileInput = document.getElementById("file");
-
-/* 드래그 중 */
-dropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  dropZone.classList.add("dragover");
-});
-
-/* 드래그 나감 */
-dropZone.addEventListener("dragleave", () => {
-  dropZone.classList.remove("dragover");
-});
-
-/* 드롭 */
-dropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  dropZone.classList.remove("dragover");
-
-  const file = e.dataTransfer.files[0];
-  if (!file) return;
-
-  const preview = document.getElementById("preview");
-  const poster = document.getElementById("poster");
-
-  preview.src = URL.createObjectURL(file);
-
-  const dataTransfer = new DataTransfer();
-  dataTransfer.items.add(file);
-  fileInput.files = dataTransfer.files;
-
-  poster.value = "";
-});
-
-document.getElementById("preview").onload = () => {
+document.getElementById("preview").onload = function () {
   const text = document.querySelector(".preview-text");
   if (text) text.style.display = "none";
+
+  if (this.naturalWidth > this.naturalHeight) {
+    this.style.aspectRatio = "16 / 9";
+  } else {
+    this.style.aspectRatio = "2 / 3";
+  }
 };
 
 function resetForm(event) {
@@ -272,6 +235,63 @@ function resetForm(event) {
 }
 
 const cancelBtn = document.getElementById("cancelBtn");
+/* ===== 감독 버블 ===== */
+const directorInput = document.getElementById("director");
+const directorContainer = document.getElementById("director-bubbles");
+
+let directorList = [];
+
+directorInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    const value = directorInput.value.trim();
+    if (!value) return;
+
+    directorList.push(value);
+
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.innerText = value;
+
+    bubble.addEventListener("click", () => {
+      directorList = directorList.filter((v) => v !== value);
+      bubble.remove();
+    });
+
+    directorContainer.appendChild(bubble);
+    directorInput.value = "";
+  }
+});
+
+/* ===== 출연진 버블 ===== */
+const actorsInput = document.getElementById("actors");
+const actorsContainer = document.getElementById("actors-bubbles");
+
+let actorsList = [];
+
+actorsInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    const value = actorsInput.value.trim();
+    if (!value) return;
+
+    actorsList.push(value);
+
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.innerText = value;
+
+    bubble.addEventListener("click", () => {
+      actorsList = actorsList.filter((v) => v !== value);
+      bubble.remove();
+    });
+
+    actorsContainer.appendChild(bubble);
+    actorsInput.value = "";
+  }
+});
 
 // 1. mousedown에서 포커스만 막기
 cancelBtn.addEventListener("mousedown", (e) => {

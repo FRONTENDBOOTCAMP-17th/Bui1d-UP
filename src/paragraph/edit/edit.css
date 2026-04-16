@@ -1,0 +1,308 @@
+body {
+  background: #0b0b0b;
+  color: white;
+  font-family: Arial;
+  padding: 30px;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.header {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  gap: 10px;
+}
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-height: 500px; /*  추가 */
+}
+input,
+textarea {
+  width: 100%;
+  background: #1c1c1c;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  color: white;
+  border-radius: 5px;
+}
+
+textarea {
+  height: 200px;
+}
+
+.preview {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 2 / 3;
+  height: auto;
+  background: #222;
+  margin-top: 10px;
+  object-fit: cover;
+  display: block;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.star {
+  font-size: 20px;
+  color: #555;
+}
+
+.star.active {
+  color: gold;
+}
+
+.genres {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 40px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.genres label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  justify-content: flex-start;
+}
+
+.genres input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #e50914;
+}
+.genres span {
+  white-space: nowrap;
+}
+
+.buttons {
+  margin-top: 30px;
+  text-align: right;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+.submit {
+  background: #e50914;
+  color: white;
+}
+
+.cancel {
+  background: #444;
+  color: white;
+  margin-right: 10px;
+}
+
+.top-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid #222;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+  color: white;
+}
+#ratingRange {
+  flex: 0 0 200px;
+  width: 85%; /* ← 핵심 */
+  accent-color: gold;
+  cursor: pointer;
+  margin-right: -10px;
+}
+#ratingValue {
+  margin-left: 2px;
+  font-weight: bold;
+  margin-left: 4px;
+}
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+input,
+textarea {
+  border: 1px solid transparent;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border: 1px solid #e50914;
+}
+.textarea-wrapper {
+  position: relative;
+}
+
+.char-count {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 12px;
+  color: #aaa;
+}
+#content {
+  height: 400px; /* 원하는 만큼 늘리기 */
+}
+.preview-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.preview-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #aaa;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.preview.dragover {
+  border: 2px dashed #e50914;
+  background: rgba(229, 9, 20, 0.1);
+}
+.bubble-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.bubble {
+  background: #e50914;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+/*  반응형 (모바일) */
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column; /*  핵심 */
+    gap: 20px;
+  }
+
+  .preview {
+    width: 100%; /* 이미지 꽉 채우기 */
+    height: auto;
+  }
+
+  .genres {
+    grid-template-columns: repeat(1, 1fr); /* 2열 → 1열 */
+  }
+
+  .buttons {
+    text-align: center;
+  }
+
+  button {
+    width: 100%; /* 버튼 꽉 채우기 */
+    margin-top: 10px;
+  }
+
+  .top-header {
+    flex-direction: column; /* 나가기 + 제목 세로 */
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+.drop-zone {
+  width: 100%;
+  max-width: 300px;
+  height: 80px;
+  border: 2px dashed #555;
+  border-radius: 8px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.drop-zone.dragover {
+  border-color: #e50914;
+  color: white;
+  background: rgba(229, 9, 20, 0.1);
+}
+@media (min-width: 768px) and (max-width: 1080px) {
+  .container {
+    flex-direction: row; /* 다시 가로 */
+    gap: 20px;
+  }
+
+  .left,
+  .right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .preview {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3; /* 포스터 비율 */
+  }
+
+  .wrapper {
+    padding: 0 20px;
+  }
+
+  input,
+  textarea {
+    font-size: 14px;
+  }
+  label {
+    margin-top: 10px;
+    display: block;
+  }
+
+  #ratingRange {
+    flex: 0 0 180px;
+  }
+  .genres {
+    gap: 10px 20px;
+  }
+}

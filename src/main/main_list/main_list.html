@@ -4,20 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>후기 목록(메인)</title>
-    <link
-      rel="shortcut icon"
-      href="/favicon/likelion.ico"
-      type="image/x-icon"
-    />
-    <link rel="icon" href="/favicon/likelion.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" />
     <link rel="preload" as="font" href="/font/suit/SUIT-Variable.woff2" />
     <link rel="stylesheet" href="/font/suit/SUIT-Variable.css" />
     <link rel="stylesheet" href="./main_list.css" />
   </head>
   <body>
-    <div id="header-container"></div>
-
     <main class="main-content">
+      <!-- 검색 결과 섹션 (검색 모드일 때만 표시) -->
+      <div id="search-section"></div>
+
       <!-- 전체 섹션 (JS 동적 렌더링) -->
       <div id="latest-section"></div>
 

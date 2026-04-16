@@ -3,19 +3,7 @@ requireAuth();
 
 import { getDetail } from "../../API/detail.js";
 import { deletePatagraph } from "../../API/paragraphAPI/delete.js";
-
-const GENRE_MAP = {
-  animation: "애니메이션",
-  comedy: "코미디",
-  romance: "로맨스",
-  action_thriller_crime: "액션 / 스릴러 / 범죄",
-  horror: "호러",
-  sf_fantasy: "SF / 판타지",
-  drama: "드라마",
-  documentary: "다큐멘터리",
-  music_musical: "음악 / 뮤지컬",
-  etc: "기타",
-};
+import { GENRE_MAP } from "@/utils/genres.js";
 
 const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
 
@@ -33,6 +21,25 @@ function renderDetail(movie) {
   } else {
     // 모바일: <img> 태그
     if (imageUrl) backdropImg.src = imageUrl;
+  }
+
+  // 이미지 비율 감지 → portrait / landscape 클래스 적용
+  if (imageUrl) {
+    const tempImg = new Image();
+    tempImg.onload = function () {
+      const isPortrait = this.naturalHeight > this.naturalWidth;
+      if (isPortrait) {
+        if (isDesktop()) {
+          backdrop.classList.add("portrait-mode");
+        } else {
+          backdropImg.classList.add("portrait-img");
+        }
+      } else {
+        // 가로 이미지: 사이드바 포스터도 16:9로
+        document.getElementById("poster").classList.add("landscape-img");
+      }
+    };
+    tempImg.src = imageUrl;
   }
 
   /* ── hero 영역 (좌측 하단 / 모바일 이미지 아래) ── */
@@ -69,6 +76,12 @@ function renderDetail(movie) {
       .map((line) => `<li>"${line.trim()}"</li>`)
       .join("");
   }
+}
+
+/* ── 영화 후기 ── */
+const review = document.getElementById("reviewContent");
+function renderReview(content) {
+  review.textContent = content ?? "리뷰가 없습니다.";
 }
 
 /* ── 패널 열기/닫기 헬퍼 ── */
@@ -130,6 +143,7 @@ async function init() {
   }
 
   renderDetail(data.data);
+  renderReview(data.data.content);
 }
 
 document.getElementById("delete_btn").addEventListener("click", async () => {
@@ -143,7 +157,7 @@ document.getElementById("delete_btn").addEventListener("click", async () => {
   const res = await deletePatagraph(postId);
   if (res) {
     alert("영화가 삭제되었습니다. 메인화면으로 이동합니다.");
-    window.location.href = "../../main_list/main_list.html";
+    window.location.href = "../main_list/main_list.html";
   }
 });
 
