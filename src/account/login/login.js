@@ -1,5 +1,6 @@
 import { setupInput, setupToggle } from "../../components/input.js";
 import { login } from "@/API/accountAPI/login.js";
+import { showToast } from "@/utils/toast.js";
 
 setupInput("username");
 setupInput("password");
@@ -42,8 +43,8 @@ form.addEventListener("submit", async (e) => {
 
   try {
     await login(id, pwd);
-    alert("로그인에 성공하였습니다!");
-    location.href = "../../main/main_list/main_list.html";
+    showToast("로그인에 성공하였습니다!");
+    setTimeout(() => { location.href = "../../main/main_list/main_list.html"; }, 1500);
   } catch (error) {
     if (error.message === "NOT_FOUND") {
       usernameHint.textContent = "존재하지 않는 아이디입니다.";
@@ -52,7 +53,7 @@ form.addEventListener("submit", async (e) => {
       passwordHint.textContent = "비밀번호가 올바르지 않습니다.";
       passwordHint.className = "text-hint error";
     } else if (error.message === "이미 사용 중인 닉네임입니다.") {
-      alert("이미 사용 중인 닉네임입니다.");
+      showToast("이미 사용 중인 닉네임입니다.", "error");
     } else {
       passwordHint.textContent = "로그인에 실패했습니다. 다시 시도해주세요.";
       passwordHint.className = "text-hint error";

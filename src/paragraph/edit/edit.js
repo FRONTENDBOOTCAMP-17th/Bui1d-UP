@@ -1,6 +1,8 @@
 import { requireAuth, getToken, redirectOnAuthFail } from "@/utils/auth.js";
 requireAuth();
 
+import { showToast } from "@/utils/toast.js";
+
 const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const token = getToken();
 const title = document.getElementById("title");
@@ -146,7 +148,7 @@ async function updateMovie() {
     if (!imgRes.ok) {
       const errorData = await imgRes.json();
       console.error("이미지 업로드 실패:", errorData);
-      alert("이미지 업로드 실패");
+      showToast("이미지 업로드 실패", "error");
       return;
     }
 
@@ -202,14 +204,14 @@ async function updateMovie() {
     if (!res.ok) {
       const errorData = await res.json();
       console.error("수정 실패:", errorData);
-      alert(errorData.message || "수정 실패");
+      showToast(errorData.message || "수정 실패", "error");
       return;
     }
 
-    alert("수정 완료!");
-    location.href = `/detail.html?id=${postId}`;
+    showToast("수정 완료!");
+    setTimeout(() => { location.href = `/detail.html?id=${postId}`; }, 1500);
   } catch (err) {
-    alert("수정 실패");
+    showToast("수정 실패", "error");
   }
 }
 

@@ -4,6 +4,7 @@ requireAuth();
 import { getDetail } from "../../API/detail.js";
 import { deletePatagraph } from "../../API/paragraphAPI/delete.js";
 import { GENRE_MAP } from "@/utils/genres.js";
+import { showToast } from "@/utils/toast.js";
 
 const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
 
@@ -156,8 +157,10 @@ document.getElementById("delete_btn").addEventListener("click", async () => {
 
   const res = await deletePatagraph(postId);
   if (res) {
-    alert("영화가 삭제되었습니다. 메인화면으로 이동합니다.");
-    window.location.href = "../main_list/main_list.html";
+    showToast("리뷰가 삭제되었습니다. 잠시 후 메인화면으로 이동합니다.");
+    setTimeout(() => {
+      window.location.href = "../main_list/main_list.html";
+    }, 1500);
   }
 });
 

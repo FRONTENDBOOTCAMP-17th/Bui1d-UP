@@ -1,6 +1,7 @@
 import "./header.css";
 import { getProfileNickname } from "../../API/accountAPI/nickname.js";
 import { logout } from "../../API/accountAPI/logout.js";
+import { showToast } from "@/utils/toast.js";
 
 export function renderHeader(targetSelector = "body") {
   const html = `
@@ -62,8 +63,10 @@ const userLogout = async () => {
   try {
     await logout();
 
-    alert("로그아웃되었습니다. 로그인 페이지로 이동합니다.");
-    window.location.href = "/src/account/login/login.html";
+    showToast("로그아웃되었습니다. 잠시 후 로그인 페이지로 이동합니다.");
+    setTimeout(() => {
+      window.location.href = "/src/account/login/login.html";
+    }, 1500);
   } catch (error) {
     console.error("Error during logout:", error);
   }
