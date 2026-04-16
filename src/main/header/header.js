@@ -5,8 +5,8 @@ import { logout } from "../../API/accountAPI/logout.js";
 export function renderHeader(targetSelector = "body") {
   const html = `
   <header class="site-header">
-  <a href="/src/main/main_list/main_list.html" class="header-logo-link">
-  <img src="/logo.webp" alt="빌드업 로고" class="header-logo" />
+  <a href="/src/main/main_list/main_list.html" class="header-logo-link" aria-label="Bui1dBox 홈으로 이동">
+  <img src="/logo.webp" alt="" class="header-logo" />
   </a>
   <div class="search-bar">
   <img src="/public/Search_icon.svg" alt="검색" class="search-icon" />
