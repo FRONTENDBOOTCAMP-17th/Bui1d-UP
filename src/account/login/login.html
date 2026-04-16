@@ -55,7 +55,7 @@
     </div>
 
     <!-- RIGHT -->
-    <div
+    <main
       class="w-full md:w-1/2 flex flex-col justify-center p-12 md:px-14 md:py-16 overflow-hidden"
     >
       <!-- 모바일 로고. 이것도 나중에 수정 필요. 좌측 로고와는 md, mb만 다름. -->
@@ -186,13 +186,29 @@
         </button>
       </form>
 
+      <!-- 비밀번호 재설정 -->
+      <a
+        href="../resetPassword/resetPassword.html"
+        aria-label="비밀번호를 잊으셨나요? 비밀번호 재설정 페이지로 이동할 수 있습니다."
+        class="flex h-5 mt-4 w-full justify-center text-sm text-(--text-secondary,#737373) transition-colors duration-150 hover:text-(--text-primary,#ffffff)"
+        >비밀번호를 잊으셨나요?</a
+      >
+
       <!-- 구분선 -->
       <div
+        role="separator"
+        aria-label="또는"
         class="flex items-center my-6 text-(--text-tertiary,#d4d4d4)/80 text-sm"
       >
-        <div class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"></div>
-        <span class="mx-3">또는</span>
-        <div class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"></div>
+        <div
+          class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"
+          aria-hidden="true"
+        ></div>
+        <span class="mx-3" aria-hidden="true">또는</span>
+        <div
+          class="flex-1 border-t border-(--text-tertiary,#d4d4d4)/30"
+          aria-hidden="true"
+        ></div>
       </div>
       <!-- 홈 버튼 -->
       <a
@@ -200,7 +216,7 @@
         class="flex items-center justify-center w-full h-10 rounded-lg text-[0.95rem] font-semibold mt-3 border-0 bg-transparent text-(--text-secondary,#737373) cursor-pointer transition-colors duration-150 hover:text-(--text-primary,#ffffff) active:scale-[0.99]"
         >처음으로 돌아가기</a
       >
-    </div>
+    </main>
 
     <script type="module" src="./login.js"></script>
   </body>

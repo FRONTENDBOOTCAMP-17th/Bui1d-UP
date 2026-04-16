@@ -25,7 +25,11 @@ export const searchMovies = async (keyword, offset = 0, limit = 20) => {
     }
     const json = await response.json();
     console.log("Search results fetched successfully:", json);
+<<<<<<< HEAD
     return json.data.results ?? [];
+=======
+    return Array.isArray(json.data) ? json.data : (json.data.results ?? []);
+>>>>>>> 693d6e5885187716760ba8f53eaa9640e43c27a1
   } catch (error) {
     console.error("Error fetching search results:", error);
     return null;

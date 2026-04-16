@@ -65,7 +65,7 @@
     </div>
 
     <!-- RIGHT -->
-    <div
+    <main
       class="w-full md:w-1/2 flex flex-col justify-center p-12 md:px-14 md:py-16 overflow-hidden"
     >
       <!-- 모바일 로고. 이것도 나중에 수정 필요. 좌측 로고와는 md, mb만 다름. -->
@@ -137,7 +137,7 @@
               </dt>
               <dd
                 id="display-email"
-                class="text-(--text-primary,#ffffff) mt-1"
+                class="text-(--text-primary,#ffffff) mt-1 py-3"
               ></dd>
             </dl>
             <!-- 새 이메일 -->
@@ -178,7 +178,6 @@
                 <button
                   type="button"
                   id="send-code-btn"
-                  aria-controls="email"
                   class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
                 >
                   인증코드 발송
@@ -229,7 +228,6 @@
                 <button
                   type="button"
                   id="verify-code-btn"
-                  aria-controls="email-code"
                   class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
                 >
                   확인
@@ -525,7 +523,7 @@
               </dt>
               <dd
                 id="display-nickname"
-                class="text-(--text-primary,#ffffff) mt-1"
+                class="text-(--text-primary,#ffffff) mt-1 py-3"
               ></dd>
             </dl>
             <div class="flex flex-col gap-1.5">
@@ -588,7 +586,7 @@
           </button>
         </div>
       </section>
-    </div>
+    </main>
 
     <!-- 회원 탈퇴 다이얼로그 -->
     <dialog
@@ -611,7 +609,7 @@
         </p>
         <div class="flex flex-col gap-1.5 w-full">
           <span class="text-sm font-medium pb-1" id="password-label"
-            >비밀번호</span
+            >현재 비밀번호</span
           >
           <div class="form-input">
             <input
@@ -665,7 +663,7 @@
               </svg>
             </button>
           </div>
-          <p class="text-hint" id="password-hint" aria-live="polite">
+          <p class="text-hint" id="password-hint" role="status">
             8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
           </p>
         </div>

@@ -157,7 +157,7 @@ document.getElementById("delete_btn").addEventListener("click", async () => {
   const res = await deletePatagraph(postId);
   if (res) {
     alert("영화가 삭제되었습니다. 메인화면으로 이동합니다.");
-    window.location.href = "../../main_list/main_list.html";
+    window.location.href = "../main_list/main_list.html";
   }
 });
 
