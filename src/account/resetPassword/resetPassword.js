@@ -1,12 +1,13 @@
 import { sendResetCode } from "../../API/accountAPI/sendResetCode.js";
 import { verifyResetCode } from "../../API/accountAPI/verifyResetCode.js";
 import { resetPassword } from "../../API/accountAPI/resetPassword.js";
-import { setupInput, setupToggle } from "../../components/input.js";
+import { setupInput, setupToggle, setupPasswordCheck } from "../../components/input.js";
 
 setupInput("email");
 setupInput("email-code");
-setupInput("password");
-setupToggle("password");
+setupInput("new-password");
+setupToggle("new-password");
+setupPasswordCheck();
 setupToggle("password-check");
 
 // 이메일 인증 상태
@@ -21,8 +22,8 @@ const emailCodeHint = document.getElementById("email-code-hint");
 const sendCodeBtn = document.getElementById("send-code-btn");
 const verifyCodeBtn = document.getElementById("verify-code-btn");
 
-const passwordInput = document.getElementById("password");
-const passwordHint = document.getElementById("password-hint");
+const passwordInput = document.getElementById("new-password");
+const passwordHint = document.getElementById("new-password-hint");
 const passwordCheckInput = document.getElementById("password-check");
 const passwordCheckHint = document.getElementById("password-check-hint");
 const resetPasswordForm = document.getElementById("reset-password-form");
