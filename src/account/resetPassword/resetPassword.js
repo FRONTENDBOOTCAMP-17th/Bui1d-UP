@@ -2,6 +2,7 @@ import { sendResetCode } from "../../API/accountAPI/sendResetCode.js";
 import { verifyResetCode } from "../../API/accountAPI/verifyResetCode.js";
 import { resetPassword } from "../../API/accountAPI/resetPassword.js";
 import { setupInput, setupToggle, setupPasswordCheck } from "../../components/input.js";
+import { showToast } from "@/utils/toast.js";
 
 setupInput("email");
 setupInput("email-code");
@@ -140,8 +141,8 @@ resetPasswordForm.addEventListener("submit", async (e) => {
 
   try {
     await resetPassword(resetToken, pwd);
-    alert("비밀번호가 재설정되었습니다. 다시 로그인해주세요.");
-    location.href = "../login/login.html";
+    showToast("비밀번호가 재설정되었습니다. 다시 로그인해주세요.");
+    setTimeout(() => { location.href = "../login/login.html"; }, 1500);
   } catch (error) {
     passwordHint.textContent =
       "비밀번호 재설정에 실패했습니다. 다시 시도해주세요.";
