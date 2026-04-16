@@ -152,6 +152,7 @@ async function createMovie() {
     alert("별점을 입력해주세요");
     return;
   }
+
   const description = document.getElementById("description");
   //  입력창에 값 남아있으면 막기
   if (directorInput.value.trim()) {
@@ -159,34 +160,7 @@ async function createMovie() {
     return;
   }
   //  개봉연도 형식 검증
-  // 🔥 개봉연도 필수 + 형식 검증
-  if (!year.value) {
-    alert("개봉 연도를 입력해주세요");
-    return;
-  }
-
-  if (!/^\d{4}$/.test(year.value)) {
-    alert("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)");
-    return;
-  }
-
-  if (actorsInput.value.trim()) {
-    alert("출연진 이름을 입력 후 Enter를 눌러주세요");
-    return;
-  }
-
-  if (description.value && !isValidText(description.value)) {
-    alert("명대사를 제대로 입력해주세요");
-    return;
-  }
-  const description = document.getElementById("description");
-  //  입력창에 값 남아있으면 막기
-  if (directorInput.value.trim()) {
-    alert("감독 이름을 입력 후 Enter를 눌러주세요");
-    return;
-  }
-  //  개봉연도 형식 검증
-  // 🔥 개봉연도 필수 + 형식 검증
+  //  개봉연도 필수 + 형식 검증
   if (!year.value) {
     alert("개봉 연도를 입력해주세요");
     return;

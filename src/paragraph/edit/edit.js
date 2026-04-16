@@ -296,13 +296,8 @@ async function updateMovie() {
       return;
     }
 
-<<<<<<< HEAD
     alert("수정 완료!");
     location.href = "/src/main/main_list/main_list.html";
-=======
-    showToast("수정 완료!");
-    setTimeout(() => { location.href = `/detail.html?id=${postId}`; }, 1500);
->>>>>>> 6f9c4110a1877ccf1c3306d58857cce97be2a130
   } catch (err) {
     showToast("수정 실패", "error");
   }
