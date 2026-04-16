@@ -51,6 +51,8 @@ form.addEventListener("submit", async (e) => {
     } else if (error.message === "UNAUTHORIZED") {
       passwordHint.textContent = "비밀번호가 올바르지 않습니다.";
       passwordHint.className = "text-hint error";
+    } else if (error.message === "이미 사용 중인 닉네임입니다.") {
+      alert("이미 사용 중인 닉네임입니다.");
     } else {
       passwordHint.textContent = "로그인에 실패했습니다. 다시 시도해주세요.";
       passwordHint.className = "text-hint error";
