@@ -6,8 +6,7 @@ export function renderHeader(targetSelector = "body") {
   const html = `
   <header class="site-header">
   <a href="/src/main/main_list/main_list.html" class="header-logo-link">
-  <img src="/bui1d-boxLogo.png" alt="빌드업 로고" class="header-logo" />
-  <img src="/public/Bui1dBox.png" alt="빌드업 텍스트 로고" class="header-text-logo" />
+  <img src="/logo.webp" alt="빌드업 로고" class="header-logo" />
   </a>
   <div class="search-bar">
   <img src="/public/Search_icon.svg" alt="검색" class="search-icon" />

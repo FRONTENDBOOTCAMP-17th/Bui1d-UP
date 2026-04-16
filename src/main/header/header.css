@@ -25,12 +25,12 @@
 }
 
 .header-logo {
-  height: 36px;
+  height: 50px;
   width: auto;
 }
 
 .header-text-logo {
-  height: 28px;
+  height: px;
   width: auto;
 }
 
@@ -110,7 +110,7 @@
 @media (min-width: 768px) {
   .site-header {
     flex-wrap: nowrap;
-    padding: 12px 24px;
+    padding: 12px 85px;
   }
 
   .header-logo-link {
