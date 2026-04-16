@@ -9,8 +9,8 @@ import { checkEmailCode } from "../../API/accountAPI/checkEmailCode.js";
 
 setupInput("username");
 setupInput("nickname");
-setupInput("password");
-setupToggle("password");
+setupInput("new-password");
+setupToggle("new-password");
 setupInput("email");
 setupInput("email-code");
 setupPasswordCheck();
@@ -29,10 +29,10 @@ const verifyCodeBtn = document.getElementById("verify-code-btn");
 
 const usernameInput = document.getElementById("username");
 const nicknameInput = document.getElementById("nickname");
-const passwordInput = document.getElementById("password");
+const passwordInput = document.getElementById("new-password");
 const usernameHint = document.getElementById("username-hint");
 const nicknameHint = document.getElementById("nickname-hint");
-const passwordHint = document.getElementById("password-hint");
+const passwordHint = document.getElementById("new-password-hint");
 const signupForm = document.getElementById("signup-form");
 const submitBtn = signupForm.querySelector("button[type='submit']");
 
