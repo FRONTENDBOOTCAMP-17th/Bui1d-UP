@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../styles/theme.css" />
     <link rel="stylesheet" href="../../components/input.css" />
     <link rel="stylesheet" href="../../components/button.css" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" />
   </head>
   <body
     class="min-h-screen flex bg-(--background-base,#171717) text-(--text-primary,#ffffff)"
@@ -265,20 +266,20 @@
           <div class="form-input">
             <input
               type="password"
-              id="password"
-              name="password"
+              id="new-password"
+              name="new-password"
               class="has-two-actions"
               placeholder=" "
               autocomplete="new-password"
               aria-labelledby="password-label"
-              aria-describedby="password-hint"
+              aria-describedby="new-password-hint"
               required
             />
-            <label for="password">8~50자, 영문 대문자+숫자+특수문자</label>
+            <label for="new-password">8~50자, 영문 대문자+숫자+특수문자</label>
             <button
               type="button"
               class="action-btn toggle"
-              id="password-toggle"
+              id="new-password-toggle"
               aria-label="비밀번호 표시"
               aria-pressed="false"
             >
@@ -298,7 +299,7 @@
             <button
               type="button"
               class="action-btn clear"
-              id="password-clear"
+              id="new-password-clear"
               aria-label="비밀번호 입력값 삭제"
             >
               <svg width="18" height="18" aria-hidden="true" focusable="false">
@@ -306,7 +307,7 @@
               </svg>
             </button>
           </div>
-          <p class="text-hint" id="password-hint" role="status">
+          <p class="text-hint" id="new-password-hint" role="status">
             8~50자, 대문자·숫자·특수문자를 포함해야 합니다.
           </p>
         </div>
