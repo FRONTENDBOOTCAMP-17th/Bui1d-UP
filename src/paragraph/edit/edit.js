@@ -19,6 +19,26 @@ const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get("id");
 
 let rating = 0;
+function isValidText(text) {
+  const trimmed = text.trim();
+
+  if (trimmed.length < 2) return false;
+  if (/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(trimmed)) return false;
+  if (/^(.)\1+$/.test(trimmed)) return false;
+  if (/^[bcdfghjklmnpqrstvwxyz]+$/i.test(trimmed)) return false;
+
+  //  전체가 정상 텍스트인지 검사
+
+  // 한글 + 공백 + 기본 문장부호만 허용
+  const validKoreanSentence = /^[가-힣0-9\s.,!?]+$/.test(trimmed);
+
+  // 영어 (모음 포함 + 정상 단어)
+  const validEnglishSentence = /^(?=.*[aeiouAEIOU])[a-zA-Z0-9\s.,!?]+$/.test(
+    trimmed,
+  );
+
+  return validKoreanSentence || validEnglishSentence;
+}
 
 /*  별점 */
 const ratingRange = document.getElementById("ratingRange");
@@ -27,6 +47,16 @@ const ratingText = document.getElementById("ratingValue");
 ratingRange.addEventListener("input", () => {
   rating = ratingRange.value;
   ratingText.innerText = "⭐ " + Number(rating).toFixed(1);
+});
+//  개봉연도 입력 제한 (숫자 + 4자리)
+year.addEventListener("input", () => {
+  // 숫자만 남기기
+  year.value = year.value.replace(/[^0-9]/g, "");
+
+  // 4자리까지만 허용
+  if (year.value.length > 4) {
+    year.value = year.value.slice(0, 4);
+  }
 });
 
 /*  미리보기 */
@@ -156,7 +186,65 @@ async function updateMovie() {
     /* 파일 없으면 URL 사용 */
     imageUrl = document.getElementById("poster").value || "";
   }
+  // 이미지 필수 체크
+  if (!imageUrl || !/^https?:\/\/.+/.test(imageUrl)) {
+    alert("올바른 이미지 URL 또는 파일을 입력해주세요");
+    return;
+  }
   const genre = document.querySelector("input[name=genre]:checked")?.value;
+  if (!isValidText(title.value)) {
+    alert("영화 제목을 제대로 입력해주세요");
+    return;
+  }
+  if (!isValidText(content.value)) {
+    alert("후기를 제대로 입력해주세요");
+    return;
+  }
+  if (!rating || rating === 0) {
+    alert("별점을 입력해주세요");
+    return;
+  }
+  //  명대사 검증
+  if (description.value && !isValidText(description.value)) {
+    alert("명대사를 제대로 입력해주세요");
+    return;
+  }
+  //  개봉연도 숫자 검증
+  //  개봉연도 필수 + 형식 검증
+  if (!year.value) {
+    alert("개봉 연도를 입력해주세요");
+    return;
+  }
+
+  if (!/^\d{4}$/.test(year.value)) {
+    alert("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)");
+    return;
+  }
+  //  입력창에 값 남아있으면 막기 (엔터 안 누른 경우)
+  if (directorInput.value.trim()) {
+    alert("감독 이름을 입력 후 Enter를 눌러주세요");
+    return;
+  }
+
+  if (actorsInput.value.trim()) {
+    alert("출연진 이름을 입력 후 Enter를 눌러주세요");
+    return;
+  }
+  //  감독 전체 검증 (무조건 실행)
+  for (const director of directorList) {
+    if (!isValidText(director)) {
+      alert("감독 이름에 올바르지 않은 값이 있습니다");
+      return;
+    }
+  }
+
+  //  출연진 전체 검증 (무조건 실행)
+  for (const actor of actorsList) {
+    if (!isValidText(actor)) {
+      alert("출연진 이름에 올바르지 않은 값이 있습니다");
+      return;
+    }
+  }
   const body = {};
 
   // 값 있는 것만 추가
@@ -207,7 +295,7 @@ async function updateMovie() {
     }
 
     alert("수정 완료!");
-    location.href = `/detail.html?id=${postId}`;
+    location.href = "/src/main/main_list/main_list.html";
   } catch (err) {
     alert("수정 실패");
   }
@@ -295,10 +383,14 @@ directorInput.addEventListener("keydown", (e) => {
     e.preventDefault();
 
     const value = directorInput.value.trim();
-    if (!value) return;
+
+    //  upload랑 동일한 검증 추가
+    if (!isValidText(value)) {
+      alert("감독 이름을 제대로 입력해주세요");
+      return;
+    }
 
     directorList.push(value);
-
     const bubble = document.createElement("span");
     bubble.className = "bubble";
     bubble.innerText = value;
@@ -320,10 +412,14 @@ actorsInput.addEventListener("keydown", (e) => {
     e.preventDefault();
 
     const value = actorsInput.value.trim();
-    if (!value) return;
+
+    //  upload랑 동일한 검증 추가
+    if (!isValidText(value)) {
+      alert("출연진 이름을 제대로 입력해주세요");
+      return;
+    }
 
     actorsList.push(value);
-
     const bubble = document.createElement("span");
     bubble.className = "bubble";
     bubble.innerText = value;
