@@ -17,7 +17,7 @@ body {
   text-decoration: none;
   color: inherit;
   width: 100%;
-  height: calc(100vh - 75px);
+  /* 모바일: 높이는 포스터 이미지가 결정 */
 }
 
 /* 하단 그라디언트 오버레이 (텍스트 가독성) */
@@ -35,22 +35,20 @@ body {
   z-index: 1;
 }
 
-/* 배경 포스터 고정 (스크롤해도 움직이지 않음) */
+/* 모바일: aspect-ratio로 포스터 높이를 결정, cover로 여백 없이 꽉 채움 */
 .featured-card__poster {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  height: 100vh;
   background-color: #404040;
   overflow: hidden;
-  z-index: -1;
+  aspect-ratio: 16 / 9;
 }
 
 .featured-card__poster img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
+  object-fit: cover;
 }
 
 /* 영화 정보 (왼쪽 하단) — 스크롤 시 자연스럽게 위로 올라감 */
@@ -90,7 +88,7 @@ body {
 #sections-wrap {
   position: relative;
   z-index: 1;
-  margin-top: -120px;
+  margin-top: -30px; /* 모바일: 그라디언트와 자연스럽게 연결 */
 }
 
 .content-section {
@@ -166,6 +164,8 @@ body {
 }
 
 .movie-card__poster img {
+  width: 100%;
+  display: block;
   aspect-ratio: 16/9;
   object-fit: contain;
 }
@@ -220,6 +220,30 @@ body {
 }
 
 @media screen and (min-width: 768px) {
+  /* 웹: 뷰포트 높이로 featured card 결정, 포스터는 fixed 배경 */
+  .featured-card {
+    height: calc(100vh - 75px);
+  }
+
+  .featured-card__poster {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+  }
+
+  .featured-card__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #sections-wrap {
+    margin-top: -120px;
+  }
+
   .featured-card__info {
     left: 48px;
     max-width: 45%;
