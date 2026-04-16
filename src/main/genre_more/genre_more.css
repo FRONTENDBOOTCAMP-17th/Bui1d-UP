@@ -61,11 +61,13 @@ body {
 .movie-card__poster {
   background-color: #404040;
   overflow: hidden;
+  aspect-ratio: 16 / 9;
 }
 
 .movie-card__poster img {
+  display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 100%;
   object-fit: contain;
 }
 
