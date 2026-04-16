@@ -166,6 +166,9 @@ async function loadMainList() {
     // 전체 섹션
     if (latest.length > 0) {
       latestSectionEl.innerHTML = renderLatestSection(latest);
+    } else {
+      latestSectionEl.innerHTML =
+        "<p class='empty-message'>작성한 영화후기가 없습니다. 지금 후기를 작성해보세요!</p>";
     }
 
     // 장르별 섹션

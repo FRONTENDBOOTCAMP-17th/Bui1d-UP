@@ -110,3 +110,11 @@ body {
   border-color: #404040;
   cursor: default;
 }
+
+#no-data {
+  display: none;
+  color: #e5e5e5;
+  text-align: center;
+  padding: 80px 0;
+  font-size: 18px;
+}

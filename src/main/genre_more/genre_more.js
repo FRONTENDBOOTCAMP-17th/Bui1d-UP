@@ -16,6 +16,7 @@ let isLoading = false;
 
 const gridEl = document.getElementById("genre-more-grid");
 const loadMoreBtn = document.getElementById("load-more-btn");
+const noDataEl = document.getElementById("no-data");
 
 function renderCard(post) {
   return `
@@ -39,6 +40,10 @@ async function loadMore() {
   const data = await getGenreMore(genre, offset, LIMIT);
 
   if (!data || data.length === 0) {
+    if (offset === 0) {
+      noDataEl.style.display = "block";
+      gridEl.style.display = "none";
+    }
     loadMoreBtn.textContent = "더 이상 없습니다";
     loadMoreBtn.disabled = true;
     isLoading = false;
