@@ -227,6 +227,12 @@ textarea:focus {
     flex-direction: column;
     gap: 20px;
   }
+
+  .left,
+  .right {
+    width: 100%;
+  }
+
   .preview {
     width: 100%;
     height: auto;
