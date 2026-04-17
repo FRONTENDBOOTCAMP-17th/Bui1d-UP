@@ -1,14 +1,26 @@
 # Bui1d-UP
 
-바닐라 프로젝트를 Bui1d up합니다.
+### 바닐라 프로젝트를 Bui1d UP합니다.
 
 <h1 align="center">
   Bui1d<span style="color:red;">Box</span>
 </h1>
 
-![Bui1dBox 로고](./public/build-box.jpg)
+<p align="center">
+  <img src="./public/Bui1dBox.jpg" width="500"/>
+</p>
 
-> 🎬 영화 리뷰를 공유하고 관리할 수 있는 웹 서비스
+> 🎬 <b style="font-size:18px;">Bui1d<span style="color:red;">Box</span></b>는 영화를 보고 감상평을 남길 수 있는 웹 서비스입니다.
+
+## 📅 프로젝트 캘린더
+
+| 일  | 월                    | 화                    | 수                        | 목                    | 금                     | 토                    |
+| --- | --------------------- | --------------------- | ------------------------- | --------------------- | ---------------------- | --------------------- |
+|     |                       |                       |                           |                       | 🔥 3/26<br/>프로토타입 | 🔥 3/27<br/>주제 선정 |
+|     | 🔥 3/30<br/>특강      | 🔥 3/31<br/>휴강      | 🔥 4/1<br/>마일스톤       | 🔥 4/2<br/>HTML & CSS | 🔥 4/3<br/>HTML & CSS  |                       |
+|     | 🔥 4/6<br/>HTML & CSS | 🔥 4/7<br/>HTML & CSS | 🔥 4/8<br/>중간점검       | 🔥 4/9<br/>JS 개발    | 🔥 4/10<br/>휴강       |                       |
+|     | 🔥 4/13<br/>JS 개발   | 🔥 4/14<br/>JS 개발   | 🔥 4/15<br/>프로젝트 마감 | 🔥 4/16<br/>PPT 제작  | 🔥 4/17<br/>휴강       |                       |
+|     | 🔴 4/20<br/>최종 발표 |                       |                           |                       |                        |                       |
 
 ---
 
@@ -45,16 +57,60 @@
 
 ## 👥 팀원 및 역할
 
-| 구분            | 역할     | 담당 기능                                             |
-| --------------- | -------- | ----------------------------------------------------- |
-| 👑 강재훈(조장) | Frontend | 메인 페이지, 상세 페이지, 장르 페이지 UI 구현         |
-| 🟣 최영은(팀원) | Frontend | 마이페이지, 로그인, 회원가입 UI 구현                  |
-| 🟡 홍정빈(팀원) | Frontend | 랜딩 페이지, 업로드 페이지, 수정(edit) 페이지 UI 구현 |
+<table border="1" cellspacing="0" cellpadding="20">
+  <tr>
+    <td align="center" width="250">
+      <img src="./public/hun.jpeg" width="120"/><br/><br/>
+      <b>👑 강재훈 (조장)</b><br/>
+      <sub>Frontend</sub><br/><br/>
+      메인 / 상세 / 장르 페이지
+    </td>
+    <td align="center" width="250">
+      <img src="./public/profile2.jpg" width="120"/><br/><br/>
+      <b>🟣 최영은 (팀원)</b><br/>
+      <sub>Frontend</sub><br/><br/>
+      마이페이지 / 로그인 / 회원가입
+    </td>
+    <td align="center" width="250">
+      <img src="./public/bin.jpg" width="120"/><br/><br/>
+      <b>🟡 홍정빈 (팀원)</b><br/>
+      <sub>Frontend</sub><br/><br/>
+      랜딩 / 업로드 / 수정
+    </td>
+  </tr>
+</table>
 
 ## 🎬 시연 이미지
 
-![메인 화면](./images/main.png)
-![업로드 화면](./images/upload.png)
+### 📌 랜딩 페이지 (landing)
+
+![메인](./public/landing.jpg)
+
+### 📌 회원가입 페이지 (signup)
+
+![메인](./public/signup.jpg)
+
+### 📌 로그인 페이지 (login)
+
+![메인](./public/login.jpg)
+
+### 📌 메인 페이지 (main)
+
+![메인](./public/main.jpg)
+
+### 📌 업로드 페이지 (upload)
+
+![메인](./public/upload.jpg)
+
+### 📌 수정 페이지 (edit)
+
+![메인](./public/edit.jpg)
+
+### 📌 마이 페이지 (mypage)
+
+## ![업로드](./public/mypage.jpg)
+
+## 🎬 영상
 
 ---
 
@@ -93,7 +149,7 @@
 
 ---
 
-### 👑 강제훈 (조장)
+### 👑 강재훈 (조장)
 
 ### ❗ 1. 메인 페이지 및 리스트 렌더링 문제
 
