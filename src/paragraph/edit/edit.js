@@ -2,6 +2,7 @@ import { requireAuth, getToken, redirectOnAuthFail } from "@/utils/auth.js";
 requireAuth();
 
 import { showToast } from "@/utils/toast.js";
+import { showModal } from "@/utils/modal.js";
 
 const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const token = getToken();
@@ -24,22 +25,19 @@ let rating = 0;
 function isValidText(text) {
   const trimmed = text.trim();
 
-  if (trimmed.length < 2) return false;
+  // 1글자 이상
+  if (trimmed.length < 1) return false;
+
+  // 자음/모음만 (ㅋㅋ, ㄱㄱ)
   if (/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(trimmed)) return false;
+
+  // 같은 문자 반복 (aaaa, ㅋㅋㅋㅋ)
   if (/^(.)\1+$/.test(trimmed)) return false;
-  if (/^[bcdfghjklmnpqrstvwxyz]+$/i.test(trimmed)) return false;
 
-  //  전체가 정상 텍스트인지 검사
-
-  // 한글 + 공백 + 기본 문장부호만 허용
-  const validKoreanSentence = /^[가-힣0-9\s.,!?]+$/.test(trimmed);
-
-  // 영어 (모음 포함 + 정상 단어)
-  const validEnglishSentence = /^(?=.*[aeiouAEIOU])[a-zA-Z0-9\s.,!?]+$/.test(
+  // 허용 문자: 한글, 영어, 숫자, 일본어, 공백, 특수문자
+  return /^[가-힣a-zA-Z0-9\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\s.,!?()\-:'"~]+$/.test(
     trimmed,
   );
-
-  return validKoreanSentence || validEnglishSentence;
 }
 
 /*  별점 */
@@ -190,52 +188,52 @@ async function updateMovie() {
   }
   // 이미지 필수 체크
   if (!imageUrl || !/^https?:\/\/.+/.test(imageUrl)) {
-    alert("올바른 이미지 URL 또는 파일을 입력해주세요");
+    showToast("올바른 이미지 URL 또는 파일을 입력해주세요", "error");
     return;
   }
   const genre = document.querySelector("input[name=genre]:checked")?.value;
   if (!isValidText(title.value)) {
-    alert("영화 제목을 제대로 입력해주세요");
+    showToast("영화 제목을 제대로 입력해주세요", "error");
     return;
   }
   if (!isValidText(content.value)) {
-    alert("후기를 제대로 입력해주세요");
+    showToast("후기를 제대로 입력해주세요", "error");
     return;
   }
   if (!rating || rating === 0) {
-    alert("별점을 입력해주세요");
+    showToast("별점을 입력해주세요", "error");
     return;
   }
   //  명대사 검증
   if (description.value && !isValidText(description.value)) {
-    alert("명대사를 제대로 입력해주세요");
+    showToast("명대사를 제대로 입력해주세요", "error");
     return;
   }
   //  개봉연도 숫자 검증
   //  개봉연도 필수 + 형식 검증
   if (!year.value) {
-    alert("개봉 연도를 입력해주세요");
+    showToast("개봉 연도를 입력해주세요", "error");
     return;
   }
 
   if (!/^\d{4}$/.test(year.value)) {
-    alert("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)");
+    showToast("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)", "error");
     return;
   }
   //  입력창에 값 남아있으면 막기 (엔터 안 누른 경우)
   if (directorInput.value.trim()) {
-    alert("감독 이름을 입력 후 Enter를 눌러주세요");
+    showToast("감독 이름을 입력 후 Enter를 눌러주세요", "error");
     return;
   }
 
   if (actorsInput.value.trim()) {
-    alert("출연진 이름을 입력 후 Enter를 눌러주세요");
+    showToast("출연진 이름을 입력 후 Enter를 눌러주세요", "error");
     return;
   }
   //  감독 전체 검증 (무조건 실행)
   for (const director of directorList) {
     if (!isValidText(director)) {
-      alert("감독 이름에 올바르지 않은 값이 있습니다");
+      showToast("감독 이름에 올바르지 않은 값이 있습니다", "error");
       return;
     }
   }
@@ -243,7 +241,7 @@ async function updateMovie() {
   //  출연진 전체 검증 (무조건 실행)
   for (const actor of actorsList) {
     if (!isValidText(actor)) {
-      alert("출연진 이름에 올바르지 않은 값이 있습니다");
+      showToast("출연진 이름에 올바르지 않은 값이 있습니다", "error");
       return;
     }
   }
@@ -296,7 +294,7 @@ async function updateMovie() {
       return;
     }
 
-    alert("수정 완료!");
+    showToast("수정 완료!", "success");
     location.href = "/src/main/main_list/main_list.html";
   } catch (err) {
     showToast("수정 실패", "error");
@@ -333,12 +331,12 @@ document.getElementById("preview").onload = function () {
   }
 };
 
-function resetForm(event) {
+async function resetForm(event) {
   event.preventDefault();
   event.stopPropagation();
   const scrollY = window.scrollY;
 
-  if (!confirm("작성한 내용을 모두 지우시겠습니까?")) return;
+  if (!(await showModal("작성한 내용을 모두 지우시겠습니까?"))) return;
 
   // 1. input 초기화
   document.querySelectorAll("input").forEach((input) => {
@@ -388,7 +386,7 @@ directorInput.addEventListener("keydown", (e) => {
 
     //  upload랑 동일한 검증 추가
     if (!isValidText(value)) {
-      alert("감독 이름을 제대로 입력해주세요");
+      showToast("감독 이름을 제대로 입력해주세요", "error");
       return;
     }
 
@@ -417,7 +415,7 @@ actorsInput.addEventListener("keydown", (e) => {
 
     //  upload랑 동일한 검증 추가
     if (!isValidText(value)) {
-      alert("출연진 이름을 제대로 입력해주세요");
+      showToast("출연진 이름을 제대로 입력해주세요", "error");
       return;
     }
 

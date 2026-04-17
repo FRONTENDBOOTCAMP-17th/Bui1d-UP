@@ -68,6 +68,8 @@
 
 .btn-label {
   display: none;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* 모바일: 검색바를 전체 너비로 아래 행에 배치 */

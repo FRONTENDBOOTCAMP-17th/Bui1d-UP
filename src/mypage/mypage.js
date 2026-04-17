@@ -68,26 +68,20 @@ accordions.forEach((accordion) => {
   const body = accordion.querySelector(".accordion-body");
 
   // 초기 상태: 모두 닫힘
-  body.style.transform = "scaleY(0)";
-  body.hidden = true;
+  body.setAttribute("inert", "");
 
   const openAccordion = (targetHead, targetBody) => {
     targetHead.setAttribute("aria-expanded", "true");
     targetHead.classList.add("open");
-    targetBody.hidden = false;
-    requestAnimationFrame(() => {
-      targetBody.style.transform = "scaleY(1)";
-    });
+    targetBody.classList.add("open");
+    targetBody.removeAttribute("inert");
   };
 
   const closeAccordion = (targetHead, targetBody) => {
     targetHead.setAttribute("aria-expanded", "false");
     targetHead.classList.remove("open");
-    targetBody.style.transform = "scaleY(0)";
-    targetBody.addEventListener("transitionend", function handler() {
-      targetBody.hidden = true;
-      targetBody.removeEventListener("transitionend", handler);
-    });
+    targetBody.classList.remove("open");
+    targetBody.setAttribute("inert", "");
   };
 
   head.addEventListener("click", () => {
