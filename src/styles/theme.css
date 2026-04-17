@@ -45,7 +45,50 @@
 }
 /* 우측 타이틀 텍스트 설정 */
 .heading-right-text {
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(2rem, 4vw, 2.3rem);
   font-weight: 700;
   margin-bottom: 2.5rem;
+}
+/* 위와 같은 페이지들의 텍스트 효과 */
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animationLeft {
+  animation: fadeRight 1s ease-out both;
+}
+.animationRight {
+  animation: fadeLeft 1s ease-out both;
+}
+
+body {
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+/* OS의 동작 줄이기 모드 이용자 고려 */
+@media (prefers-reduced-motion: reduce) {
+  .animationLeft,
+  .animationRight {
+    animation: none;
+  }
 }
