@@ -2,6 +2,7 @@ import { requireAuth, getToken } from "@/utils/auth.js";
 requireAuth();
 
 import { showToast } from "@/utils/toast.js";
+import { showModal } from "@/utils/modal.js";
 
 const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const accesstoken = getToken();
@@ -129,12 +130,12 @@ async function createMovie() {
   }
   //  이미지 필수 체크
   if (!imageUrl || !/^https?:\/\/.+/.test(imageUrl)) {
-    alert("올바른 이미지 URL 또는 파일을 입력해주세요");
+    showToast("올바른 이미지 URL 또는 파일을 입력해주세요", "error");
     return;
   }
   const genre = document.querySelector("input[name=genre]:checked")?.value;
   if (!isValidText(title.value)) {
-    alert("영화 제목을 제대로 입력해주세요");
+    showToast("영화 제목을 제대로 입력해주세요", "error");
     return;
   }
 
@@ -144,40 +145,40 @@ async function createMovie() {
   }
 
   if (!isValidText(content.value)) {
-    alert("후기를 제대로 입력해주세요");
+    showToast("후기를 제대로 입력해주세요", "error");
     return;
   }
 
   if (!rating || rating === 0) {
-    alert("별점을 입력해주세요");
+    showToast("별점을 입력해주세요", "error");
     return;
   }
 
   const description = document.getElementById("description");
   //  입력창에 값 남아있으면 막기
   if (directorInput.value.trim()) {
-    alert("감독 이름을 입력 후 Enter를 눌러주세요");
+    showToast("감독 이름을 입력 후 Enter를 눌러주세요", "error");
     return;
   }
   //  개봉연도 형식 검증
   //  개봉연도 필수 + 형식 검증
   if (!year.value) {
-    alert("개봉 연도를 입력해주세요");
+    showToast("개봉 연도를 입력해주세요", "error");
     return;
   }
 
   if (!/^\d{4}$/.test(year.value)) {
-    alert("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)");
+    showToast("개봉 연도는 4자리 숫자로 입력해주세요 (예: 2024)", "error");
     return;
   }
 
   if (actorsInput.value.trim()) {
-    alert("출연진 이름을 입력 후 Enter를 눌러주세요");
+    showToast("출연진 이름을 입력 후 Enter를 눌러주세요", "error");
     return;
   }
 
   if (description.value && !isValidText(description.value)) {
-    alert("명대사를 제대로 입력해주세요");
+    showToast("명대사를 제대로 입력해주세요", "error");
     return;
   }
   const body = {
@@ -259,13 +260,13 @@ document.getElementById("preview").onload = function () {
   }
 };
 
-function resetForm(event) {
+async function resetForm(event) {
   event.preventDefault();
   event.stopPropagation();
 
   const scrollY = window.scrollY;
 
-  if (!confirm("작성한 내용을 모두 지우시겠습니까?")) return;
+  if (!(await showModal("작성한 내용을 모두 지우시겠습니까?"))) return;
 
   // 1. input 초기화
   document.querySelectorAll("input").forEach((input) => {
@@ -319,7 +320,7 @@ directorInput.addEventListener("keydown", (e) => {
 
     //  유효성 검사 추가
     if (!isValidText(value)) {
-      alert("감독 이름을 제대로 입력해주세요");
+      showToast("감독 이름을 제대로 입력해주세요", "error");
       return;
     }
 
@@ -352,7 +353,7 @@ actorsInput.addEventListener("keydown", (e) => {
 
     //  유효성 검사 추가
     if (!isValidText(value)) {
-      alert("출연진 이름을 제대로 입력해주세요");
+      showToast("출연진 이름을 제대로 입력해주세요", "error");
       return;
     }
 

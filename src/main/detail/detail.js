@@ -5,6 +5,7 @@ import { getDetail } from "../../API/detail.js";
 import { deletePatagraph } from "../../API/paragraphAPI/delete.js";
 import { GENRE_MAP } from "@/utils/genres.js";
 import { showToast } from "@/utils/toast.js";
+import { showModal } from "@/utils/modal.js";
 
 const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
 
@@ -153,7 +154,7 @@ document.getElementById("delete_btn").addEventListener("click", async () => {
     return;
   }
 
-  if (!confirm("정말로 삭제하시겠습니까?")) return;
+  if (!(await showModal("정말로 삭제하시겠습니까?"))) return;
 
   const res = await deletePatagraph(postId);
   if (res) {
