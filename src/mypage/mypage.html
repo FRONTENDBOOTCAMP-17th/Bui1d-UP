@@ -30,7 +30,7 @@
         "
       ></div>
       <!-- 콘텐츠 -->
-      <div class="relative z-10">
+      <div class="relative z-10 animationLeft">
         <!-- 로고 -->
         <div class="flex items-center gap-3 mb-8">
           <img src="/logo.webp" alt="Bui1dBox 로고" class="header-logo" />
@@ -38,12 +38,10 @@
 
         <p class="heading-left-text">
           <span style="white-space: nowrap"> 안녕하세요,<br /></span>
-          <span style="white-space: nowrap">
-            <span id="welcome-nickname" class="text-(--color-primary,#dc2626)"
-              >로딩 중</span
-            >
-            님!</span
+          <span id="welcome-nickname" class="text-(--color-primary,#dc2626)"
+            >로딩 중</span
           >
+          님!
         </p>
         <p class="subtext-left-text">
           <span style="white-space: nowrap">계정 정보를 관리하고</span>
@@ -93,7 +91,7 @@
       <section
         id="accordion-components-wrap"
         aria-labelledby="form-title"
-        class="space-y-3"
+        class="space-y-1"
       >
         <!-- 이메일 변경 -->
         <div class="accordion-components rounded-lg overflow-hidden">
@@ -116,124 +114,125 @@
           </button>
           <div
             id="accordion-body-email"
-            class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
-            hidden
+            class="accordion-body mt-1 bg-(--background-surface,#262626) rounded-lg"
           >
-            <dl>
-              <dt class="text-(--text-secondary,#737373) text-sm">
-                현재 이메일
-              </dt>
-              <dd
-                id="display-email"
-                class="text-(--text-primary,#ffffff) mt-1 py-3"
-              ></dd>
-            </dl>
-            <!-- 새 이메일 -->
-            <div class="flex flex-col gap-1">
-              <span class="text-sm font-medium pb-1" id="email-label"
-                >새 이메일</span
-              >
-              <div class="flex gap-2">
-                <div class="form-input flex-1">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder=" "
-                    autocomplete="email"
-                    aria-labelledby="email-label"
-                    aria-describedby="email-hint"
-                    required
-                  />
-                  <label for="email">이메일 주소를 입력하세요.</label>
+            <div class="p-4 space-y-3">
+              <dl>
+                <dt class="text-(--text-secondary,#737373) text-sm">
+                  현재 이메일
+                </dt>
+                <dd
+                  id="display-email"
+                  class="text-(--text-primary,#ffffff) mt-1 py-3"
+                ></dd>
+              </dl>
+              <!-- 새 이메일 -->
+              <div class="flex flex-col gap-1">
+                <span class="text-sm font-medium pb-1" id="email-label"
+                  >새 이메일</span
+                >
+                <div class="flex gap-2">
+                  <div class="form-input flex-1">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder=" "
+                      autocomplete="email"
+                      aria-labelledby="email-label"
+                      aria-describedby="email-hint"
+                      required
+                    />
+                    <label for="email">이메일 주소를 입력하세요.</label>
+                    <button
+                      type="button"
+                      class="action-btn clear"
+                      id="email-clear"
+                      aria-label="이메일 입력값 삭제"
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <use href="../assets/icons/sprite.svg#icon-x" />
+                      </svg>
+                    </button>
+                  </div>
+                  <!-- 인증코드 발송 버튼 -->
                   <button
                     type="button"
-                    class="action-btn clear"
-                    id="email-clear"
-                    aria-label="이메일 입력값 삭제"
+                    id="send-code-btn"
+                    class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
                   >
-                    <svg
-                      width="18"
-                      height="18"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <use href="../assets/icons/sprite.svg#icon-x" />
-                    </svg>
+                    인증코드 발송
                   </button>
                 </div>
-                <!-- 인증코드 발송 버튼 -->
-                <button
-                  type="button"
-                  id="send-code-btn"
-                  class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
-                >
-                  인증코드 발송
-                </button>
+                <p class="text-hint" id="email-hint" role="status">
+                  이메일 주소를 입력하세요.
+                </p>
               </div>
-              <p class="text-hint" id="email-hint" role="status">
-                이메일 주소를 입력하세요.
-              </p>
-            </div>
 
-            <!-- 인증 코드 -->
-            <div class="flex flex-col gap-1">
-              <span class="text-sm font-medium pb-1" id="email-code-label"
-                >인증 코드</span
-              >
-              <div class="flex gap-2">
-                <div class="form-input flex-1">
-                  <input
-                    type="text"
-                    id="email-code"
-                    name="email-code"
-                    placeholder=" "
-                    autocomplete="one-time-code"
-                    aria-labelledby="email-code-label"
-                    aria-describedby="email-code-hint"
-                    required
-                  />
-                  <label for="email-code"
-                    >이메일로 발송된 4자리 코드를 입력하세요.</label
-                  >
+              <!-- 인증 코드 -->
+              <div class="flex flex-col gap-1">
+                <span class="text-sm font-medium pb-1" id="email-code-label"
+                  >인증 코드</span
+                >
+                <div class="flex gap-2">
+                  <div class="form-input flex-1">
+                    <input
+                      type="text"
+                      id="email-code"
+                      name="email-code"
+                      placeholder=" "
+                      autocomplete="one-time-code"
+                      aria-labelledby="email-code-label"
+                      aria-describedby="email-code-hint"
+                      required
+                    />
+                    <label for="email-code"
+                      >이메일로 발송된 4자리 코드를 입력하세요.</label
+                    >
+                    <button
+                      type="button"
+                      class="action-btn clear"
+                      id="email-code-clear"
+                      aria-label="인증 코드 입력값 삭제"
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <use href="../assets/icons/sprite.svg#icon-x" />
+                      </svg>
+                    </button>
+                  </div>
+                  <!-- 확인 버튼 -->
                   <button
                     type="button"
-                    class="action-btn clear"
-                    id="email-code-clear"
-                    aria-label="인증 코드 입력값 삭제"
+                    id="verify-code-btn"
+                    class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
                   >
-                    <svg
-                      width="18"
-                      height="18"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <use href="../assets/icons/sprite.svg#icon-x" />
-                    </svg>
+                    확인
                   </button>
                 </div>
-                <!-- 확인 버튼 -->
-                <button
-                  type="button"
-                  id="verify-code-btn"
-                  class="border-0 shrink-0 h-13 px-4 rounded-lg text-sm font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
-                >
-                  확인
-                </button>
+                <p class="text-hint" id="email-code-hint" role="status">
+                  이메일로 발송된 4자리 코드를 입력하세요.
+                </p>
               </div>
-              <p class="text-hint" id="email-code-hint" role="status">
-                이메일로 발송된 4자리 코드를 입력하세요.
-              </p>
-            </div>
 
-            <!-- 이메일 변경 버튼 -->
-            <button
-              type="button"
-              onclick="handleEmailChange()"
-              class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
-            >
-              이메일 변경하기
-            </button>
+              <!-- 이메일 변경 버튼 -->
+              <button
+                type="button"
+                onclick="handleEmailChange()"
+                class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+              >
+                이메일 변경하기
+              </button>
+            </div>
           </div>
         </div>
 
@@ -258,10 +257,9 @@
           </button>
           <div
             id="accordion-body-password"
-            class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
-            hidden
+            class="accordion-body mt-1 bg-(--background-surface,#262626) rounded-lg"
           >
-            <form id="password-change-form" novalidate>
+            <form id="password-change-form" class="p-4 space-y-3" novalidate>
               <input
                 type="text"
                 id="password-form-username"
@@ -502,63 +500,64 @@
           </button>
           <div
             id="accordion-body-nickname"
-            class="accordion-body mt-1 p-4 bg-(--background-surface,#262626) rounded-lg space-y-3"
-            hidden
+            class="accordion-body mt-1 bg-(--background-surface,#262626) rounded-lg"
           >
-            <dl>
-              <dt class="text-(--text-secondary,#737373) text-sm">
-                현재 닉네임
-              </dt>
-              <dd
-                id="display-nickname"
-                class="text-(--text-primary,#ffffff) mt-1 py-3"
-              ></dd>
-            </dl>
-            <div class="flex flex-col gap-1.5">
-              <span class="text-sm font-medium pb-1" id="nickname-label"
-                >새 닉네임</span
-              >
-              <div class="form-input">
-                <input
-                  type="text"
-                  id="nickname"
-                  name="nickname"
-                  placeholder=" "
-                  autocomplete="nickname"
-                  aria-labelledby="nickname-label"
-                  aria-describedby="nickname-hint"
-                  required
-                />
-                <label for="nickname">1~10자로 입력하세요.</label>
-                <button
-                  type="button"
-                  class="action-btn clear"
-                  id="nickname-clear"
-                  aria-label="닉네임 입력값 삭제"
+            <div class="p-4 space-y-3">
+              <dl>
+                <dt class="text-(--text-secondary,#737373) text-sm">
+                  현재 닉네임
+                </dt>
+                <dd
+                  id="display-nickname"
+                  class="text-(--text-primary,#ffffff) mt-1 py-3"
+                ></dd>
+              </dl>
+              <div class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium pb-1" id="nickname-label"
+                  >새 닉네임</span
                 >
-                  <svg
-                    width="18"
-                    height="18"
-                    aria-hidden="true"
-                    focusable="false"
+                <div class="form-input">
+                  <input
+                    type="text"
+                    id="nickname"
+                    name="nickname"
+                    placeholder=" "
+                    autocomplete="nickname"
+                    aria-labelledby="nickname-label"
+                    aria-describedby="nickname-hint"
+                    required
+                  />
+                  <label for="nickname">1~10자로 입력하세요.</label>
+                  <button
+                    type="button"
+                    class="action-btn clear"
+                    id="nickname-clear"
+                    aria-label="닉네임 입력값 삭제"
                   >
-                    <use href="../assets/icons/sprite.svg#icon-x" />
-                  </svg>
-                </button>
+                    <svg
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="../assets/icons/sprite.svg#icon-x" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-hint" id="nickname-hint" role="status">
+                  1~10자로 입력해야 합니다.
+                </p>
               </div>
-              <p class="text-hint" id="nickname-hint" role="status">
-                1~10자로 입력해야 합니다.
-              </p>
-            </div>
 
-            <!-- 닉네임 변경 버튼 -->
-            <button
-              type="button"
-              onclick="handleNicknameChange()"
-              class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
-            >
-              닉네임 변경하기
-            </button>
+              <!-- 닉네임 변경 버튼 -->
+              <button
+                type="button"
+                onclick="handleNicknameChange()"
+                class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
+              >
+                닉네임 변경하기
+              </button>
+            </div>
           </div>
         </div>
 
