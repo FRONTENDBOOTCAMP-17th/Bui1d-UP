@@ -27,6 +27,7 @@ const emailCodeInput = document.getElementById("email-code");
 const emailCodeHint = document.getElementById("email-code-hint");
 const sendCodeBtn = document.getElementById("send-code-btn");
 const verifyCodeBtn = document.getElementById("verify-code-btn");
+const emailCodeSection = document.getElementById("email-code-section");
 
 const usernameInput = document.getElementById("username");
 const nicknameInput = document.getElementById("nickname");
@@ -54,6 +55,7 @@ sendCodeBtn.addEventListener("click", async () => {
     isEmailVerified = false;
     emailHint.textContent = "인증코드가 발송되었습니다. 이메일을 확인하세요.";
     emailHint.className = "text-hint success";
+    emailCodeSection.classList.add("open");
     emailCodeInput.focus();
   } catch (e) {
     console.error(e);

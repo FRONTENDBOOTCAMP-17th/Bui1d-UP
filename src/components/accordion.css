@@ -1,15 +1,19 @@
 .accordion-body {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   height: 0;
+  overflow: hidden;
+  transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0s 0.28s;
 }
 .accordion-body > * {
   overflow: hidden;
 }
 .accordion-body.open {
   grid-template-rows: 1fr;
-  height: fit-content;
+  height: auto;
+  transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0s;
 }
 .icon-chevron {
   transition: transform 0.2s ease;
