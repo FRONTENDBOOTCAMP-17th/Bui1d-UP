@@ -2,6 +2,7 @@ import { requireAuth, getToken, redirectOnAuthFail } from "@/utils/auth.js";
 requireAuth();
 
 import { showToast } from "@/utils/toast.js";
+import { showModal } from "@/utils/modal.js";
 
 const API = `${import.meta.env.VITE_API_BASE_URL}/movies`;
 const token = getToken();
@@ -333,12 +334,12 @@ document.getElementById("preview").onload = function () {
   }
 };
 
-function resetForm(event) {
+async function resetForm(event) {
   event.preventDefault();
   event.stopPropagation();
   const scrollY = window.scrollY;
 
-  if (!confirm("작성한 내용을 모두 지우시겠습니까?")) return;
+  if (!(await showModal("작성한 내용을 모두 지우시겠습니까?"))) return;
 
   // 1. input 초기화
   document.querySelectorAll("input").forEach((input) => {
