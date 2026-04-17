@@ -2,6 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>리뷰 수정 | Bui1dBox</title>
 
     <link rel="stylesheet" href="../../styles/theme.css" />
@@ -19,7 +20,10 @@
       <div class="container">
         <!-- 좌측 -->
         <div class="left">
-          <label>포스터 URL</label>
+          <div class="label-row">
+            <label>포스터 URL</label>
+            <span class="label-hint">* URL 또는 파일 중 1개만 입력</span>
+          </div>
           <input id="poster" placeholder="이미지 URL 입력" />
           <input type="file" id="file" />
           <div class="preview-wrapper">
@@ -27,9 +31,12 @@
           </div>
 
           <label>영화 제목</label>
-          <input id="title" placeholder="영화 제목을 입력하세요" />
+          <input id="title" placeholder="영화 제목을 입력해주세요" />
 
-          <label>별점</label>
+          <div class="label-row">
+            <label>별점</label>
+            <span class="label-hint">* 1점 이상</span>
+          </div>
           <div class="rating-box">
             <input
               type="range"
@@ -45,7 +52,10 @@
           <label>개봉 연도</label>
           <input id="year" placeholder="예: 2024" />
 
-          <label>장르</label>
+          <div class="label-row">
+            <label>장르</label>
+            <span class="label-hint">* 1개만 선택 가능</span>
+          </div>
           <div class="genres">
             <label
               ><input type="radio" name="genre" value="animation" /><span
@@ -101,21 +111,27 @@
             >
           </div>
 
-          <label>감독</label>
-          <input
-            id="director"
-            placeholder="감독 이름 입력 (여러 명은 ,로 구분)"
-          />
+          <div class="label-row">
+            <label>감독</label>
+            <span class="label-hint">* 입력 후 Enter</span>
+          </div>
+          <input id="director" placeholder="감독 이름을 입력해주세요" />
           <div id="director-bubbles" class="bubble-container"></div>
 
-          <label>출연진</label>
-          <input id="actors" placeholder="출연진 입력 (여러 명은 ,로 구분)" />
+          <div class="label-row">
+            <label>출연진</label>
+            <span class="label-hint">* 입력 후 Enter</span>
+          </div>
+          <input id="actors" placeholder="출연진 이름을 입력해주세요" />
           <div id="actors-bubbles" class="bubble-container"></div>
         </div>
 
         <!-- 우측 -->
         <div class="right">
-          <label>명대사</label>
+          <div class="label-row">
+            <label>명대사</label>
+            <span class="label-hint">* 양옆에 " "가 붙습니다</span>
+          </div>
           <div class="textarea-wrapper">
             <textarea
               id="description"
@@ -138,7 +154,7 @@
       </div>
 
       <div class="buttons">
-        <button type="button" class="cancel" id="cancelBtn">취소</button>
+        <button type="button" class="cancel" id="cancelBtn">초기화</button>
         <button class="submit" onclick="updateMovie()">수정하기</button>
       </div>
     </div>
