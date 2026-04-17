@@ -114,7 +114,8 @@ async function loadSearchResults() {
   const gridEl = document.getElementById("search-grid");
 
   if (results === null) {
-    gridEl.innerHTML = "<p class='empty-message'>검색 중 오류가 발생했습니다.</p>";
+    gridEl.innerHTML =
+      "<p class='empty-message'>검색 중 오류가 발생했습니다.</p>";
     return;
   }
 
@@ -145,6 +146,7 @@ async function loadMainList() {
   const searchSectionEl = document.getElementById("search-section");
   const latestSectionEl = document.getElementById("latest-section");
   const genreListEl = document.getElementById("genre-list");
+  const sectionsWrapEl = document.getElementById("sections-wrap");
 
   // 검색 모드
   if (searchQuery) {
@@ -167,6 +169,8 @@ async function loadMainList() {
     if (latest.length > 0) {
       latestSectionEl.innerHTML = renderLatestSection(latest);
     } else {
+      // 배너가 없을 때 negative margin을 제거
+      sectionsWrapEl.style.marginTop = "0";
       latestSectionEl.innerHTML =
         "<p class='empty-message'>작성한 영화후기가 없습니다. 지금 후기를 작성해보세요!</p>";
     }
@@ -178,6 +182,7 @@ async function loadMainList() {
       .map((key) => renderGenreSection(key, genres[key]))
       .join("");
   } catch (err) {
+    sectionsWrapEl.style.marginTop = "0";
     latestSectionEl.innerHTML =
       "<p class='empty-message'>데이터를 불러오지 못했습니다.</p>";
     console.error(err);
