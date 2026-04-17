@@ -25,22 +25,19 @@ let rating = 0;
 function isValidText(text) {
   const trimmed = text.trim();
 
-  if (trimmed.length < 2) return false;
+  // 1글자 이상
+  if (trimmed.length < 1) return false;
+
+  // 자음/모음만 (ㅋㅋ, ㄱㄱ)
   if (/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(trimmed)) return false;
+
+  // 같은 문자 반복 (aaaa, ㅋㅋㅋㅋ)
   if (/^(.)\1+$/.test(trimmed)) return false;
-  if (/^[bcdfghjklmnpqrstvwxyz]+$/i.test(trimmed)) return false;
 
-  //  전체가 정상 텍스트인지 검사
-
-  // 한글 + 공백 + 기본 문장부호만 허용
-  const validKoreanSentence = /^[가-힣0-9\s.,!?]+$/.test(trimmed);
-
-  // 영어 (모음 포함 + 정상 단어)
-  const validEnglishSentence = /^(?=.*[aeiouAEIOU])[a-zA-Z0-9\s.,!?]+$/.test(
+  // 허용 문자: 한글, 영어, 숫자, 일본어, 공백, 특수문자
+  return /^[가-힣a-zA-Z0-9\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\s.,!?()\-:'"~]+$/.test(
     trimmed,
   );
-
-  return validKoreanSentence || validEnglishSentence;
 }
 
 /*  별점 */
