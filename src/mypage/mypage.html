@@ -67,7 +67,7 @@
       <!-- 뒤로가기 -->
       <div class="mb-8">
         <button
-          onclick="history.back()"
+          id="btnBack"
           class="flex items-center gap-2 text-(--text-tertiary,#d4d4d4) hover:text-(--text-primary,#ffffff) text-sm transition-colors font-medium"
         >
           <svg
@@ -228,7 +228,7 @@
               <!-- 이메일 변경 버튼 -->
               <button
                 type="button"
-                onclick="handleEmailChange()"
+                id="btnEmailChange"
                 class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
               >
                 이메일 변경하기
@@ -472,7 +472,7 @@
               <!-- 비밀번호 변경 버튼 -->
               <button
                 type="button"
-                onclick="handlePasswordChange()"
+                id="btnPasswordChange"
                 class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
               >
                 비밀번호 변경하기
@@ -555,7 +555,7 @@
               <!-- 닉네임 변경 버튼 -->
               <button
                 type="button"
-                onclick="handleNicknameChange()"
+                id="btnNicknameChange"
                 class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-primary"
               >
                 닉네임 변경하기
@@ -567,7 +567,7 @@
         <!-- 회원 탈퇴 버튼 -->
         <div class="pt-4">
           <button
-            onclick="openWithdrawDialog()"
+            id="btnWithdrawOpen"
             type="button"
             class="border-0 w-full h-13 rounded-lg text-[0.95rem] font-semibold mt-4 cursor-pointer transition-[background] duration-150 active:scale-[0.99] button-secondary button-responsive"
           >
