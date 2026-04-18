@@ -78,13 +78,6 @@
   animation: fadeLeft 1s ease-out both;
 }
 
-body {
-  overflow-x: hidden;
-  scrollbar-width: none;
-}
-body::-webkit-scrollbar {
-  display: none;
-}
 /* OS의 동작 줄이기 모드 이용자 고려 */
 @media (prefers-reduced-motion: reduce) {
   .animationLeft,
