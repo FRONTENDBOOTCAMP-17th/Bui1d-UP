@@ -68,26 +68,20 @@ accordions.forEach((accordion) => {
   const body = accordion.querySelector(".accordion-body");
 
   // 초기 상태: 모두 닫힘
-  body.style.transform = "scaleY(0)";
-  body.hidden = true;
+  body.setAttribute("inert", "");
 
   const openAccordion = (targetHead, targetBody) => {
     targetHead.setAttribute("aria-expanded", "true");
     targetHead.classList.add("open");
-    targetBody.hidden = false;
-    requestAnimationFrame(() => {
-      targetBody.style.transform = "scaleY(1)";
-    });
+    targetBody.classList.add("open");
+    targetBody.removeAttribute("inert");
   };
 
   const closeAccordion = (targetHead, targetBody) => {
     targetHead.setAttribute("aria-expanded", "false");
     targetHead.classList.remove("open");
-    targetBody.style.transform = "scaleY(0)";
-    targetBody.addEventListener("transitionend", function handler() {
-      targetBody.hidden = true;
-      targetBody.removeEventListener("transitionend", handler);
-    });
+    targetBody.classList.remove("open");
+    targetBody.setAttribute("inert", "");
   };
 
   head.addEventListener("click", () => {
@@ -115,7 +109,7 @@ accordions.forEach((accordion) => {
 
 // 핸들러
 // 이메일 변경
-window.handleEmailChange = async function () {
+async function handleEmailChange() {
   if (!isEmailVerified) {
     showToast("인증을 먼저 완료해주세요.", "error");
     return;
@@ -132,7 +126,7 @@ window.handleEmailChange = async function () {
   } catch (error) {
     showToast(error.message ?? "이메일 변경에 실패했습니다.", "error");
   }
-};
+}
 
 // 이메일 인증코드 발송
 sendCodeBtn.addEventListener("click", async () => {
@@ -207,7 +201,7 @@ verifyCodeBtn.addEventListener("click", async () => {
 });
 
 // 비밀번호 변경
-window.handlePasswordChange = async function () {
+async function handlePasswordChange() {
   const currentPwdInput = document.getElementById("current-password");
   const newPwdInput = document.getElementById("new-password");
   const checkPwdInput = document.getElementById("password-check");
@@ -282,10 +276,10 @@ window.handlePasswordChange = async function () {
     // 그 외 에러 (토큰 만료, 형식 오류 등)
     showToast(error.message ?? "비밀번호 변경에 실패했습니다.", "error");
   }
-};
+}
 
 // 닉네임 변경
-window.handleNicknameChange = async function () {
+async function handleNicknameChange() {
   const nickname = document.getElementById("nickname").value.trim();
   if (!nickname) {
     showToast("닉네임을 입력해주세요.", "error");
@@ -302,7 +296,7 @@ window.handleNicknameChange = async function () {
     nicknameHint.textContent = "닉네임 변경에 실패했습니다.";
     nicknameHint.className = "text-hint error";
   }
-};
+}
 
 // 회원탈퇴
 const withdrawDialog = document.getElementById("withdrawDialog");
@@ -318,10 +312,26 @@ function resetWithdrawInput() {
   document.getElementById("password-clear").classList.remove("show");
 }
 
-window.openWithdrawDialog = function () {
+function openWithdrawDialog() {
   resetWithdrawInput();
   withdrawDialog.showModal();
-};
+}
+
+document
+  .getElementById("btnBack")
+  .addEventListener("click", () => history.back());
+document
+  .getElementById("btnEmailChange")
+  .addEventListener("click", handleEmailChange);
+document
+  .getElementById("btnPasswordChange")
+  .addEventListener("click", handlePasswordChange);
+document
+  .getElementById("btnNicknameChange")
+  .addEventListener("click", handleNicknameChange);
+document
+  .getElementById("btnWithdrawOpen")
+  .addEventListener("click", openWithdrawDialog);
 
 document.getElementById("withdrawCancel").addEventListener("click", () => {
   withdrawDialog.close();

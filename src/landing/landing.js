@@ -6,8 +6,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("signupBtn").addEventListener("click", () => {
     window.location.href = "../account/signup/signup.html";
   });
-
-  document.getElementById("logo").addEventListener("click", () => {
-    window.location.href = "/index.html";
-  });
 });

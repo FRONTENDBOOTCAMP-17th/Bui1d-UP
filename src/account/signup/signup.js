@@ -6,6 +6,7 @@ import {
 } from "../../components/input.js";
 import { sendEmailCode } from "../../API/accountAPI/sendEmailCode.js";
 import { checkEmailCode } from "../../API/accountAPI/checkEmailCode.js";
+import { showToast } from "@/utils/toast.js";
 
 setupInput("username");
 setupInput("nickname");
@@ -26,6 +27,7 @@ const emailCodeInput = document.getElementById("email-code");
 const emailCodeHint = document.getElementById("email-code-hint");
 const sendCodeBtn = document.getElementById("send-code-btn");
 const verifyCodeBtn = document.getElementById("verify-code-btn");
+const emailCodeSection = document.getElementById("email-code-section");
 
 const usernameInput = document.getElementById("username");
 const nicknameInput = document.getElementById("nickname");
@@ -53,6 +55,7 @@ sendCodeBtn.addEventListener("click", async () => {
     isEmailVerified = false;
     emailHint.textContent = "인증코드가 발송되었습니다. 이메일을 확인하세요.";
     emailHint.className = "text-hint success";
+    emailCodeSection.classList.add("open");
     emailCodeInput.focus();
   } catch (e) {
     console.error(e);
@@ -155,7 +158,8 @@ signupForm.addEventListener("submit", async (e) => {
 
   try {
     await signup(id, pwd, email, nickname, emailUuid);
-    location.href = "../../account/login/login.html";
+    showToast("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다");
+    setTimeout(() => { location.href = "../../account/login/login.html"; }, 1500);
   } catch (error) {
     if (error.message === "DUPLICATE_ID") {
       usernameHint.textContent = "이미 사용 중인 아이디입니다.";
@@ -168,7 +172,6 @@ signupForm.addEventListener("submit", async (e) => {
       passwordHint.textContent = "회원가입에 실패했습니다. 다시 시도해주세요.";
       passwordHint.className = "text-hint error";
     }
-  } finally {
     submitBtn.disabled = false;
   }
 });
