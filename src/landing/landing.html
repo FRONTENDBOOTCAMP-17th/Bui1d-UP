@@ -3,14 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BuildBox</title>
-
-    <link rel="stylesheet" href="./landing.css" />
+    <title>Bui1dBox</title>
+    <link rel="stylesheet" href="../styles/theme.css" />
+    <link rel="stylesheet" href="../components/button.css" />
     <link rel="icon" type="image/png" href="/favicon-16x16.png" />
+    <style>
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          translate: 0 0;
+        }
+      }
+
+      @keyframes move {
+        0% {
+          transform: rotate(-10deg) translateY(200px) scale(1.2);
+        }
+        100% {
+          transform: rotate(-10deg) translateY(-200px) scale(1.2);
+        }
+      }
+
+      .poster-bg {
+        pointer-events: none;
+        position: absolute;
+        top: -15%;
+        left: -15%;
+        width: 130%;
+        height: 130%;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 220px;
+        gap: 16px;
+        transform: rotate(-10deg) scale(1.15);
+        animation: move 45s ease-in-out infinite alternate;
+        z-index: 0;
+      }
+
+      .poster-bg img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px;
+        opacity: 0.7;
+        transition: all 0.4s ease;
+      }
+
+      #landing-content h1 {
+        font-size: 48px;
+      }
+      @media (max-width: 1080px) {
+        #landing-content h1 {
+          font-size: 38px;
+        }
+      }
+      @media (max-width: 768px) {
+        #landing-content h1 {
+          font-size: 28px;
+        }
+      }
+
+      /* OS의 동작 줄이기 모드 이용자 고려 */
+      @media (prefers-reduced-motion: reduce) {
+        .poster-bg {
+          animation: none;
+        }
+        #landing-content {
+          animation: none;
+          opacity: 1;
+          translate: 0 0;
+        }
+      }
+    </style>
   </head>
 
-  <body>
-    <div class="container">
+  <body class="bg-(--background-base,#171717) text-(--text-primary,#ffffff)">
+    <div
+      class="bg-(--background-base,#171717) relative h-screen overflow-hidden"
+    >
       <div class="poster-bg" aria-hidden="true">
         <img src="../assets/icons/poster01.jpg" alt="" />
         <img src="../assets/icons/poster02.jpg" alt="" />
@@ -43,26 +113,49 @@
         <img src="../assets/icons/poster29.jpg" alt="" />
         <img src="../assets/icons/poster30.jpg" alt="" />
       </div>
-      <div class="overlay"></div>
 
-      <header>
-        <div class="logo" id="logo">
-          <img src="/logo.png" alt="BuildBox 로고" />
+      <div class="absolute inset-0 pointer-events-none bg-black/70 z-1"></div>
+
+      <header
+        class="absolute top-5 left-5 right-5 md:left-10 md:right-10 flex justify-between items-center z-9999"
+      >
+        <div class="flex items-center gap-2 text-xl font-bold">
+          <img src="/logo.webp" alt="Bui1dBox 로고" class="h-12.5 w-auto" />
         </div>
         <div>
-          <button class="login-btn" id="signupBtn">회원가입</button>
+          <button
+            id="signupBtn"
+            class="py-1.5 px-3.5 rounded-lg box-border border-2 border-current button-outline"
+          >
+            회원가입
+          </button>
         </div>
       </header>
 
-      <div class="content">
-        <h1>나만의 영화 기록장</h1>
-        <p>
+      <main
+        id="landing-content"
+        class="relative z-2 h-full flex flex-col justify-center items-center text-center px-5 opacity-0 translate-y-5 animate-[fadeUp_1s_ease_forwards]"
+      >
+        <h1 class="font-bold mb-4">나만의 영화 기록장</h1>
+        <p
+          class="text-sm md:text-base text-(--text-tertiary,#d4d4d4) mb-7.5 leading-normal"
+        >
           본 영화를 기록하고, 추억하고, 공유하세요.<br />
           당신만의 영화 컬렉션을 만들어보세요.
         </p>
-        <button class="start-btn" id="loginBtn">로그인을 해주세요</button>
-        <p class="sub-info">이미 500명 이상이 사용 중입니다</p>
-      </div>
+        <button
+          id="loginBtn"
+          aria-label="로그인 페이지로 이동"
+          class="bg-(--color-primary,#dc2626) border-0 py-3 px-7 text-(--text-primary,#ffffff) text-base rounded-md cursor-pointer transition-all duration-300 hover:bg-(--color-primary-hover,#fb2c36) hover:scale-105 hover:shadow-[0_10px_20px_rgba(255,0,0,0.3)]"
+        >
+          로그인을 해주세요
+        </button>
+        <p
+          class="text-sm md:text-base text-(--text-tertiary,#d4d4d4) my-4 opacity-80"
+        >
+          이미 500명 이상이 사용 중입니다
+        </p>
+      </main>
     </div>
 
     <script type="module" src="./landing.js"></script>
