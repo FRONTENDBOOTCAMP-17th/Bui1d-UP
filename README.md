@@ -67,7 +67,7 @@
       메인 / 상세 / 장르 페이지
     </td>
     <td align="center" width="250">
-      <img src="./public/eun.jpg" width="120"/><br/><br/>
+      <img src="./public/eun.jpeg" width="120"/><br/><br/>
       <b>🟣 최영은 (팀원)</b><br/>
       <sub>Frontend</sub><br/><br/>
       마이페이지 / 로그인 / 회원가입
