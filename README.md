@@ -60,23 +60,27 @@
 
 <table border="1" cellspacing="0" cellpadding="20">
   <tr>
-    <td align="center" width="250">
-      <img src="./public/hun.jpeg" width="120"/><br/><br/>
+    <td align="center" width="250" height="300">
+      <img src="./public/hun.jpeg" 
+           style="width:120px; height:140px; object-fit:cover; border-radius:0%;"/><br/><br/>
       <b>👑 강재훈 (조장)</b><br/>
       <sub>Frontend</sub><br/><br/>
-      메인 / 상세 / 장르 페이지
+      메인 / 상세 / 장르 페이지<br/>
     </td>
-    <td align="center" width="250">
-      <img src="./public/eun.jpeg" width="120"/><br/><br/>
-      <b>🟣 최영은 (팀원)</b><br/>
-      <sub>Frontend</sub><br/><br/>
-      마이페이지 / 로그인 / 회원가입
-    </td>
-    <td align="center" width="250">
-      <img src="./public/bin.jpg" width="120"/><br/><br/>
+    <td align="center" width="250" height="300">
+  <img src="./public/eun.jpg"
+       style="width:120px; height:140px; object-fit:cover; border-radius:0%;"/><br/><br/>
+  <b>🟣 (팀원)</b><br/>
+  <sub>Frontend</sub><br/><br/>
+  마이페이지 / 로그인 /  회원가입<br/>
+  
+</td>
+    <td align="center" width="250" height="300">
+      <img src="./public/bin.jpg" 
+           style="width:120px; height:140px; object-fit:cover; border-radius:0%;"/><br/><br/>
       <b>🟡 홍정빈 (팀원)</b><br/>
       <sub>Frontend</sub><br/><br/>
-      랜딩 / 업로드 / 수정
+      랜딩 / 업로드 / 수정<br/>
     </td>
   </tr>
 </table>
