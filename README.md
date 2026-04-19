@@ -7,7 +7,7 @@
 </h1>
 
 <p align="center">
-  <img src="./public/Bui1dBox.jpg" width="500"/>
+  <img src="./public/logo_readme_Bui1dBox.webp" width="500"/>
 </p>
 
 > 🎬 <b style="font-size:18px;">Bui1d<span style="color:red;">Box</span></b>는 영화를 보고 감상평을 남길 수 있는 웹 서비스입니다.
