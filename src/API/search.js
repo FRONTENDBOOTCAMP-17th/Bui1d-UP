@@ -3,13 +3,13 @@ import { redirectOnAuthFail } from "@/utils/auth.js";
 export const searchMovies = async (keyword, offset = 0, limit = 20) => {
   try {
     const params = new URLSearchParams({
-      search: keyword,
+      keyword,
       sort: "DESC",
       offset,
       limit,
     });
     const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/movies?${params}`,
+      `${import.meta.env.VITE_API_BASE_URL}/movies/search?${params}`,
       {
         method: "GET",
         headers: {
