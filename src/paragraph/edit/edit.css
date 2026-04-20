@@ -321,4 +321,12 @@ textarea:focus {
   .genres {
     gap: 10px 20px;
   }
+  .bubble {
+    background: #dc2626;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+  }
 }

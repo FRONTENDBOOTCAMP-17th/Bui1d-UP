@@ -5,149 +5,236 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>리뷰 등록 | Bui1dBox</title>
 
-    <link rel="stylesheet" href="../../styles/theme.css" />
-    <link rel="stylesheet" href="./upload.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="icon" type="image/png" href="/favicon-16x16.png" />
   </head>
 
-  <body>
-    <div class="wrapper">
-      <div class="top-header">
-        <span class="back-btn" onclick="history.back()">← 나가기</span>
-        <span class="title">새 영화 추가</span>
+  <body class="bg-[#171717] text-white p-6">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="flex items-center gap-4 border-b border-[#262626] pb-3 mb-5">
+        <span
+          class="text-gray-400 cursor-pointer hover:text-white"
+          onclick="history.back()"
+          >← 나가기</span
+        >
+        <span class="text-xl font-bold">새 영화 추가</span>
       </div>
-
-      <div class="container">
+      <!-- 컨테이너 -->
+      <div class="flex flex-col md:flex-row gap-10">
         <!-- 좌측 -->
-        <div class="left">
-          <div class="label-row">
+        <div class="flex flex-col gap-3 w-full md:max-w-[400px]">
+          <div class="flex items-center gap-2 text-sm">
             <label>포스터 URL</label>
-            <span class="label-hint">* URL 또는 파일 중 1개만 입력</span>
+            <span class="text-gray-400">* URL 또는 파일 중 1개만 입력</span>
           </div>
-          <input id="poster" placeholder="이미지 URL 입력" />
-          <input type="file" id="file" />
-          <div class="preview-wrapper">
-            <img id="preview" class="preview" />
+          <input
+            id="poster"
+            class="bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
+            placeholder="이미지 URL 입력"
+          />
+          <input type="file" id="file" class="text-sm" />
+          <div class="w-full">
+            <img
+              id="preview"
+              class="w-full bg-[#262626] rounded mt-2 object-cover"
+            />
           </div>
-
           <label>영화 제목</label>
-          <input id="title" placeholder="영화 제목을 입력해주세요" />
-
-          <div class="label-row">
-            <label>별점</label>
-            <span class="label-hint">* 1점 이상</span>
+          <input
+            id="title"
+            class="bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
+            placeholder="영화 제목을 입력해주세요"
+          />
+          <div class="flex items-center gap-2 text-sm">
+            <label>별점</label> <span class="text-gray-400">* 1점 이상</span>
           </div>
-          <div class="rating-box">
+          <div class="flex items-center gap-2">
             <input
               type="range"
               id="ratingRange"
+              class="w-full accent-yellow-400 cursor-pointer"
               min="0"
               max="5"
               step="0.5"
               value="0"
             />
-            <span id="ratingValue">⭐ 0.0</span>
+            <span id="ratingValue" class="font-bold">⭐ 0.0</span>
           </div>
           <label>개봉 연도</label>
-          <input id="year" placeholder="예: 2024" />
-
-          <div class="label-row">
+          <input
+            id="year"
+            class="bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
+            placeholder="예: 2024"
+          />
+          <div class="flex items-center gap-2 text-sm">
             <label>장르</label>
-            <span class="label-hint">* 1개만 선택 가능</span>
+            <span class="text-gray-400">* 1개만 선택 가능</span>
           </div>
-          <div class="genres">
-            <label
-              ><input type="radio" name="genre" value="animation" /><span
-                >애니메이션</span
-              ></label
-            >
-            <label
-              ><input type="radio" name="genre" value="comedy" />
-              <span>코미디</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="romance" />
-              <span>로맨스</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="action_thriller_crime" />
-              <span>액션 / 스릴러 / 범죄</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="horror" />
-              <span>호러</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="sf_fantasy" />
-              <span>SF / 판타지</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="drama" />
-              <span>드라마</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="documentary" />
-              <span>다큐멘터리</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="music_musical" />
-              <span>음악 / 뮤지컬</span></label
-            >
-            <label
-              ><input type="radio" name="genre" value="etc" />
-              <span>기타</span></label
-            >
-          </div>
-          <div class="label-row">
-            <label>감독</label>
-            <span class="label-hint">* 입력 후 Enter</span>
-          </div>
-          <input id="director" placeholder="감독 이름을 입력해주세요" />
-          <div id="director-bubbles" class="bubble-container"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="animation"
+                class="accent-red-600"
+              />
+              애니메이션
+            </label>
 
-          <div class="label-row">
-            <label>출연진</label>
-            <span class="label-hint">* 입력 후 Enter</span>
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="comedy"
+                class="accent-red-600"
+              />
+              코미디
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="romance"
+                class="accent-red-600"
+              />
+              로맨스
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="action_thriller_crime"
+                class="accent-red-600"
+              />
+              액션 / 스릴러 / 범죄
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="horror"
+                class="accent-red-600"
+              />
+              호러
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="sf_fantasy"
+                class="accent-red-600"
+              />
+              SF / 판타지
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="drama"
+                class="accent-red-600"
+              />
+              드라마
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="documentary"
+                class="accent-red-600"
+              />
+              다큐멘터리
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="music_musical"
+                class="accent-red-600"
+              />
+              음악 / 뮤지컬
+            </label>
+
+            <label class="flex items-center gap-2 whitespace-nowrap">
+              <input
+                type="radio"
+                name="genre"
+                value="etc"
+                class="accent-red-600"
+              />
+              기타
+            </label>
           </div>
-          <input id="actors" placeholder="출연진 이름을 입력해주세요" />
-          <div id="actors-bubbles" class="bubble-container"></div>
+          <label>감독</label>
+          <input
+            id="director"
+            class="bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
+            placeholder="감독 이름 입력 후 Enter"
+          />
+          <div id="director-bubbles" class="flex flex-wrap gap-2 mt-1"></div>
+          <label>출연진</label>
+          <input
+            id="actors"
+            class="bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
+            placeholder="출연진 입력 후 Enter"
+          />
+          <div id="actors-bubbles" class="flex flex-wrap gap-2 mt-1"></div>
         </div>
-
         <!-- 우측 -->
-        <div class="right">
-          <div class="label-row">
-            <label>명대사</label>
-            <span class="label-hint">* 양옆에 " "가 붙습니다</span>
-          </div>
-          <div class="textarea-wrapper">
+        <div class="flex flex-col gap-3 w-full">
+          <label>명대사</label>
+          <div class="relative">
             <textarea
               id="description"
               maxlength="500"
-              placeholder="기억에 남는 명대사를 적어주세요"
+              class="w-full h-[200px] bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
             ></textarea>
-            <div class="char-count" id="descCount">0/500자</div>
+            <div
+              id="descCount"
+              class="absolute bottom-2 right-2 text-xs text-gray-400"
+            >
+              0/500자
+            </div>
           </div>
-
           <label>나의 후기</label>
-          <div class="textarea-wrapper">
+          <div class="relative">
             <textarea
               id="content"
               maxlength="1500"
-              placeholder="영화에 대한 생각과 감상을 자유롭게 작성해주세요"
+              class="w-full h-[400px] bg-[#262626] p-2 rounded border border-transparent focus:border-red-500 outline-none"
             ></textarea>
-            <div class="char-count" id="contentCount">0/1500자</div>
+            <div
+              id="contentCount"
+              class="absolute bottom-2 right-2 text-xs text-gray-400"
+            >
+              0/1500자
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="buttons">
-        <button type="button" class="cancel" id="cancelBtn">초기화</button>
-        <button type="button" class="submit" onclick="createMovie()">
+      <!-- 버튼 -->
+      <div class="mt-8 flex justify-end gap-3 flex-col md:flex-row">
+        <button
+          id="cancelBtn"
+          class="bg-gray-500 px-5 py-2 rounded hover:bg-gray-400 w-full md:w-auto"
+        >
+          초기화
+        </button>
+        <button
+          onclick="createMovie()"
+          class="bg-red-600 px-5 py-2 rounded hover:bg-red-500 w-full md:w-auto"
+        >
           등록하기
         </button>
       </div>
     </div>
-
     <script type="module" src="./upload.js"></script>
   </body>
 </html>
