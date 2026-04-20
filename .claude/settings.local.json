@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(wc -l \"/Users/kangjaehoon/bootcamp/프로젝트 모음/Bui1d-UP/src/API/mypageAPI/\"*)"
+      "Bash(wc -l \"/Users/kangjaehoon/bootcamp/프로젝트 모음/Bui1d-UP/src/API/mypageAPI/\"*)",
+      "Bash(python3 -c ' *)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(python3 -c \"import fitz; print\\('pymupdf available'\\)\")",
+      "Bash(python3 -c \"import pdfplumber; print\\('pdfplumber available'\\)\")",
+      "Bash(/opt/homebrew/bin/pdftotext /tmp/readme_doc.pdf -)"
     ]
   }
 }
