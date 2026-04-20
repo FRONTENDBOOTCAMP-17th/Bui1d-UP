@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="./main_list.css" />
   </head>
   <body>
-    <main class="main-content">
+    <main class="pb-0">
       <!-- 검색 결과 섹션 (검색 모드일 때만 표시) -->
-      <div id="search-section"></div>
+      <div id="search-section" class="relative z-1 bg-[#171717]"></div>
 
       <!-- 전체 + 장르별 섹션 (JS 동적 렌더링) -->
-      <section id="sections-wrap">
+      <section id="sections-wrap" class="relative z-1 -mt-7.5 md:-mt-30">
         <div id="latest-section"></div>
-        <div id="genre-list"></div>
+        <div id="genre-list" class="relative z-1 bg-[#171717] pb-8"></div>
       </section>
     </main>
 

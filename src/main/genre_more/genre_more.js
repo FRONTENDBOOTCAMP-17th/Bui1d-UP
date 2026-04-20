@@ -20,13 +20,13 @@ const noDataEl = document.getElementById("no-data");
 
 function renderCard(post) {
   return `
-    <a href="/src/main/detail/detail.html?postId=${post.postId}" class="movie-card">
-      <div class="movie-card__poster">
-        ${post.imageUrl ? `<img src="${post.imageUrl}" alt="${post.title}" />` : ""}
+    <a href="/src/main/detail/detail.html?postId=${post.postId}" class="flex flex-col no-underline text-inherit rounded-lg overflow-hidden bg-[#262626]">
+      <div class="bg-[#404040] overflow-hidden">
+        ${post.imageUrl ? `<img src="${post.imageUrl}" alt="${post.title}" class="w-full aspect-[16/9] object-contain" />` : ""}
       </div>
-      <div class="movie-card__info">
-        <p class="movie-card__title">${post.title}</p>
-        ${post.star != null ? `<span class="movie-card__star">★ ${post.star}</span>` : ""}
+      <div class="p-2">
+        <p class="text-[13px] font-medium text-white m-0 mb-1 overflow-hidden text-ellipsis whitespace-nowrap">${post.title}</p>
+        ${post.star != null ? `<span class="text-xs text-[#facc15]">★ ${post.star}</span>` : ""}
       </div>
     </a>
   `;
