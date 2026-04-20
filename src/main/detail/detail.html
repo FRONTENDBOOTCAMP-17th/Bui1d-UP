@@ -9,94 +9,85 @@
     <title>영화 상세</title>
   </head>
   <body>
-    <header class="top-bar">
+    <header class="top-bar flex items-center justify-between py-4 px-5 absolute top-0 left-0 w-full z-10">
       <nav>
-        <button class="back-btn" id="backBtn">← 뒤로가기</button>
+        <button class="bg-transparent border-0 text-base cursor-pointer text-gray-500 back-btn" id="backBtn">← 뒤로가기</button>
       </nav>
     </header>
 
-    <main class="detail-layout">
+    <main class="detail-layout block">
       <!-- 데스크탑 전용: 패널 열릴 때 배경 블러 오버레이 -->
       <div class="backdrop-overlay" id="backdropOverlay"></div>
 
-      <!-- ① 배경 영역
-           모바일 : <img>가 보임, background-image 없음
-           데스크탑: <img> 숨김, JS가 backdrop_path를 background-image로 주입 -->
-      <section class="backdrop" id="backdrop">
+      <!-- 모바일: <img> 표시, 데스크탑: JS가 background-image 주입 -->
+      <section class="backdrop relative w-full" id="backdrop">
         <img
-          class="backdrop-img"
+          class="backdrop-img w-full block aspect-[16/9] object-cover"
           id="backdropImg"
           src=""
           alt="영화 배경 이미지"
         />
 
-        <!-- 모바일에서는 이미지 아래, 데스크탑에서는 좌하단 오버레이 -->
         <div class="hero-info">
-          <h1 id="title"></h1>
-          <div class="hero-meta">
+          <h1 class="text-[28px] font-bold mb-2" id="title"></h1>
+          <div class="flex items-center gap-3 text-sm text-[#aaa] hero-meta">
             <span id="year"></span>
-            <div class="rating">
-              <img src="/star.svg" alt="별점" />
+            <div class="flex items-center gap-1 text-[#f5c518] font-bold">
+              <img src="/star.svg" alt="별점" class="w-4 h-4" />
               <span id="rating"></span>
             </div>
           </div>
-          <!-- 데스크탑 전용 버튼: 패널 열기 -->
           <button class="detail-btn" id="detailBtn" type="button">
             ≡ 상세 정보
           </button>
         </div>
       </section>
 
-      <!-- ② 상세 정보 패널
-           모바일 : 항상 아래에 펼쳐져 있음 (세로 스크롤)
-           데스크탑: 우측에서 슬라이드 인, 패널 열기 버튼으로 토글 -->
       <aside class="detail-panel" id="detailPanel">
-        <!-- 데스크탑 전용 닫기 버튼 -->
-        <button class="close-btn" id="closeBtn" type="button">✕</button>
+        <button class="close-btn bg-transparent border-0 text-[#ccc] text-xl cursor-pointer" id="closeBtn" type="button">✕</button>
 
-        <!-- 데스크탑 패널 안 포스터 썸네일 (모바일에서는 숨김) -->
         <figure class="poster-wrap">
-          <img id="poster" src="" alt="영화 포스터" />
+          <img id="poster" src="" alt="영화 포스터" class="w-full rounded-lg object-cover aspect-[2/3]" />
         </figure>
 
-        <h2 id="panelTitle"></h2>
+        <h2 class="text-[22px] font-bold mb-2" id="panelTitle"></h2>
 
-        <div class="panel-rating">
-          <img src="/star.svg" alt="별점" />
+        <div class="flex items-center gap-1.5 text-[#f5c518] text-lg font-bold mb-5">
+          <img src="/star.svg" alt="별점" class="w-[18px] h-[18px]" />
           <span id="panelRating"></span>
         </div>
 
-        <dl class="movie-meta">
-          <div class="meta-row">
-            <dt>개봉 연도</dt>
-            <dd id="panelYear"></dd>
+        <dl class="grid grid-cols-2 gap-y-4 mb-5 movie-meta">
+          <div>
+            <dt class="text-xs text-[#888] mb-1">개봉 연도</dt>
+            <dd class="text-sm text-white" id="panelYear"></dd>
           </div>
-          <div class="meta-row">
-            <dt>장르</dt>
-            <dd id="genre"></dd>
+          <div>
+            <dt class="text-xs text-[#888] mb-1">장르</dt>
+            <dd class="text-sm text-white" id="genre"></dd>
           </div>
-          <div class="meta-row">
-            <dt>감독</dt>
-            <dd id="director"></dd>
+          <div>
+            <dt class="text-xs text-[#888] mb-1">감독</dt>
+            <dd class="text-sm text-white" id="director"></dd>
           </div>
-          <div class="meta-row">
-            <dt>출연진</dt>
-            <dd id="cast"></dd>
+          <div>
+            <dt class="text-xs text-[#888] mb-1">출연진</dt>
+            <dd class="text-sm text-white" id="cast"></dd>
           </div>
         </dl>
 
         <hr />
 
         <section class="quotes">
-          <h3>명대사</h3>
-          <ul id="quoteList"></ul>
+          <h3 class="text-sm text-[#888] mb-3">명대사</h3>
+          <ul class="list-none flex flex-col gap-3" id="quoteList"></ul>
         </section>
 
         <hr />
 
-        <section class="review">
-          <h3>후기</h3>
-          <p id="reviewContent"></p>
+        <section class="mt-1">
+          <h3 class="text-sm text-[#888] mb-3">후기</h3>
+          <p class="text-sm text-[#ccc] leading-7 whitespace-pre-wrap bg-[#1a1a1a] rounded-lg p-4 border-l-2 border-[#e50914]" id="reviewContent"></p>
         </section>
 
         <div class="w-full flex justify-center gap-6 mt-8">

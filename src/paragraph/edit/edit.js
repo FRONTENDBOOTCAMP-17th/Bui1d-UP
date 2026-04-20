@@ -105,7 +105,7 @@ async function getMovie() {
 
     directorList.forEach((name) => {
       const bubble = document.createElement("span");
-      bubble.className = "bubble";
+      bubble.className = "bg-[#dc2626] text-white py-[5px] px-2.5 rounded-[20px] text-xs cursor-pointer";
       bubble.innerText = name;
 
       bubble.addEventListener("click", () => {
@@ -123,7 +123,7 @@ async function getMovie() {
 
     actorsList.forEach((name) => {
       const bubble = document.createElement("span");
-      bubble.className = "bubble";
+      bubble.className = "bg-[#dc2626] text-white py-[5px] px-2.5 rounded-[20px] text-xs cursor-pointer";
       bubble.innerText = name;
 
       bubble.addEventListener("click", () => {
