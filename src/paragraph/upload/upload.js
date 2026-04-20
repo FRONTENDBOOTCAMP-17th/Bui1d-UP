@@ -318,7 +318,8 @@ directorInput.addEventListener("keydown", (e) => {
 
     directorList.push(value);
     const bubble = document.createElement("span");
-    bubble.className = "bubble";
+    bubble.className =
+      "bg-red-600 text-white px-3 py-1 rounded-full text-sm cursor-pointer";
     bubble.innerText = value;
 
     bubble.addEventListener("click", () => {
@@ -351,7 +352,8 @@ actorsInput.addEventListener("keydown", (e) => {
 
     actorsList.push(value);
     const bubble = document.createElement("span");
-    bubble.className = "bubble";
+    bubble.className =
+      "bg-red-600 text-white px-3 py-1 rounded-full text-sm cursor-pointer";
     bubble.innerText = value;
 
     bubble.addEventListener("click", () => {
