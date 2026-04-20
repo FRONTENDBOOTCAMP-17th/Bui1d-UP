@@ -1,23 +1,27 @@
 .accordion-body {
   display: grid;
+  overflow: hidden;
   grid-template-rows: 0fr;
   height: 0;
-  overflow: hidden;
   transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1),
               height 0s 0.28s;
 }
+
 .accordion-body > * {
   overflow: hidden;
 }
+
 .accordion-body.open {
-  grid-template-rows: 1fr;
   height: auto;
+  grid-template-rows: 1fr;
   transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1),
               height 0s;
 }
+
 .icon-chevron {
-  transition: transform 0.2s ease;
+  transition: transform 200ms ease-in-out;
 }
+
 .accordion-head.open .icon-chevron {
   transform: rotate(180deg);
 }

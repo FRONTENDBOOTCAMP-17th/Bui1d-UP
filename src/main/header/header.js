@@ -5,28 +5,28 @@ import { showToast } from "@/utils/toast.js";
 
 export function renderHeader(targetSelector = "body") {
   const html = `
-  <header class="site-header">
-  <a href="/src/main/main_list/main_list.html" class="header-logo-link" aria-label="Bui1dBox 홈으로 이동">
-  <img src="/logo.webp" alt="" class="header-logo" />
-  </a>
-  <div class="search-bar">
-  <img src="/Search_icon.svg" alt="검색" class="search-icon" />
-  <input class="search-input" type="text" placeholder="작성한 글 검색..." />
-  </div>
-  <nav class="header-nav">
-  <a href="/src/paragraph/upload/upload.html" class="nav-btn nav-btn--red" id="btn-new-post">
-  <img src="/Add_round.svg" alt="새 포스트" />
-  <span class="btn-label">새 포스트</span>
-  </a>
-  <a href="/src/mypage/mypage.html" class="nav-btn" id="btn-myinfo">
-  <img src="/myinfo.png" alt="내 정보" />
-  <span class="btn-label" id="nickname"></span>
-  </a>
-  <button class="nav-btn" id="btn-logout">
-  <img src="/logout.png" alt="로그아웃" />
-  <span class="btn-label">로그아웃</span>
-  </button>
-  </nav>
+  <header class="flex justify-between flex-wrap items-center w-full px-4 pt-3 pb-2.5 gap-2 border-b border-[#262626] bg-[#171717] sticky top-0 z-10 md:flex-nowrap md:px-[85px]">
+    <a href="/src/main/main_list/main_list.html" class="flex-1 flex flex-row items-center gap-2 no-underline md:flex-none" aria-label="Bui1dBox 홈으로 이동">
+      <img src="/logo.webp" alt="" class="h-12.5 w-auto" />
+    </a>
+    <div class="order-1 w-full flex flex-row items-center border border-[#737373] gap-2 px-3 py-2 bg-[#262626] rounded-lg box-border mx-2.5 md:order-[0] md:max-w-[50%]">
+      <img src="/Search_icon.svg" alt="검색" class="w-4 h-4 opacity-50 shrink-0" />
+      <input class="search-input flex-1 bg-transparent border-0 text-white text-sm outline-none" type="text" placeholder="작성한 글 검색..." />
+    </div>
+    <nav class="flex flex-row items-center gap-1 shrink-0 md:gap-3">
+      <a href="/src/paragraph/upload/upload.html" class="flex items-center cursor-pointer border-0 p-1.5 gap-0.5 rounded-lg text-base text-white bg-[#dc2626] py-1.5 pl-2 pr-2.5 md:hover:bg-[#b91c1c]" id="btn-new-post">
+        <img src="/Add_round.svg" alt="새 포스트" class="w-[22px] h-[22px]" />
+        <span class="hidden text-[13px] font-medium md:inline md:whitespace-nowrap">새 포스트</span>
+      </a>
+      <a href="/src/mypage/mypage.html" class="flex items-center cursor-pointer border-0 p-1.5 gap-0.5 rounded-lg text-base text-white bg-transparent md:hover:bg-[#262626]" id="btn-myinfo">
+        <img src="/myinfo.png" alt="내 정보" class="w-[22px] h-[22px]" />
+        <span class="hidden text-[13px] font-medium md:inline md:whitespace-nowrap" id="nickname"></span>
+      </a>
+      <button class="flex items-center cursor-pointer border-0 p-1.5 gap-0.5 rounded-lg text-base text-white bg-transparent md:hover:bg-[#262626]" id="btn-logout">
+        <img src="/logout.png" alt="로그아웃" class="w-[22px] h-[22px]" />
+        <span class="hidden text-[13px] font-medium md:inline md:whitespace-nowrap">로그아웃</span>
+      </button>
+    </nav>
   </header>
   `;
 
