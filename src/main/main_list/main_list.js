@@ -150,6 +150,7 @@ async function loadMainList() {
 
   // 검색 모드
   if (searchQuery) {
+    sectionsWrapEl.style.display = "none";
     searchSectionEl.innerHTML = renderSearchSection(searchQuery);
     document
       .getElementById("search-load-more")

@@ -17,7 +17,7 @@ export const changePassword = async (password, newPassword) => {
         },
         body: JSON.stringify({
           currentPassword: password,
-          password: newPassword,
+          newPassword: newPassword,
         }),
       },
     );
