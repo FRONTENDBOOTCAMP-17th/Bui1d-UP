@@ -119,11 +119,11 @@
 
 ### 📌 업로드 페이지 (upload)
 
-![업로드](./public/upload.jpg)
+![업로드](./public/upload.png)
 
 ### 📌 수정 페이지 (edit)
 
-![수정](./public/edit.jpg)
+![수정](./public/edit.png)
 
 ### 📌 마이 페이지 (mypage)
 
